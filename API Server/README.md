@@ -1,15 +1,4 @@
-<h1 align="center"> 🚗 I-GO(아이고) </h1>
-
-![language](https://img.shields.io/badge/license-MIT-green)
-![language](https://img.shields.io/badge/version-1.0.0-blue)
-
-<h2>2022년 1학기 캡스톤 디자인</h2>
-<h2>About I-GO (아이고)</h2>
-<p>카풀 매칭을 온라인상에서 편하게 할 수 있도록 지원하는 웹앱 서비스입니다.</p>
-<h2>Git Branchs</h2>
-
-![git_Branch](https://user-images.githubusercontent.com/65306839/159635186-e10f0389-ec4c-4551-9028-2d86a017ab1b.png)
-
+<h1 align="center"> 🚗 I-GO(아이고) API 서버</h1>
 
 
 ## 🖥️ Collabrator
