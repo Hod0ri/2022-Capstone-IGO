@@ -1,0 +1,14 @@
+version: "3.7" 
+services:
+  IGO-login-db:
+    image: mongo
+    restart: always
+    container_name: IGO-login-mongodb
+    ports:
+      - "20302:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - TZ=Asia/Seoul
+    volumes:
+      - ./data:/data/db
