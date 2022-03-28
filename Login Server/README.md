@@ -30,3 +30,13 @@ mongodb://root:root@localhost:27017/
 ```
 mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
 ```
+
+## FilePath
+
+```js
+/*
+/src
+  |--- models   # mongodb models ( Schema )
+  |--- routes   
+*/
+```
