@@ -25,6 +25,16 @@ UserSchema.pre("save", function (next) {
     next();
   }
 });
+UserSchema.methods.comparePassword = function (reqPassword, cb) {
+  const user = this;
+  bcrypt.compare(reqPassword, user.password).then(function (isMatch) {
+    if (isMatch) {
+      cb(null, isMatch);
+    } else {
+      cb(false, isMatch);
+    }
+  });
+};
 
 const User = model("user", UserSchema);
 module.exports = { User };
