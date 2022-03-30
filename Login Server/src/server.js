@@ -4,7 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const { userRouter } = require("./routes/userRoute");
-const MONGO_URI = "mongodb://root:root@localhost:3333/LoginServer?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false";
+const MONGO_URI = "mongodb://root:root@mongodb/LoginServer?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false";
 const cors = require("cors");
 
 app.use(cors());
