@@ -5,7 +5,7 @@ services:
     restart: always
     container_name: IGO-login-mongodb
     ports:
-      - "20302:27017"
+      - "3333:27017"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
