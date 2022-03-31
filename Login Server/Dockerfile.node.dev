@@ -1,11 +1,10 @@
 FROM node:lts-alpine3.15
-
+# tzdata install
+RUN apk add --update tzdata
 # alpine linux python3설치
 RUN apk --no-cache add --virtual builds-deps build-base python3
-
 # 앱 디렉터리 생성
 WORKDIR /usr/src/app
-
 COPY package*.json ./
 
 RUN npm install

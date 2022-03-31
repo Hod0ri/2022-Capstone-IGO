@@ -1,9 +1,9 @@
 version: "3.9" 
 services:
   mongodb:
+    container_name: IGO-Login-Mongodb
     image: mongo
     restart: always
-    container_name: IGO-login-mongodb
     ports:
       - "3333:27017"
     environment:
@@ -12,29 +12,45 @@ services:
       - TZ=Asia/Seoul
     volumes:
       - ./data:/data/db
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"
   nginx:
+    container_name: IGO-Nginx
     image: nginx:stable
     restart: always
-    container_name: IGO-NGINX
     ports:
     - "80:80"
+    environment:
+      - TZ=Asia/Seoul
     volumes:
     - ./conf.d:/etc/nginx/conf.d
     links:
     - node
-    #environment:
-    #- NGINX_HOST=foobar.com
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"
   node:
-    container_name: nodejs
-    restart: always
+    container_name: IGO-Node-Server
     build:
       context: .
       dockerfile: Dockerfile.node.dev
+    restart: always
     volumes:
     - ./src:/usr/src/app/src
     - ./package.json:/usr/src/app/package.json
     - ./package-lock.json:/usr/src/app/package-lock.json
     ports:
       - "23712:23712"
+    environment:
+      - TZ=Asia/Seoul
     links:
       - mongodb
+    depends_on:
+      - mongodb
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"
