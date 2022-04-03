@@ -1,46 +1,29 @@
 from django.db import models
 
+
 # Create your models here.
 class Member(models.Model):
     user_Id = models.CharField(max_length=50, primary_key=True)
     user_Nick = models.CharField(max_length=10, unique=True)
     user_Name = models.CharField(max_length=10)
-    user_Driver = models.IntegerField(max_length=1)
+    user_Driver = models.IntegerField()
     user_Phone = models.CharField(max_length=30)
     user_Points = models.IntegerField(default=0)
     user_Grade = models.IntegerField(default=0)
     user_Email = models.CharField(max_length=50, unique=True)
-    
+
     def __str__(self):
         return self.user_Id
-    
+
     class Meta:
         db_table = 'TB_MEMBER'
 
-class Location(models.Model):
-    loc_Id = models.ForeignKey(
-    "Member", related_name="Member", 
-    on_delete=models.CASCADE, db_column="loc_Id",  
-    primary_key=True
-    )
-    # 탑승 희망 장소 5가지 (1개는 필수)
-    loc_Pri = models.CharField(max_length=12)
-    loc_Sec = models.CharField(max_length=12, null=True)
-    loc_Thi = models.CharField(max_length=12, null=True)
-    loc_For = models.CharField(max_length=12, null=True)
-    loc_Fif = models.CharField(max_length=12, null=True)
 
-    def __str__(self):
-        return self.loc_Id
-
-    class Meta:
-        db_table = 'TB_LOCATION'
-        
 class UpdatePoint(models.Model):
     pot_Id = models.ForeignKey(
-    "Member", related_name="Member", 
-    on_delete=models.CASCADE, db_column="pot_Id",  
-    primary_key=True
+        "Member", related_name="MemberPoint",
+        on_delete=models.CASCADE, db_column="pot_Id",
+        primary_key=True
     )
     pot_date = models.DateTimeField(auto_now_add=True)
     pot_Amount = models.IntegerField()
@@ -52,11 +35,12 @@ class UpdatePoint(models.Model):
     class Meta:
         db_table = 'TB_LOGPOINT'
 
+
 class HireDriver(models.Model):
     hire_Id = models.ForeignKey(
-    "Member", related_name="Member",
-    on_delete=models.CASCADE, db_column="hire_Id",
-    primary_key=True 
+        "Member", related_name="MemberHD",
+        on_delete=models.CASCADE, db_column="hire_Id",
+        primary_key=True
     )
     hire_Date = models.DateTimeField(auto_now_add=True)
     hire_Loc1 = models.CharField(max_length=12)
@@ -76,9 +60,9 @@ class HireDriver(models.Model):
 
 class HireCustomer(models.Model):
     hc_Id = models.ForeignKey(
-    "Mebmer", related_name="Member",
-    on_delete=models.CASCADE, db_column="hc_Id",
-    primary_key=True
+        "Member", related_name="MemberHC",
+        on_delete=models.CASCADE, db_column="hc_Id",
+        primary_key=True
     )
     hc_Date = models.DateTimeField(auto_now_add=True)
     hc_Loc1 = models.CharField(max_length=12)
@@ -92,4 +76,4 @@ class HireCustomer(models.Model):
         return self.hc_Id
 
     class Meta:
-        db_table= 'TB_HIRECUSTOMER'
+        db_table = 'TB_HIRECUSTOMER'
