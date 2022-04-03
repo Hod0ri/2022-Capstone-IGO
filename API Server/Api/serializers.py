@@ -6,11 +6,6 @@ class MemberSerializer(serializers.ModelSerializer):
         model = Member
         fields = '__all__'
 
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = '__all__'
-
 class UpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UpdatePoint
