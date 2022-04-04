@@ -1,2 +1,2 @@
-/data
-/node_modules/
+/db/data
+/server/node_modules/

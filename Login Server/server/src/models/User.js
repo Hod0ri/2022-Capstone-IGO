@@ -5,8 +5,8 @@ const UserSchema = new Schema({
   user_ID: { type: String, required: true, unique: true, maxlength: 50 },
   password: { type: String, required: true },
   token: {
-    value: String,
-    exp: String,
+    access: String,
+    refresh: String,
   },
 });
 
