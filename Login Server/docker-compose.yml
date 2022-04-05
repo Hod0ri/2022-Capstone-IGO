@@ -44,6 +44,7 @@ services:
       - "23712:23712"
     environment:
       - TZ=Asia/Seoul
+      - NODE_ENV=development
     links:
       - mongodb
     depends_on:
