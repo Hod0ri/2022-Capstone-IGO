@@ -1,20 +1,25 @@
 from rest_framework import serializers
-from .models import HireCustomer, HireDriver, Location, Member, UpdatePoint
+from .models import HireCustomer, HireDriver, Member, UpdatePoint
+
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = '__all__'
+        fields = ['user_Id', 'user_Name', 'user_Nick', 'user_Driver', 'user_Phone', 'user_Email']
+
 
 class UpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = UpdatePoint
         fields = '__all__'
 
+
 class HireDriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = HireDriver
         fields = '__all__'
+
+
 class HireCustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = HireCustomer

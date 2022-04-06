@@ -1,9 +1,56 @@
+import http
+
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from .models import Member, UpdatePoint, HireDriver, HireCustomer
 from rest_framework.views import APIView
-from .serializers import MemberSerializer, UpdatePointSerializer, HireDriverSerializer, HireCustomerSerializer
+from .serializers import MemberSerializer, UpdateSerializer, HireDriverSerializer, HireCustomerSerializer
+import jwt
+from jwt import ExpiredSignatureError
+from .vaildators import CheckVaildAccount
+
+
+class Jwt_Checker_Middleware:
+    secret_key = ''
+
+    def checkVaild(self, request):
+        cookie = request.getCookie()
+        token = cookie.jwt
+        try:
+            jwt.decode(token, self.secret_key, algorithms='HS256')
+            return None
+        except ExpiredSignatureError:
+            return HttpResponse(status=401)
+
 
 # Create your views here.
-class UserSequenceView(APIView):
-    pass
+class UserView(APIView):
+    def post(self, request):
+        # Jwt_Checker_Middleware.checkVaild(request)
+        # return Response("test ok", status=200)
+        tempdata = JSONParser().parse(request)
+        member_serializer = MemberSerializer(data=tempdata)
+
+        if member_serializer.is_valid():
+            if len(CheckVaildAccount(tempdata)) == 0:
+                member_serializer.save()
+                response_json = {
+                    'err': ''
+                }
+            else:
+                response_json = {
+                    'err': CheckVaildAccount(tempdata)
+                }
+            return JsonResponse(response_json)
+
+    def get(self, request):
+
+        return Response("test ok", status=200)
+
+    def put(self, request):
+        return Response("test ok", status=200)
+
+    def delete(self, request):
+        return Response("test ok", status=200)
