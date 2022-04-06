@@ -10,6 +10,7 @@ from .serializers import MemberSerializer, UpdateSerializer, HireDriverSerialize
 import jwt
 from jwt import ExpiredSignatureError
 from .vaildators import CheckVaildAccount
+from rest_framework import status
 
 
 class Jwt_Checker_Middleware:
@@ -22,7 +23,7 @@ class Jwt_Checker_Middleware:
             jwt.decode(token, self.secret_key, algorithms='HS256')
             return None
         except ExpiredSignatureError:
-            return HttpResponse(status=401)
+            return HttpResponse(status=status.HTTP_401_UNAUTHORIZED)
 
 
 # Create your views here.
@@ -46,10 +47,26 @@ class UserView(APIView):
             return JsonResponse(response_json)
 
     def get(self, request):
-
         return Response("test ok", status=200)
 
-    def put(self, request):
+    def put(self, request, **kwargs):
+        if kwargs.get('user_Id') is None:
+            return Response("Invalid request",status=status.HTTP_400_BAD_REQUEST)
+        else:
+            member_id = kwargs.get('user_Id')
+            member_object = Member.objects.get(id=member_id)
+
+            update_member_serializer = MemberSerializer(member_object, data=request.data)
+            if update_member_serializer.is_valid():
+                if len(CheckVaildAccount(request.data)) == 0:
+                    update_member_serializer.save()
+                    return Response(status=status.HTTP_200_OK)
+                else:
+                    response_json = {
+                        'err':CheckVaildAccount(request.data)
+                    }
+                    return Response(status=status.HTTP_400_BAD_REQUEST)
+
         return Response("test ok", status=200)
 
     def delete(self, request):
