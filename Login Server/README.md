@@ -35,8 +35,73 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 
 ```js
 /*
-/src
-  |--- models   # mongodb models ( Schema )
-  |--- routes   
+/db                     # mongodb data
+   |--- /data
+/nginx                  # nginx conf files
+   |--- /conf.d
+/server
+  |--- /src
+        |--- /models    # mongodb models ( Schema )
+        |--- /routes   
 */
 ```
+
+## api
+
+### 1. 회원가입 ( post )
+
+|     TAG     |      value      | required |
+| :---------: | :-------------: | :------: |
+|   API URL   | /api/auth/user/ |    -     |
+|   Method    |      POST       |    -     |
+|   user_ID   |     String      |    v     |
+|  user_Nick  |     String      |    v     |
+|  user_Name  |     String      |    v     |
+| user_Driver |     String      |    v     |
+| user_Phone  |     String      |    v     |
+| user_Email  |     String      |    v     |
+|   user_Pw   |     String      |    v     |
+
+---
+
+### 2. 로그인 ( get )
+
+|   TAG   |      value      | required |
+| :-----: | :-------------: | :------: |
+| API URL | /api/auth/user/ |    -     |
+| Method  |      POST       |    -     |
+| user_ID |     String      |    v     |
+| user_Pw |     String      |    v     |
+
+---
+
+### 3. 회원 수정 ( put )
+
+|     TAG     |      value      | required |
+| :---------: | :-------------: | :------: |
+|   API URL   | /api/auth/user/ |    -     |
+|   Method    |       PUT       |    -     |
+|  user_Nick  |     String      |    -     |
+| user_Driver |     String      |    -     |
+| user_Phone  |     String      |    -     |
+| user_Email  |     String      |    -     |
+|   user_Pw   |     String      |    -     |
+
+---
+
+### 4. 회원 탈퇴 ( delete )
+
+|   TAG   |      value      | required |
+| :-----: | :-------------: | :------: |
+| API URL | /api/auth/user/ |    -     |
+| Method  |     DELETE      |    -     |
+| user_Pw |     String      |    v     |
+
+---
+
+### 5. 로그아웃 ( get )
+
+|   TAG   |         value         | required |
+| :-----: | :-------------------: | :------: |
+| API URL | /api/auth/user/logout |    -     |
+| Method  |          GET          |    -     |
