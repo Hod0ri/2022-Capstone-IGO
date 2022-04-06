@@ -51,10 +51,10 @@ class UserView(APIView):
 
     def put(self, request, **kwargs):
         if kwargs.get('user_Id') is None:
-            return Response("Invalid request",status=status.HTTP_400_BAD_REQUEST)
+            return Response("Invalid request", status=status.HTTP_400_BAD_REQUEST)
         else:
             member_id = kwargs.get('user_Id')
-            member_object = Member.objects.get(id=member_id)
+            member_object = Member.objects.get(user_Id=member_id)
 
             update_member_serializer = MemberSerializer(member_object, data=request.data)
             if update_member_serializer.is_valid():
@@ -63,11 +63,17 @@ class UserView(APIView):
                     return Response(status=status.HTTP_200_OK)
                 else:
                     response_json = {
-                        'err':CheckVaildAccount(request.data)
+                        'err': CheckVaildAccount(request.data)
                     }
                     return Response(status=status.HTTP_400_BAD_REQUEST)
 
         return Response("test ok", status=200)
 
-    def delete(self, request):
-        return Response("test ok", status=200)
+    def delete(self, request, **kwargs):
+        if kwargs.get('user_Id') is None:
+            return Response("Invalid request", status=status.HTTP_400_BAD_REQUEST)
+        else:
+            delete_id = kwargs.get('user_Id')
+            delete_object = Member.objects.get(user_Id=delete_id)
+            delete_object.delete()
+        return Response(status=status.HTTP_200_OK)
