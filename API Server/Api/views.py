@@ -1,15 +1,12 @@
-import http
-
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from .models import Member, UpdatePoint, HireDriver, HireCustomer
+from .models import Member
 from rest_framework.views import APIView
-from .serializers import MemberSerializer, UpdateSerializer, HireDriverSerializer, HireCustomerSerializer
+from .serializers import MemberSerializer
 import jwt
 from jwt import ExpiredSignatureError
-from .vaildators import CheckVaildAccount
+from API.UserMethod.vaildators import CheckVaildAccount
 from rest_framework import status
 
 
@@ -46,8 +43,10 @@ class UserView(APIView):
                 }
             return JsonResponse(response_json)
 
-    def get(self, request):
-        return Response("test ok", status=200)
+    def get(self, request, user_Id):
+        member = self.get(user_Id)
+        serializer = MemberSerializer(member)
+        return Response(serializer.data)
 
     def put(self, request, **kwargs):
         if kwargs.get('user_Id') is None:
@@ -67,8 +66,6 @@ class UserView(APIView):
                     }
                     return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        return Response("test ok", status=200)
-
     def delete(self, request, **kwargs):
         if kwargs.get('user_Id') is None:
             return Response("Invalid request", status=status.HTTP_400_BAD_REQUEST)
@@ -76,4 +73,3 @@ class UserView(APIView):
             delete_id = kwargs.get('user_Id')
             delete_object = Member.objects.get(user_Id=delete_id)
             delete_object.delete()
-        return Response(status=status.HTTP_200_OK)
