@@ -156,7 +156,7 @@ userRouter.delete("/", async (req, res) => {
 //logout
 userRouter.get("/logout", async (req, res) => {
   const user_Id = await verifyJwt(req.cookies.refreshToken);
-  if (!user_Id) return res.status(400).clearCookie("jwt").send({ success: false, err: "logout failed" });
+  if (!user_Id) return res.status(400).clearCookie("jwt").send({ success: false, err: "accessToken state invalid ( user is not defined)" });
   await User.findOneAndUpdate({ user_Id }, { $set: { token: "" } });
   return res.status(200).clearCookie("jwt").clearCookie("refreshToken").send({ success: true });
 });

@@ -50,6 +50,9 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 
 ### 1. 회원가입 ( post )
 
+<details>
+<summary>Request</summary>
+
 |     TAG     |      value      | required |
 | :---------: | :-------------: | :------: |
 |   API URL   | /api/auth/user/ |    -     |
@@ -62,9 +65,27 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 | user_Email  |     String      |    v     |
 |   user_Pw   |     String      |    v     |
 
+</details>
+
+<details>
+<summary>Response</summary>
+
+|    TAG    |  value  |     note      |
+| :-------: | :-----: | :-----------: |
+|  success  | boolean |       -       |
+| user_Nick | String  | success state |
+|    err    | String  |   err state   |
+
+</details>
+
 ---
 
 ### 2. 로그인 ( get )
+
+> ##### case 1. 최초 로그인 요청
+
+<details>
+<summary>Request</summary>
 
 |   TAG   |      value      | required |
 | :-----: | :-------------: | :------: |
@@ -73,9 +94,51 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 | user_ID |     String      |    v     |
 | user_Pw |     String      |    v     |
 
+</details>
+
+<details>
+<summary>Response</summary>
+
+|    TAG    |  value  |     note      |
+| :-------: | :-----: | :-----------: |
+|  success  | boolean |       -       |
+| user_Nick | String  | success state |
+|    err    | String  |   err state   |
+
+</details>
+
+> ##### case 2. accessToken 갱신
+
+<details>
+<summary>Request</summary>
+
+|    TAG    |      value      | required |
+| :-------: | :-------------: | :------: |
+|  API URL  | /api/auth/user/ |    -     |
+|  Method   |      POST       |    -     |
+| user_Nick |     String      |    v     |
+
+</details>
+
+<details>
+<summary>Response</summary>
+
+|    TAG    |  value  |     note      |
+| :-------: | :-----: | :-----------: |
+|  success  | boolean |       -       |
+| user_Nick | String  | success state |
+|    err    | String  |   err state   |
+
+</details>
+
 ---
 
 ### 3. 회원 수정 ( put )
+
+##### 만약 회원 수정이 이뤄진다면 accessToken을 재발급 받아서 정보를 최신화 해야한다.
+
+<details>
+<summary>Request</summary>
 
 |     TAG     |      value      | required |
 | :---------: | :-------------: | :------: |
@@ -87,9 +150,26 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 | user_Email  |     String      |    -     |
 |   user_Pw   |     String      |    -     |
 
+</details>
+
+<details>
+<summary>Response</summary>
+
+|   TAG   |  value  |   note    |
+| :-----: | :-----: | :-------: |
+| success | boolean |     -     |
+|   err   | String  | err state |
+
+</details>
+
 ---
 
 ### 4. 회원 탈퇴 ( delete )
+
+##### 회원 탈퇴와 동시에 쿠키데이터 삭제가 진행된다.
+
+<details>
+<summary>Request</summary>
 
 |   TAG   |      value      | required |
 | :-----: | :-------------: | :------: |
@@ -97,11 +177,40 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 | Method  |     DELETE      |    -     |
 | user_Pw |     String      |    v     |
 
+</details>
+
+<details>
+<summary>Response</summary>
+
+|   TAG   |  value  |   note    |
+| :-----: | :-----: | :-------: |
+| success | boolean |     -     |
+|   err   | String  | err state |
+
+</details>
+
 ---
 
 ### 5. 로그아웃 ( get )
+
+##### 로그아웃의 실패는 accessToken이 검증실패가 원인이다.
+
+<details>
+<summary>Request</summary>
 
 |   TAG   |         value         | required |
 | :-----: | :-------------------: | :------: |
 | API URL | /api/auth/user/logout |    -     |
 | Method  |          GET          |    -     |
+
+</details>
+
+<details>
+<summary>Response</summary>
+
+|   TAG   |  value  |   note    |
+| :-----: | :-----: | :-------: |
+| success | boolean |     -     |
+|   err   | String  | err state |
+
+</details>
