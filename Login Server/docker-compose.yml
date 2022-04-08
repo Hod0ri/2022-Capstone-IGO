@@ -39,7 +39,7 @@ services:
       dockerfile: ./server/Dockerfile.node.dev
     restart: always
     volumes:
-    - ./server:/usr/src/app
+    - ./server/src:/usr/src/app/src
     ports:
       - "23712:23712"
     environment:
