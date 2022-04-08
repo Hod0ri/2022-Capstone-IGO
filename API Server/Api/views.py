@@ -11,7 +11,7 @@ from rest_framework import status
 
 
 class Jwt_Checker_Middleware:
-    secret_key = ''
+    secret_key = 'secret-key'
 
     def checkVaild(self, request):
         cookie = request.getCookie()

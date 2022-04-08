@@ -1,15 +1,14 @@
 import re
 
 # Regex Patterns
-email_Pattern = re.compile('^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$')
-phoneNum_Pattern = re.compile('\d{3}-\d{3,4}-\d{4}')
-name_Pattern = re.compile(r'[ㄱ-ㅣ가-힣]+')
+email_Pattern = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
+phoneNum_Pattern = re.compile(r'\d{3}-\d{3,4}-\d{4}')
+name_Pattern = re.compile(r'[ㄱ-ㅣ가-힣]{2,10}')
 nick_Pattern = re.compile(r'[ㄱ-ㅣ가-힣a-zA-Z]{2,10}')
-id_Pattern = re.compile('[a-zA-Z0-9]{5,50}')
-driver_Pattern = re.compile('\d{1}')
+id_Pattern = re.compile(r'[a-zA-Z0-9]{5,50}')
 
 
-def CheckVaildAccount(inputData):
+def CheckValidAccount(inputData):
     exceptions_reason = []
 
     # Email Checker
@@ -41,5 +40,11 @@ def CheckVaildAccount(inputData):
         pass
     else:
         exceptions_reason.append('Id')
+
+    # # Driver Checker
+    # if re.match(id_Pattern, inputData['user_Driver']):
+    #     pass
+    # else:
+    #     exceptions_reason.append('Driver')
 
     return exceptions_reason
