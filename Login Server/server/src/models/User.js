@@ -3,7 +3,8 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const UserSchema = new Schema(
   {
-    user_ID: { type: String, required: true, unique: true, maxlength: 50 },
+    user_Id: { type: String, required: true, unique: true, maxlength: 50 },
+    user_Nick: { type: String, required: true, unique: true },
     user_Pw: { type: String, required: true },
     user_Email: { type: String, required: true },
     token: { type: String, unique: true },

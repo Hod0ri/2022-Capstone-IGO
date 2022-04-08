@@ -13,6 +13,7 @@ app.use(cors());
 const server = async () => {
   try {
     let mongooseConnection = await mongoose.connect(MONGO_URI);
+    //mongoose.set("debug", true);
     console.log("db connected!");
     app.use(logger("dev"));
     app.use(express.json());
