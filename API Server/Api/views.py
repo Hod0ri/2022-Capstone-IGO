@@ -34,10 +34,8 @@ class UserView(APIView):
         tempdata = JSONParser().parse(request)
         temp_id = tempdata.get('user_Id')
         try:
-            Member.objects.get(user_Id=temp_id)
-            response_json = {
-                'err': ''
-            }
+            ms = MemberSerializer(Member.objects.get(user_Id=temp_id))
+            return JsonResponse(ms.data)
         except Member.DoesNotExist:
             response_json = {
                 'err': 'Member.DoesNotExist'
