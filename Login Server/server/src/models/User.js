@@ -7,7 +7,7 @@ const UserSchema = new Schema(
     user_Nick: { type: String, required: true, unique: true },
     user_Pw: { type: String, required: true },
     user_Email: { type: String, required: true },
-    token: { type: String, unique: true },
+    token: { type: String, default: "" },
   },
   { timestamps: true }
 );
@@ -16,7 +16,6 @@ UserSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("user_Pw")) {
     user.user_Pw = await bcrypt.hash(user.user_Pw, saltRounds);
-    console.log(user.user_Pw);
     next();
   } else {
     next();

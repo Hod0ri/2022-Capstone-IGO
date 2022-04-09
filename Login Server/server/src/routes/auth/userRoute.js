@@ -37,14 +37,14 @@ userRouter.post("/", async (req, res) => {
     if (typeof user_Driver !== "boolean") return res.status(400).send({ success: false, err: "user_Driver must be boolean" });
     if (typeof user_Pw !== "string") return res.status(400).send({ success: false, err: "user_Pw must be string" });
 
-    const userFind = await User.findOne({ user_Id });
-    if (!userFind) {
+    const [getUserId, getUserNick] = await Promise.all([User.findOne({ user_Id }), User.findOne({ user_Nick })]);
+    if (!getUserId && !getUserNick) {
       //const apiRegister = await axios.post("te");
       const user = new User(req.body);
       await user.save();
       return res.status(200).send({ success: true });
     } else {
-      return res.status(400).send({ success: false, err: "user_Id is already in use" });
+      return res.status(400).send({ success: false, err: "user_Id or user_Nick is already in use" });
     }
   } catch (err) {
     console.log(err);
