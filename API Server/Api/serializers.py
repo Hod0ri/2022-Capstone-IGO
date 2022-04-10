@@ -5,7 +5,7 @@ from .models import HireCustomer, HireDriver, Member, UpdatePoint
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
-        fields = ['user_Id', 'user_Name', 'user_Nick', 'user_Driver', 'user_Phone', 'user_Email']
+        fields = '__all__'
 
 
 class UpdateSerializer(serializers.ModelSerializer):
@@ -24,3 +24,9 @@ class HireCustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = HireCustomer
         fields = '__all__'
+
+
+class LoginMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Member
+        fields = ['user_Id']

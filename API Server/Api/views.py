@@ -43,7 +43,19 @@ class UserView(APIView):
         return JsonResponse(response_json)
 
     def put(self, request):
-        return Response(status=status.HTTP_200_OK)
+        tempdata = JSONParser().parse(request)
+        tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
+        temp_id = tempdata.get('user_Id')
+        userdata = Member.objects.get(user_Id=temp_id)
+        member_update_serializer = MemberSerializer(userdata, data=tempdata)
+        if member_update_serializer.is_valid():
+            # if not CheckValidAccount(tempdata):
+            member_update_serializer.save()
+        return Response(member_update_serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request):
+        tempdata = JSONParser().parse(request)
+        temp_id = tempdata.get('user_Id')
+        userdata = Member.objects.get(user_Id=temp_id)
+        userdata.delete()
         return Response(status=status.HTTP_200_OK)
