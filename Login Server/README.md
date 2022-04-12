@@ -90,7 +90,7 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 |   TAG   |      value      | required |
 | :-----: | :-------------: | :------: |
 | API URL | /api/auth/user/ |    -     |
-| Method  |      POST       |    -     |
+| Method  |       GET       |    -     |
 | user_ID |     String      |    v     |
 | user_Pw |     String      |    v     |
 
@@ -115,7 +115,7 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 |    TAG    |      value      | required |
 | :-------: | :-------------: | :------: |
 |  API URL  | /api/auth/user/ |    -     |
-|  Method   |      POST       |    -     |
+|  Method   |       GET       |    -     |
 | user_Nick |     String      |    v     |
 
 </details>
