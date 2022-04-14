@@ -57,7 +57,7 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 | :---------: | :-------------: | :------: |
 |   API URL   | /api/auth/user/ |    -     |
 |   Method    |      POST       |    -     |
-|   user_ID   |     String      |    v     |
+|   user_Id   |     String      |    v     |
 |  user_Nick  |     String      |    v     |
 |  user_Name  |     String      |    v     |
 | user_Driver |     String      |    v     |
@@ -87,12 +87,12 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 <details>
 <summary>Request</summary>
 
-|   TAG   |      value      | required |
-| :-----: | :-------------: | :------: |
-| API URL | /api/auth/user/ |    -     |
-| Method  |       GET       |    -     |
-| user_ID |     String      |    v     |
-| user_Pw |     String      |    v     |
+|   TAG   |        value         | required |
+| :-----: | :------------------: | :------: |
+| API URL | /api/auth/user/login |    -     |
+| Method  |         POST         |    -     |
+| user_Id |        String        |    v     |
+| user_Pw |        String        |    v     |
 
 </details>
 
@@ -112,11 +112,10 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 <details>
 <summary>Request</summary>
 
-|    TAG    |      value      | required |
-| :-------: | :-------------: | :------: |
-|  API URL  | /api/auth/user/ |    -     |
-|  Method   |       GET       |    -     |
-| user_Nick |     String      |    v     |
+|   TAG   |      value      | required |
+| :-----: | :-------------: | :------: |
+| API URL | /api/auth/user/ |    -     |
+| Method  |       GET       |    -     |
 
 </details>
 
