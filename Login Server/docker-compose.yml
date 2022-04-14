@@ -28,6 +28,8 @@ services:
     - ./nginx/conf.d:/etc/nginx/conf.d
     links:
     - node
+    depends_on:
+    - node
     logging:
       options:
         max-size: "100m"

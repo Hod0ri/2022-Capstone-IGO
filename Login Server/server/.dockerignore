@@ -2,3 +2,4 @@
 /data
 /conf.d
 docker-compose.yml
+.env
