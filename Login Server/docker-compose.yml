@@ -21,11 +21,13 @@ services:
     image: nginx:stable
     restart: always
     ports:
-    - "80:80"
+    #- "80:80"
+    - "443:443"
     environment:
       - TZ=Asia/Seoul
     volumes:
     - ./nginx/conf.d:/etc/nginx/conf.d
+    - ./nginx/ssl:/etc/nginx/ssl
     links:
     - node
     depends_on:

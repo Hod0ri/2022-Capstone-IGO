@@ -7,7 +7,37 @@
     <td align="center"><a href="https://github.com/SOPLAY"><img src="https://avatars.githubusercontent.com/u/40691745?v=4" width="100px;" alt="이미지"/><br /><sub><b>SOPLAY</b></sub></a><br />🌭Web -FullStack</td>
 </table>
 
-## mongodb env
+## FilePath
+
+```js
+/*
+/db                     # mongodb data
+   |--- /data
+/nginx                  # nginx conf files
+   |--- /conf.d
+   |--- /ssl            # nginx ssl files
+/server
+  |--- /src
+        |--- /models    # mongodb models ( Schema )
+        |--- /routes   
+*/
+```
+
+### Nginx
+
+<details>
+
+#### ssl 인증서
+
+> nginx 의 ssl 인증서는 nginx/ssl 폴더 안에 igo.pem, igo.key 파일을 위치 시킨다.
+
+</details>
+
+### mongoDB
+
+<details>
+
+### mongodb env
 
 |          envName           |   value    |
 | :------------------------: | :--------: |
@@ -31,20 +61,7 @@ mongodb://root:root@localhost:27017/
 mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
 ```
 
-## FilePath
-
-```js
-/*
-/db                     # mongodb data
-   |--- /data
-/nginx                  # nginx conf files
-   |--- /conf.d
-/server
-  |--- /src
-        |--- /models    # mongodb models ( Schema )
-        |--- /routes   
-*/
-```
+</details>
 
 ## api
 

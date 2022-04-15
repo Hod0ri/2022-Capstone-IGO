@@ -12,12 +12,16 @@ const cookieSettings = {
     //쿠키를 세션 쿠키로 변경
     //maxAge: 30 * 60 * 999,
     httpOnly: true,
+    sameSite: "none",
+    secure: true,
   },
   exp: {
     //쿠키를 세션 쿠키로 변경
     // maxAge: 6 * 24 * 60 * 60 * 999,
     httpOnly: true,
     signed: true,
+    sameSite: "none",
+    secure: true,
   },
 };
 const verifyJwt = (token) => {
