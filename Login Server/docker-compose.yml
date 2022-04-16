@@ -1,0 +1,59 @@
+version: "3.9" 
+services:
+  mongodb:
+    container_name: IGO-Login-Mongodb
+    image: mongo
+    restart: always
+    ports:
+      - "3333:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - TZ=Asia/Seoul
+    volumes:
+      - ./db/data:/data/db
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"
+  nginx:
+    container_name: IGO-Nginx
+    image: nginx:stable
+    restart: always
+    ports:
+    #- "80:80"
+    - "443:443"
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+    - ./nginx/conf.d:/etc/nginx/conf.d
+    - ./nginx/ssl:/etc/nginx/ssl
+    links:
+    - node
+    depends_on:
+    - node
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"
+  node:
+    container_name: IGO-Node-Server
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile.node.dev
+    restart: always
+    volumes:
+    - ./server/src:/usr/src/app/src
+    ports:
+      - "23712:23712"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=development
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"

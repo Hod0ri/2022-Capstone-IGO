@@ -1,0 +1,4 @@
+/db/data
+/server/node_modules/
+.env
+nginx/ssl

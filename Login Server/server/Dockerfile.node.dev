@@ -1,0 +1,19 @@
+FROM node:alpine
+# tzdata install
+RUN apk add --update tzdata
+# alpine linux python3설치
+RUN apk --no-cache add --virtual builds-deps build-base python3
+# 앱 디렉터리 생성
+WORKDIR /usr/src/app
+# docker-compose 실행 위치 기준 
+COPY server/package.json .
+
+RUN npm install
+RUN npm install -g pm2 
+
+# 앱 소스 추가
+COPY . .
+
+EXPOSE 23712
+
+CMD [ "pm2-runtime","./src/server.js","--watch" ]
