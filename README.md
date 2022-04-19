@@ -8,7 +8,8 @@
 <p>카풀 매칭을 온라인상에서 편하게 할 수 있도록 지원하는 웹앱 서비스입니다.</p>
 <h2>Git Branchs</h2>
 
-![git_Branch](https://user-images.githubusercontent.com/65306839/159643726-ff84d6c6-e400-4c81-9476-d02a1ee7cba7.png)
+![git_Branch](https://user-images.githubusercontent.com/65306839/164006458-f072a78b-19b5-4fae-9307-d0257d4440d9.png)
+
 
 ## 🖥️ Collabrator
 
