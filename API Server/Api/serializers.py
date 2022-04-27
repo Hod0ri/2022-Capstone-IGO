@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Member, LogPoint
+from .models import Member, LogPoint, MatchMember, MatchData, NoshowIssue
 
 
 class MemberSerializer(serializers.ModelSerializer):
@@ -19,3 +19,17 @@ class LogPointSerializer(serializers.ModelSerializer):
         model = LogPoint
         fields = '__all__'
 
+class MatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchData
+        fields = '__all__'
+
+class MatchMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchMember
+        fields = '__all__'
+
+class NoshowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NoshowIssue
+        fields = '__all__'
