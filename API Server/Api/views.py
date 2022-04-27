@@ -14,6 +14,12 @@ from .UserMethod.validators import CheckValidAccount
 
 # 유저 엔드 포인트
 class UserView(APIView):
+    def checkValid(self, request):
+        cookie = request.getCookie()
+        token = cookie.jwt
+        jwtdata = JSONParser().parse(jwt.decode(token, self.secret_key, algorithms="HS256"))
+        mem_id = Member.objects.get(user_Id=jwtdata['user_Id'])
+
     def post(self, request):
         """POST 회원가입(추가) 포인트
             @description
