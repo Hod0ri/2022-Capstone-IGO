@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import HireCustomer, HireDriver, Member, UpdatePoint
+from .models import Member, LogPoint
 
 
 class MemberSerializer(serializers.ModelSerializer):
@@ -8,25 +8,14 @@ class MemberSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UpdatePoint
-        fields = '__all__'
-
-
-class HireDriverSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HireDriver
-        fields = '__all__'
-
-
-class HireCustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = HireCustomer
-        fields = '__all__'
-
-
 class LoginMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ['user_Id']
+
+
+class LogPointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LogPoint
+        fields = '__all__'
+

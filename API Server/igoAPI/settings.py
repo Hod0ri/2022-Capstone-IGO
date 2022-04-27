@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'igoMain',
+    'Api',
 ]
 
 MIDDLEWARE = [
@@ -79,16 +79,15 @@ WSGI_APPLICATION = 'igoAPI.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'igo',
-        'USER': 'root',
-        'PASSWORD' : '',
-        'HOST': 'localhost',
-        'PORT': '3306'
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME': 'igodata',
+       'USER': 'postgres',
+       'PASSWORD': '1234',
+       'HOST': 'localhost',
+       'PORT': '',
+   }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
