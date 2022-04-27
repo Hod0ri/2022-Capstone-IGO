@@ -11,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
   }
 `;
 
-function MyApp({ Component, pageProps }) {
+const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       <RecoilRoot>
@@ -20,6 +20,6 @@ function MyApp({ Component, pageProps }) {
       </RecoilRoot>
     </>
   );
-}
+};
 
 export default MyApp;
