@@ -38,7 +38,8 @@ class LogPoint(models.Model):
     """
     pot_Id = models.ForeignKey(
         "Member", related_name="MemberId",
-        on_delete=models.CASCADE, db_column="pot_Id"
+        on_delete=models.CASCADE, db_column="pot_Id",
+        primary_key=True
     )
     pot_Amount = models.ForeignKey(
         "Member", related_name="MemberAmount",
