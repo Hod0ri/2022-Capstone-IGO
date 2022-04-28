@@ -24,10 +24,10 @@ const ButtonStyle = styled.button`
   }};
   &:hover {
     opacity: 0.75;
+    cursor: pointer;
   }
   &:active {
     opacity: 1;
-    cursor: pointer;
   }
   & + & {
     margin-top: 10px;
@@ -53,4 +53,4 @@ const Button = ({
   );
 };
 
-export default Button;
+export default React.memo(Button);
