@@ -24,15 +24,15 @@ class UserView(APIView):
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
         member_serializer = MemberSerializer(data=tempdata)
         if member_serializer.is_valid():
-            if not CheckValidAccount(tempdata):
-                member_serializer.save()
-                response_json = {
-                    'err': ''
-                }
-            else:
-                response_json = {
-                    'err': CheckValidAccount(tempdata)
-                }
+            member_serializer.save()
+            response_json = {
+                'err': ''
+            }
+        else:
+            response_json = {
+                'err': 'Exception!'
+            }
+
         return JsonResponse(response_json)
 
     def get(self, request):

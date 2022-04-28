@@ -6,6 +6,7 @@ class Member(models.Model):
     @:parameter
         user_Id : 유저 고유 ID
         user_Nick : 유저 닉네임
+        user_Name : 유저 이름
         user_Driver : 사용자 운전자 등급 부여 여부
         user_Phone : 사용자 전화번호
         user_Points : 사용자 보유 포인트
