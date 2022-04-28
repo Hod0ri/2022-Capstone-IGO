@@ -3,7 +3,6 @@ import Header from "../core/components/Header";
 import Navbar from "../core/components/Navbar";
 
 const BodyContainer = styled.div`
-  padding: 5px;
   width: 500px;
   height: 100vh;
   margin: 0 auto;
