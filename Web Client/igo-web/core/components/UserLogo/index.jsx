@@ -1,6 +1,6 @@
 import React from "react";
 import Mail from "./icon/male.png";
-import Femail from "./icon/femail.png";
+import Femail from "./icon/female.png";
 import Image from "next/image";
 import styled from "styled-components";
 
@@ -24,4 +24,4 @@ const UserLogo = ({ icon = "mail", nickname = "닉네임x" }) => {
   );
 };
 
-export default UserLogo;
+export default React.memo(UserLogo);
