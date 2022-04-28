@@ -44,10 +44,8 @@ class UserView(APIView):
         # 쿠키에서 user_ID 추출
         user_Id = CheckUserID(request)
 
-        tempdata = JSONParser().parse(request)
-        temp_id = tempdata.get('user_Id')
         try:
-            ms = MemberSerializer(Member.objects.get(user_Id=temp_id))
+            ms = MemberSerializer(Member.objects.get(user_Id=user_Id))
             return JsonResponse(ms.data)
         except Member.DoesNotExist:
             response_json = {
@@ -75,8 +73,7 @@ class UserView(APIView):
             @description
             회원 탈퇴를 위한 Login Server - API Server 간 DELETE 통신
         """
-        tempdata = JSONParser().parse(request)
-        temp_id = tempdata.get('user_Id')
-        userdata = Member.objects.get(user_Id=temp_id)
+        user_Id = CheckUserID(request)
+        userdata = Member.objects.get(user_Id=user_Id)
         userdata.delete()
         return Response(status=status.HTTP_200_OK)
