@@ -1,6 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import Button from './Button';
+import Button from './NavbarButton';
 import { AiOutlineHome, AiOutlineCar } from 'react-icons/ai';
 import { RiCoinsLine, RiAccountCircleLine, RiAlarmWarningLine } from 'react-icons/ri';
 
