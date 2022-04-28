@@ -3,6 +3,7 @@ import Header from "../core/components/Header";
 import Navbar from "../core/components/Navbar";
 
 const BodyContainer = styled.div`
+  position: relative;
   width: 500px;
   height: 100vh;
   margin: 0 auto;
