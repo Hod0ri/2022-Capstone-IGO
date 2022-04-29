@@ -10,6 +10,7 @@ const NavbarStyle = styled.div`
   height: 97px;
   max-width: 500px;
   width: 100%;
+  background: ${props=>props.theme.color.white};
   position: fixed;
   bottom: 0;
   border-top: 1px solid ${(props)=>props.theme.color.black};
