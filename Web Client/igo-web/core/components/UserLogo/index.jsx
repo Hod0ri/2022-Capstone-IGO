@@ -18,7 +18,12 @@ const UserLogoContainer = styled.div`
 const UserLogo = ({ icon = "mail", nickname = "닉네임x" }) => {
   return (
     <UserLogoContainer>
-      <Image src={icon == "mail" ? Mail : Femail} width={80} height={80} />
+      <Image
+        src={icon == "mail" ? Mail : Femail}
+        width={80}
+        height={80}
+        alt="alt"
+      />
       <p>{nickname}</p>
     </UserLogoContainer>
   );
