@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const ButtonStyle = styled.button`
   display: inline-block;
   border : none;
-  background: none;
+  background: ${props=>props.theme.color.white};
   width: 20%;
 `;
 
