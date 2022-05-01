@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .UserMethod.validators import CheckValidAccount
-from .serializers import MemberSerializer, LogPointSerializer
-from .models import Member, LogPoint
+from .serializers import MemberSerializer, LogPointSerializer, MemberPointSerializer
+from .models import Member, LogPoint, MemberPoint
 from .UserMethod.CookieJWT import CheckUserID
 
 
@@ -23,6 +23,7 @@ class UserView(APIView):
         if member_serializer.is_valid():
             if not CheckValidAccount(tempdata):
                 member_serializer.save()
+                MemberPoint.objects.create(user_Id=Member.objects.get(user_Id=tempdata['user_Id']), user_Point=0)
                 response_json = {
                     'success': True
                 }
@@ -91,63 +92,67 @@ class UserView(APIView):
         return JsonResponse(response_json)
 
 
-class PointView(APIView):
-    def post(self, request):
-        tempdata = JSONParser().parse(request)
-        point_serializer = LogPointSerializer(data=tempdata)
-
-        if point_serializer.is_valid():
-            point_serializer.save()
-            response_json = {
-                'success': True
-            }
-        else:
-            response_json = {
-                'err': point_serializer.errors
-            }
-        return JsonResponse(response_json)
-
-    def get(self, request):
-        tempdata = JSONParser().parse(request)
-        temp_id = tempdata.get('user_Id')
-        try:
-            pointdata = LogPointSerializer(LogPoint.objects.get(pot_Id=temp_id))
-            response_json = pointdata.data
-            return JsonResponse(response_json)
-        except Member.DoesNotExist:
-            response_json = {
-                'success': False,
-                'err': 'Member.DoesNotExist'
-            }
-        return JsonResponse(response_json)
-
-    def put(self, request):
-        tempdata = JSONParser().parse(request)
-        temp_id = tempdata.get('pot_Id')
-        userdata = LogPoint.objects.get(pot_Id=temp_id)
-        point_update_serializer = LogPointSerializer(userdata, data=tempdata)
-        if point_update_serializer.is_valid():
-            point_update_serializer.save()
-            response_json = {
-                'success': True,
-                'pot_Id': tempdata['pot_Id'],
-                'pot_Amount': tempdata['pot_Amount'],
-                'pot_date': tempdata['pot_date'],
-                'pot_Reason': tempdata['pot_Reason'],
-                'pot_change': tempdata['pot_change']
-            }
-        else:
-            response_json = {
-                'err': ''
-            }
-        return JsonResponse(response_json)
-
-    def delete(self, request):
-        tempdata = JSONParser().parse(request)
-        temp_id = tempdata.get('pot_Id')
-        userdata = LogPoint.objects.get(pot_Id=temp_id)
-        userdata.delete()
-        response_json = {
-            'success': True
-        }
-        return JsonResponse(response_json)
+# class PointView(APIView):
+#     def post(self, request):
+#         tempdata = JSONParser().parse(request)
+#         # if "사용" in tempdata['pot_Reason']:
+#         #
+#         # elif "충전" in tempdata['pot_Reason']:
+#
+#         point_serializer = LogPointSerializer(data=tempdata)
+#
+#         if point_serializer.is_valid():
+#             point_serializer.save()
+#             response_json = {
+#                 'success': True
+#             }
+#         else:
+#             response_json = {
+#                 'err': point_serializer.errors
+#             }
+#         return JsonResponse(response_json)
+#
+#     def get(self, request):
+#         tempdata = JSONParser().parse(request)
+#         temp_id = tempdata.get('user_Id')
+#         try:
+#             pointdata = LogPointSerializer(LogPoint.objects.get(pot_Id=temp_id))
+#             response_json = pointdata.data
+#             return JsonResponse(response_json)
+#         except Member.DoesNotExist:
+#             response_json = {
+#                 'success': False,
+#                 'err': 'Member.DoesNotExist'
+#             }
+#         return JsonResponse(response_json)
+#
+#     def put(self, request):
+#         tempdata = JSONParser().parse(request)
+#         temp_id = tempdata.get('pot_Id')
+#         userdata = LogPoint.objects.get(pot_Id=temp_id)
+#         point_update_serializer = LogPointSerializer(userdata, data=tempdata)
+#         if point_update_serializer.is_valid():
+#             point_update_serializer.save()
+#             response_json = {
+#                 'success': True,
+#                 'pot_Id': tempdata['pot_Id'],
+#                 'pot_Amount': tempdata['pot_Amount'],
+#                 'pot_date': tempdata['pot_date'],
+#                 'pot_Reason': tempdata['pot_Reason'],
+#                 'pot_change': tempdata['pot_change']
+#             }
+#         else:
+#             response_json = {
+#                 'err': ''
+#             }
+#         return JsonResponse(response_json)
+#
+#     def delete(self, request):
+#         tempdata = JSONParser().parse(request)
+#         temp_id = tempdata.get('pot_Id')
+#         userdata = LogPoint.objects.get(pot_Id=temp_id)
+#         userdata.delete()
+#         response_json = {
+#             'success': True
+#         }
+#         return JsonResponse(response_json)
