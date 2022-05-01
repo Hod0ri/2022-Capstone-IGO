@@ -9,7 +9,7 @@ const BodyStyle = styled.div`
   width: 80%;
   margin: 50px;
   p {
-    margin-top: 40px;
+    margin-top: 30px;
     margin-bottom: 10px;
   }
   a {
