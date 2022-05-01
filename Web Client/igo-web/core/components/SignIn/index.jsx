@@ -59,10 +59,10 @@ const index = () => {
     <>
       <BodyStyle>
         <p>이메일</p>
-        <InputBox placeholder="example@igo.com" />
+        <InputBox placeholder="example@igo.com" type="email" />
 
         <p>비밀번호</p>
-        <InputBox placeholder="비밀번호 입력" />
+        <InputBox placeholder="비밀번호 입력" type="password" />
 
         <SubArea>
           <ul>
