@@ -9,7 +9,6 @@ class Member(models.Model):
         user_Name : 유저 이름
         user_Driver : 사용자 운전자 등급 부여 여부
         user_Phone : 사용자 전화번호
-        user_Points : 사용자 보유 포인트
         user_Email : 사용자 이메일
     """
     user_Id = models.CharField(max_length=50, primary_key=True)
@@ -17,7 +16,6 @@ class Member(models.Model):
     user_Name = models.CharField(max_length=10)
     user_Driver = models.IntegerField()
     user_Phone = models.CharField(max_length=30, unique=True)
-    user_Points = models.IntegerField(default=0)
     user_Email = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -27,22 +25,36 @@ class Member(models.Model):
         db_table = 'TB_MEMBER'
 
 
+class MemberPoint(models.Model):
+    user_Id = models.ForeignKey(
+        "Member", related_name="MemberId",
+        on_delete=models.CASCADE, db_column="user_Id",
+        primary_key=True
+    )
+    user_Point = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user_Id
+
+    class Meta:
+        db_table = 'TB_POINT'
+
+
 class LogPoint(models.Model):
     """포인트 로그 테이블
         @:parameter
             pot_Id : 유저 고유 ID
-            pot_Amount : 포인트 최종 보유량
+            pot_Amount : 포인트 변경 전 보유량
             pot_date : 포인트 변동 일시
             pot_Reason : 포인트 변동 사유
             pot_Change : 포인트 변동량
     """
     pot_Id = models.ForeignKey(
-        "Member", related_name="MemberId",
-        on_delete=models.CASCADE, db_column="pot_Id",
-        primary_key=True
+        "Member", related_name="MemberID",
+        on_delete=models.CASCADE, db_column="pot_Id"
     )
     pot_Amount = models.ForeignKey(
-        "Member", related_name="MemberAmount",
+        "MemberPoint", related_name="MemberAmount",
         on_delete=models.CASCADE, db_column="pot_Amount"
     )
     pot_date = models.DateTimeField(auto_now_add=True)
