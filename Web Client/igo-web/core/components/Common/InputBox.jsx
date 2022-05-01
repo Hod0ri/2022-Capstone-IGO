@@ -15,11 +15,12 @@ const InputStyle = styled.input`
   }
 `;
 
-const InputBox = ({ placeholder = "", setValue = () => {} }) => {
+const InputBox = ({ placeholder = "", setValue = () => {}, type = "text" }) => {
   return (
     <InputStyle
       placeholder={placeholder}
       onChange={(e) => setValue(e.target.value)}
+      type={type}
     />
   );
 };
