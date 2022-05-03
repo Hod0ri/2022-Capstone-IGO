@@ -4,10 +4,10 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .UserMethod.validators import CheckValidAccount
-from .serializers import MemberSerializer, LogPointSerializer, MemberPointSerializer
-from .models import Member, LogPoint, MemberPoint
-from .UserMethod.CookieJWT import CheckUserID
+from .Validation.validators import CheckValidAccount
+from .serializers import MemberSerializer, LogPointSerializer
+from .models import Member, LogPoint
+from .Validation.CookieJWT import CheckUserID
 
 
 # 유저 엔드 포인트
@@ -23,7 +23,6 @@ class UserView(APIView):
         if member_serializer.is_valid():
             if not CheckValidAccount(tempdata):
                 member_serializer.save()
-                MemberPoint.objects.create(user_Id=Member.objects.get(user_Id=tempdata['user_Id']), user_Point=0)
                 response_json = {
                     'success': True
                 }
