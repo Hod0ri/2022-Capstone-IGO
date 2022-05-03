@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'Api',
+    'drf_yasg',
+
 ]
 
 MIDDLEWARE = [
@@ -81,7 +83,7 @@ WSGI_APPLICATION = 'igoAPI.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'igodata',
+       'NAME': 'igoData',
        'USER': 'postgres',
        'PASSWORD': '1234',
        'HOST': 'localhost',
