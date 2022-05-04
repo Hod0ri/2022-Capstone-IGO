@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useRef, useState } from "react";
+import styled, { css } from "styled-components";
 import UserLogo from "../UserLogo";
 import Report from "./type/Report";
 import ModalCardButton from "./ModalCardButton";
+import Star from "./type/Star";
 const ModalCardPositionContainer = styled.div`
   display: flex;
   align-items: center;
@@ -15,6 +16,15 @@ const ModalCardPositionContainer = styled.div`
   width: 100vw;
   max-width: 100%;
   height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  ${(props) =>
+    !props.view &&
+    css`
+      display: none;
+    `}
+  .none {
+    display: none;
+  }
 `;
 const ModalCardContainer = styled.div`
   overflow: hidden;
@@ -43,15 +53,18 @@ const ModalCardContainer = styled.div`
 
 const ModalCard = ({ type = "report", setState = () => {} }) => {
   const [report, setReport] = useState("false");
+  //모달상태
+  const [display, setDisplay] = useState(true);
   return (
-    <ModalCardPositionContainer>
+    <ModalCardPositionContainer view={display ? true : false}>
       <ModalCardContainer>
         <div className="mt-30" />
         <UserLogo />
         <div className="mt-20" />
         {type == "report" && <Report state={setReport} />}
+        {type == "star" && <Star />}
         <div className="mt-20" />
-        <ModalCardButton setState={setState} />
+        <ModalCardButton setState={setDisplay} />
       </ModalCardContainer>
     </ModalCardPositionContainer>
   );
