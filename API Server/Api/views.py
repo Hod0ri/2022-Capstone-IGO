@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
@@ -8,15 +9,17 @@ from .Validation.validators import CheckValidAccount
 from .serializers import MemberSerializer, LogPointSerializer
 from .models import Member, LogPoint
 from .Validation.CookieJWT import CheckUserID
+from .Documentation.Swagger_Serializer import MemberParameter, MemberCookieParameter
 
 
 # 유저 엔드 포인트
 class UserView(APIView):
+    @swagger_auto_schema(tags=['회원 가입 (User POST)'], query_serializer=MemberParameter, responses={200: 'Success'})
     def post(self, request):
-        """POST 회원가입(추가) 포인트
-            @description
-            회원 추가를 위한 Login Server - API Server 간 Post 통신
         """
+            Login Server to API Server Post Communication for Adding Members
+        """
+
         tempdata = JSONParser().parse(request)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
         member_serializer = MemberSerializer(data=tempdata)
@@ -33,10 +36,10 @@ class UserView(APIView):
                 }
         return JsonResponse(response_json)
 
+    @swagger_auto_schema(tags=['회원 조회 (User GET)'], query_serializer=MemberCookieParameter, responses={200: 'Success'})
     def get(self, request):
-        """GET 로그인 포인트
-            @description
-            로그인을 위한 Login Server - API Server 간 GET 통신
+        """
+            Login Server to API Server GET Communication for Login
         """
 
         user_Id = CheckUserID(request)
@@ -55,10 +58,10 @@ class UserView(APIView):
             }
         return JsonResponse(response_json)
 
+    @swagger_auto_schema(tags=['회원 정보 수정 (User PUT)'], query_serializer=MemberParameter, responses={200: 'Success'})
     def put(self, request):
-        """PUT 정보 수정 포인트
-            @description
-            회원 정보 수정을 위한 API Server - Client Server 간 PUT 통신
+        """
+            API Server to Client Server PUT communication for member information modification
         """
         tempdata = JSONParser().parse(request)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
@@ -77,10 +80,11 @@ class UserView(APIView):
                 }
         return Response(member_update_serializer.data, status=status.HTTP_200_OK)
 
+
+    @swagger_auto_schema(tags=['회원 삭제 (User DELETE)'], query_serializer=MemberCookieParameter, responses={200: 'Success'})
     def delete(self, request):
-        """DELETE 탈퇴 포인트
-            @description
-            회원 탈퇴를 위한 Login Server - API Server 간 DELETE 통신
+        """
+            Login Server - DELETE communication between API Servers for membership withdrawal
         """
         user_Id = CheckUserID(request)
         userdata = Member.objects.get(user_Id=user_Id)
