@@ -6,8 +6,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..Validation.validators import CheckValidAccount
-from ..serializers import MemberSerializer
-from ..models import Member
+from ..serializers import IssueSerializer
+from ..models import NoshowIssue, Member
 from ..Validation.CookieJWT import CheckUserID
 from ..Documentation.Swagger_Serializer import IssueParameter
 
@@ -19,8 +19,8 @@ class IssueView(APIView):
         """
             Web Server to API Server Post Communication for Issue Report
         """
-        user_Id = CheckUserID(request)
-
+        MemberObj = CheckUserID(request)
+        print(MemberObj.user_Nick)
         response_json = {
             'success': True
         }

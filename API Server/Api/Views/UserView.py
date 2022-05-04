@@ -42,10 +42,10 @@ class UserView(APIView):
             Login Server to API Server GET Communication for Login
         """
 
-        user_Id = CheckUserID(request)
+        userData = CheckUserID(request)
 
         try:
-            ms = MemberSerializer(Member.objects.get(user_Id=user_Id))
+            ms = MemberSerializer(userData)
             response_json = {
                 'success': True,
                 'user_Nick': ms.data['user_Nick']
@@ -65,8 +65,7 @@ class UserView(APIView):
         """
         tempdata = JSONParser().parse(request)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
-        temp_id = tempdata.get('user_Id')
-        userdata = Member.objects.get(user_Id=temp_id)
+        userdata = tempdata.get('user_Id')
         member_update_serializer = MemberSerializer(userdata, data=tempdata)
         if member_update_serializer.is_valid():
             if not CheckValidAccount(tempdata):
@@ -86,8 +85,7 @@ class UserView(APIView):
         """
             Login Server - DELETE communication between API Servers for membership withdrawal
         """
-        user_Id = CheckUserID(request)
-        userdata = Member.objects.get(user_Id=user_Id)
+        userdata = CheckUserID(request)
         userdata.delete()
         response_json = {
             'success': True
