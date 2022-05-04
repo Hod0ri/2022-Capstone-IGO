@@ -13,7 +13,7 @@ class LogPointSerializer(serializers.ModelSerializer):
 
 
 class MemberSerializer(serializers.ModelSerializer):
-    member = LogPointSerializer(many=True, read_only=False)
+    member = LogPointSerializer(many=True, read_only=True)
 
     class Meta:
         model = Member
