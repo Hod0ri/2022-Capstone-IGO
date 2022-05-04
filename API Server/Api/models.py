@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Member(models.Model):
     """회원 정보 테이블
     @:parameter
@@ -16,8 +15,8 @@ class Member(models.Model):
     user_Nick = models.CharField(max_length=10, unique=True)
     user_Name = models.CharField(max_length=10)
     user_Driver = models.IntegerField(default=0)
-    user_Point = models.IntegerField(default=0)
     user_Phone = models.CharField(max_length=30, unique=True)
+    user_Point = models.IntegerField(default=0)
     user_Email = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
@@ -31,8 +30,8 @@ class LogPoint(models.Model):
     """포인트 로그 테이블
         @:parameter
             pot_Id : 유저 고유 ID
-            pot_Amount : 포인트 최종 보유량
             pot_date : 포인트 변동 일시
+            pot_Amount : 변동 후 포인트
             pot_Reason : 포인트 변동 사유
             pot_Change : 포인트 변동량
     """
@@ -40,7 +39,8 @@ class LogPoint(models.Model):
         "Member", related_name="MemberID",
         on_delete=models.CASCADE, db_column="pot_Id"
     )
-    pot_date = models.DateTimeField(auto_now_add=True)
+    pot_Date = models.DateTimeField(auto_now_add=True)
+    pot_Amount = models.IntegerField(null=True)
     pot_Reason = models.CharField(max_length=20)
     pot_Change = models.IntegerField()
 
@@ -49,6 +49,7 @@ class LogPoint(models.Model):
 
     class Meta:
         db_table = 'TB_LOGPOINT'
+        ordering = ['-pot_Date']
 
 
 class MatchData(models.Model):
