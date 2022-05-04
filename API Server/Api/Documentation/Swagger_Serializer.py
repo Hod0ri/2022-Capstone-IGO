@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Member, LogPoint
+from ..models import Member, NoshowIssue
 
 
 class MemberParameter(serializers.ModelSerializer):
@@ -22,3 +22,15 @@ class MemberCookieParameter(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ['user_Id']
+
+class IssueParameter(serializers.ModelSerializer):
+    ns_Id = serializers.CharField(help_text='Reporter ID')
+    ns_Date = serializers.DateTimeField(help_text='Report Date Time')
+    ns_Target = serializers.CharField(help_text='Respondent ID')
+    ns_Reason = serializers.CharField(help_text='Report Reason')
+    ns_Etc = serializers.CharField(help_text='ETC...')
+    ns_Status = serializers.CharField(help_text='Report processing status', default='접수대기')
+
+    class Meta:
+        model = NoshowIssue
+        fields = '__all__'
