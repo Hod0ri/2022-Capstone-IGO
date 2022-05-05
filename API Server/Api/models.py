@@ -126,7 +126,7 @@ class NoshowIssue(models.Model):
     @:parameter
         ns_Id : 회원ID
         ns_Date : 신고시간
-        ns_Targer : 피신고자 ID
+        ns_Target : 피신고자 ID
         ns_Reason : 사유 카테고리
         ns_Etc : 특이사항
         ns_Status : 처리 여부
@@ -143,7 +143,7 @@ class NoshowIssue(models.Model):
     )
     ns_Reason = models.CharField(max_length=50)
     ns_Etc = models.CharField(max_length=300, null=True)
-    ns_Statis = models.CharField(max_length=50, default='접수대기')
+    ns_Status = models.CharField(max_length=50, default='접수대기')
 
     def __str__(self):
         return self.ns_Id

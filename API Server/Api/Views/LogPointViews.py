@@ -21,12 +21,14 @@ class LogPointView(APIView):
             pointAmount = MemberObj.user_Point + tempdata['pot_Change']
             MemberObj.user_Point = pointAmount
             tempdata['pot_Amount'] = pointAmount
+            tempdata['pot_Id'] = MemberObj.user_Id
 
         elif "use" in tempdata['pot_Reason']:
             pointAmount = MemberObj.user_Point - tempdata['pot_Change']
             if pointAmount >= 0:
                 MemberObj.user_Point = pointAmount
                 tempdata['pot_Amount'] = pointAmount
+                tempdata['pot_Id'] = MemberObj.user_Id
             else:
                 response_json = {
                     'err': "Point 부족"
