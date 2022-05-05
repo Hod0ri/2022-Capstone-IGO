@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 from Api.Views.UserView import UserView
+from Api.Views.IssueView import IssueView
 from Api.Views.LogPointViews import LogPointView
-# from Api.Views.IssueView import IssueView
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -30,8 +30,8 @@ schema_view = get_schema_view(
         default_version='1.0.0',
         description="API Official Document",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="mintwlsehtro@gmail.com"), # 부가정보
-        license=openapi.License(name="MIT"),     # 부가정보
+        contact=openapi.Contact(email="mintwlsehtro@gmail.com"),
+        license=openapi.License(name="mit"),
     ),
     public=True,
     permission_classes=[permissions.AllowAny],
@@ -45,5 +45,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user/', UserView.as_view()),
     path('api/point/', LogPointView.as_view()),
-    # path('api/issue/', IssueView.as_view())
+    path('api/issue/', IssueView.as_view()),
 ]

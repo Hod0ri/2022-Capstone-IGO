@@ -1,11 +1,10 @@
 from django.http import JsonResponse
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from datetime import datetime
 
-from ..Validation.validators import CheckValidAccount
 from ..serializers import IssueSerializer
 from ..models import NoshowIssue, Member
 from ..Validation.CookieJWT import CheckUserID
@@ -20,7 +19,16 @@ class IssueView(APIView):
             Web Server to API Server Post Communication for Issue Report
         """
         MemberObj = CheckUserID(request)
-        print(MemberObj.user_Nick)
+        tempdata = JSONParser().parse(request)
+        tempdata['ns_Id'] = MemberObj.user_Id
+        tempdata['ns_Date'] = datetime.now()
+
+        issue_serializer = IssueSerializer(data=tempdata)
+
+        if issue_serializer.is_valid():
+            issue_serializer.save()
+
+
         response_json = {
             'success': True
         }

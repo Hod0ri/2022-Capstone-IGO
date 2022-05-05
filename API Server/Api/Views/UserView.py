@@ -19,6 +19,7 @@ class UserView(APIView):
         """
             Login Server to API Server Post Communication for Adding Members
         """
+
         tempdata = JSONParser().parse(request)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
         member_serializer = MemberSerializer(data=tempdata)
@@ -33,10 +34,6 @@ class UserView(APIView):
                     'success': False,
                     'err': CheckValidAccount(tempdata)
                 }
-        else:
-            response_json = {
-                'err': member_serializer.errors
-            }
         return JsonResponse(response_json)
 
     @swagger_auto_schema(tags=['회원 조회 (User GET)'], query_serializer=MemberCookieParameter, responses={200: 'Success'})
@@ -44,7 +41,9 @@ class UserView(APIView):
         """
             Login Server to API Server GET Communication for Login
         """
+
         userData = CheckUserID(request)
+
         try:
             ms = MemberSerializer(userData)
             response_json = {
@@ -64,10 +63,10 @@ class UserView(APIView):
         """
             API Server to Client Server PUT communication for member information modification
         """
-        userData = CheckUserID(request)
         tempdata = JSONParser().parse(request)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
-        member_update_serializer = MemberSerializer(userData, data=tempdata)
+        userdata = tempdata.get('user_Id')
+        member_update_serializer = MemberSerializer(userdata, data=tempdata)
         if member_update_serializer.is_valid():
             if not CheckValidAccount(tempdata):
                 member_update_serializer.save()
@@ -78,11 +77,7 @@ class UserView(APIView):
                 response_json = {
                     'err': CheckValidAccount(tempdata)
                 }
-        else:
-            response_json = {
-                'err': member_update_serializer.errors
-            }
-        return JsonResponse(response_json)
+        return Response(member_update_serializer.data, status=status.HTTP_200_OK)
 
 
     @swagger_auto_schema(tags=['회원 삭제 (User DELETE)'], query_serializer=MemberCookieParameter, responses={200: 'Success'})

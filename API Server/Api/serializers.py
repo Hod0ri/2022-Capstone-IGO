@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Member, LogPoint
+from .models import Member, LogPoint, NoshowIssue
 
 
 class LogPointSerializer(serializers.ModelSerializer):
@@ -12,8 +12,15 @@ class LogPointSerializer(serializers.ModelSerializer):
         return super(LogPointSerializer, self).to_representation(instance)
 
 
+class IssueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NoshowIssue
+        fields = '__all__'
+
+
 class MemberSerializer(serializers.ModelSerializer):
     member = LogPointSerializer(many=True, read_only=True)
+    issue = IssueSerializer(many=True, read_only=True)
 
     class Meta:
         model = Member
@@ -24,4 +31,3 @@ class LoginMemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ['user_Id']
-
