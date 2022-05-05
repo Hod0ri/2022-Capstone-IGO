@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from Api.views import UserView
+
+from Api.Views.UserView import UserView
+from Api.Views.LogPointViews import LogPointView
+# from Api.Views.IssueView import IssueView
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -40,5 +43,7 @@ urlpatterns = [
     path(r'redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc-v1'),
 
     path('admin/', admin.site.urls),
-    path('api/user/', UserView.as_view())
+    path('api/user/', UserView.as_view()),
+    path('api/point/', LogPointView.as_view()),
+    # path('api/issue/', IssueView.as_view())
 ]
