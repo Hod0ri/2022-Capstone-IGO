@@ -34,28 +34,33 @@ class IssueView(APIView):
             }
         return JsonResponse(response_json)
 
-    # @swagger_auto_schema(tags=['신고 조회 (Issue GET)'], query_serializer=IssueParameter, responses={200: 'Success'})
-    # def get(self, request):
-    #     """
-    #         Web Server to API Server GET Communication for Issue Check
-    #     """
-    #
-    #     user_Id = CheckUserID(request)
-    #
-    #     response_json = {
-    #         'success': False,
-    #         'err': 'Member.DoesNotExist'
-    #     }
-    #     return JsonResponse(response_json)
-    #
-    # @swagger_auto_schema(tags=['신고 삭제 (Issue DELETE)'], query_serializer=IssueParameter, responses={200: 'Success'})
-    # def delete(self, request):
-    #     user_Id = CheckUserID(request)
-    #
-    #     """
-    #         Web Server - DELETE communication between API Servers for Issue Clear/Delete
-    #     """
-    #     response_json = {
-    #         'success': True
-    #     }
-    #     return JsonResponse(response_json)
+    @swagger_auto_schema(tags=['신고 조회 (Issue GET)'], query_serializer=IssueParameter, responses={200: 'Success'})
+    def get(self, request):
+        """
+            Web Server to API Server GET Communication for Issue Check
+        """
+        MemberObj= CheckUserID(request)
+        logAll = NoshowIssue.objects.filter(ns_Id=MemberObj).values('ns_Reason', 'ns_Target', 'ns_Etc',
+                                                                    'ns_Date', 'ns_Status')
+        if logAll:
+            response_json = {
+                'data': list(logAll)
+            }
+        else:
+            response_json = {
+                'err': 'NoshowIssue does not exist'
+            }
+        return JsonResponse(response_json)
+
+    @swagger_auto_schema(tags=['신고 삭제 (Issue DELETE)'], query_serializer=IssueParameter, responses={200: 'Success'})
+    def delete(self, request):
+        """
+            Web Server - DELETE communication between API Servers for Issue Clear/Delete
+        """
+        MemberObj = CheckUserID(request)
+        delData = NoshowIssue.objects.get(ns_Id=MemberObj)
+        delData.delete()
+        response_json = {
+            'success': True
+        }
+        return JsonResponse(response_json)
