@@ -133,8 +133,7 @@ class NoshowIssue(models.Model):
     """
     ns_Id = models.ForeignKey(
         "Member", related_name="MemberIssue",
-        on_delete=models.CASCADE, db_column='ns_Id',
-        primary_key=True
+        on_delete=models.CASCADE, db_column='ns_Id'
     )
     ns_Date = models.DateTimeField(auto_now_add=True)
     ns_Target = models.ForeignKey(

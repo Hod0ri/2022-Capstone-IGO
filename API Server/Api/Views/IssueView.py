@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from datetime import datetime
 
-from ..serializers import IssueSerializer
+from ..serializers import IssueSerializer, MemberSerializer
 from ..models import NoshowIssue, Member
 from ..Validation.CookieJWT import CheckUserID
 from ..Documentation.Swagger_Serializer import IssueParameter
@@ -22,41 +22,40 @@ class IssueView(APIView):
         tempdata = JSONParser().parse(request)
         tempdata['ns_Id'] = MemberObj.user_Id
         tempdata['ns_Date'] = datetime.now()
-
         issue_serializer = IssueSerializer(data=tempdata)
-
         if issue_serializer.is_valid():
             issue_serializer.save()
-
-
-        response_json = {
-            'success': True
-        }
+            response_json = {
+                'success': ''
+            }
+        else:
+            response_json = {
+                'err': issue_serializer.errors
+            }
         return JsonResponse(response_json)
 
-    @swagger_auto_schema(tags=['신고 조회 (Issue GET)'], query_serializer=IssueParameter, responses={200: 'Success'})
-    def get(self, request):
-        """
-            Web Server to API Server GET Communication for Issue Check
-        """
-
-        user_Id = CheckUserID(request)
-
-        response_json = {
-            'success': False,
-            'err': 'Member.DoesNotExist'
-        }
-        return JsonResponse(response_json)
-
-
-    @swagger_auto_schema(tags=['신고 삭제 (Issue DELETE)'], query_serializer=IssueParameter, responses={200: 'Success'})
-    def delete(self, request):
-        user_Id = CheckUserID(request)
-
-        """
-            Web Server - DELETE communication between API Servers for Issue Clear/Delete
-        """
-        response_json = {
-            'success': True
-        }
-        return JsonResponse(response_json)
+    # @swagger_auto_schema(tags=['신고 조회 (Issue GET)'], query_serializer=IssueParameter, responses={200: 'Success'})
+    # def get(self, request):
+    #     """
+    #         Web Server to API Server GET Communication for Issue Check
+    #     """
+    #
+    #     user_Id = CheckUserID(request)
+    #
+    #     response_json = {
+    #         'success': False,
+    #         'err': 'Member.DoesNotExist'
+    #     }
+    #     return JsonResponse(response_json)
+    #
+    # @swagger_auto_schema(tags=['신고 삭제 (Issue DELETE)'], query_serializer=IssueParameter, responses={200: 'Success'})
+    # def delete(self, request):
+    #     user_Id = CheckUserID(request)
+    #
+    #     """
+    #         Web Server - DELETE communication between API Servers for Issue Clear/Delete
+    #     """
+    #     response_json = {
+    #         'success': True
+    #     }
+    #     return JsonResponse(response_json)
