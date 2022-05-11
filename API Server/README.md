@@ -133,6 +133,28 @@
 |   errMsg   |     String      |    ''     |
 
 </details>
+<details>
+<summary>5. 아이디 찾기 (GET)</summary>
+
+### Request Form
+
+|     TAG     |      value      | required |
+| :---------: | :-------------: | :------: |
+|   API URL   |      /ems      |    -     |
+|   Method    |      GET       |    -     |
+|   user_Name   |     String      |    ✔️     |
+|   user_Email   |     String      |    ✔️     |
+|   user_Phone   |     String      |    ✔️     |
+
+### Response Form
+
+|     TAG     |      value      | Example |
+| :---------: | :-------------: | :------: |
+|   success  |      String    |    true     |
+|   user_Id  |      String    |    user1     |
+|   errMsg   |     String      |    ''     |
+
+</details>
 
 <br />
 
@@ -158,4 +180,86 @@
 |   success  |      String    |    true     |
 |   result | Integer | 3000 |
 |   err   |     String      |    ''     |
+</details>
+
+<details>
+<summary>2. 포인트 로그 조회 (GET)</summary>
+
+### Request Form
+
+|     TAG     |      value      | required |
+| :---------: | :-------------: | :------: |
+|   API URL   |      /point      |    -     |
+|   Method    |      GET       |    -     |
+|   token (inCookie)   |     String      |    ✔️     |
+### Response Form
+
+|     TAG     |      value      | Example |
+| :---------: | :-------------: | :------: |
+|   success  |      String    |    true     |
+|   result | Json | All Log |
+|   err   |     String      |    ''     |
+
+### Log Form
+
+|     TAG     |      value      | Example |
+| :---------: | :-------------: | :------: |
+|  pot_Date  |     datetime      |    2022-01-01 00:00:00     |
+|  pot_Change  |     Integer      |    +1000     |
+| pot_Reason  |     String      |    충전     |
+| pot_Amount | Integer | 3000 |
+</details>
+<br />
+
+### 🚩 신고 처리 (/issue)
+<details>
+<summary>1. 신고 등록 (POST)</summary>
+
+### Request Form
+
+|     TAG     |      value      | required |
+| :---------: | :-------------: | :------: |
+|   API URL   |      /issue      |    -     |
+|   Method    |      POST       |    -     |
+|   token (inCookie)   |     String      |    ✔️     |
+|  ns_Target  |     String      |    ✔️     |
+|  ns_Reason  |     String      |    ✔️     |
+| ns_Etc  |     String      |    ✔️     |
+
+### Response Form
+
+|     TAG     |      value      | Example |
+| :---------: | :-------------: | :------: |
+|   success  |      String    |    true     |
+|   err   |     String      |    ''     |
+</details>
+
+<details>
+<summary>2. 신고 조회 (GET)</summary>
+
+### Request Form
+
+|     TAG     |      value      | required |
+| :---------: | :-------------: | :------: |
+|   API URL   |      /issue      |    -     |
+|   Method    |      GET       |    -     |
+|   token (inCookie)   |     String      |    ✔️     |
+
+### Response Form
+
+|     TAG     |      value      | Example |
+| :---------: | :-------------: | :------: |
+|   success  |      String    |    true     |
+|   result | Json | All Log |
+|   err   |     String      |    ''     |
+
+### Log Form
+
+|     TAG     |      value      | Example |
+| :---------: | :-------------: | :------: |
+|  ns_Date  |     datetime      |    2022-01-01 00:00:00     |
+|  ns_Target  |     String      |    user2     |
+| ns_Reason  |     String      |    노쇼     |
+| ns_Etc | String | '' |
+| ns_Status | String | 접수 대기 |
 </details>
