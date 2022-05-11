@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Member, NoshowIssue
+from ..models import Member, NoshowIssue, LogPoint
 
 
 class MemberParameter(serializers.ModelSerializer):
@@ -33,4 +33,14 @@ class IssueParameter(serializers.ModelSerializer):
 
     class Meta:
         model = NoshowIssue
+        fields = '__all__'
+
+class LogPointParameter(serializers.ModelSerializer):
+    pot_Id = serializers.CharField(help_text='User ID')
+    pot_date = serializers.DateTimeField(help_text='Datetime to Change Point')
+    pot_Reason = serializers.CharField(help_text='Change Reason')
+    pot_Change = serializers.CharField(help_text='Amount of Change')
+
+    class Meta:
+        model = LogPoint
         fields = '__all__'

@@ -1,19 +1,20 @@
-from datetime import datetime
 from django.http import JsonResponse
-from django.core import serializers
-from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import JSONParser
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..Validation.validators import CheckValidAccount
-from ..serializers import LogPointSerializer, MemberSerializer
-from ..models import Member, LogPoint
+from ..serializers import LogPointSerializer
+from ..models import LogPoint
 from ..Validation.CookieJWT import CheckUserID
+from ..Documentation.Swagger_Serializer import LogPointParameter
 
 
 class LogPointView(APIView):
+    @swagger_auto_schema(tags=['포인트 변동 (Point POST)'], query_serializer=LogPointParameter, responses={200: 'Success'})
     def post(self, request):
+        '''
+            Create Log what to change user Point
+        '''
         MemberObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
 
@@ -48,7 +49,12 @@ class LogPointView(APIView):
             }
         return JsonResponse(response_json)
 
+    @swagger_auto_schema(tags=['포인트 조회 (Point GET)'], query_serializer=LogPointParameter, responses={200: 'Success'})
+
     def get(self, request):
+        '''
+            Select(Show) Log what to change user Point
+        '''
         MemberObj = CheckUserID(request)
         logAll = LogPoint.objects.filter(pot_Id=MemberObj).values('pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount')
         if logAll:
