@@ -263,3 +263,29 @@
 | ns_Etc | String | '' |
 | ns_Status | String | 접수 대기 |
 </details>
+<br />
+
+### 🚘 매칭 관리 (/issue)
+<details>
+<summary>1. 매칭 등록 (POST)</summary>
+
+### Request Form
+
+|     TAG     |      value      | required |
+| :---------: | :-------------: | :------: |
+|   API URL   |      /issue      |    -     |
+|   Method    |      POST       |    -     |
+|   token (inCookie)   |     String      |    ✔️     |
+|  mm_Arrive  |     String      |     ✔️    |
+|  mm_ArriveTime  |     Time      |    ✔️     |
+|  mm_Goal  |     String      |         |
+| mm_Price  |     Integer      |    ✔️     |
+| mm_Desc  |     String      |         |
+
+### Response Form
+
+|     TAG     |      value      | Example |
+| :---------: | :-------------: | :------: |
+|   success  |      String    |    true     |
+|   err   |     String      |    ''     |
+</details>
