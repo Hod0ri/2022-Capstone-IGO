@@ -17,14 +17,14 @@ class EmsView(APIView):
         """
         tempdata = JSONParser().parse(request)
         try:
-            ms = Member.objects.filter(
+            querySet = Member.objects.filter(
                 Q(user_Phone=tempdata['user_Phone']) & Q(user_Email=tempdata['user_Email']) & Q(user_Name=tempdata['user_Name'])
                 )
-            user_Id = ms.data['user_Id']
+            user_Id = str(querySet.get())
             response_json = {
-            'success': True,
-            'user_Id' : user_Id,
-            'err': ''
+                'success': True,
+                'user_Id' : user_Id,
+                'err': ''
             }
         except:
             response_json = {
