@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'Api',
-    'drf_yasg',
 
 ]
 
@@ -55,7 +54,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-ROOT_URLCONF = 'igoAPI.urls'
+ROOT_URLCONF = 'igoTest.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'igoAPI.wsgi.application'
+WSGI_APPLICATION = 'igoTest.wsgi.application'
 
 
 # Database
@@ -83,7 +82,7 @@ WSGI_APPLICATION = 'igoAPI.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'igoData',
+       'NAME': 'igodata',
        'USER': 'postgres',
        'PASSWORD': '1234',
        'HOST': 'localhost',

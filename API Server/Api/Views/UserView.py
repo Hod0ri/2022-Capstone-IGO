@@ -1,20 +1,15 @@
 from django.http import JsonResponse
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
 from rest_framework.parsers import JSONParser
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from ..Validation.validators import CheckValidAccount
 from ..serializers import MemberSerializer
 from ..models import Member
 from ..Validation.CookieJWT import CheckUserID
-from ..Documentation.Swagger_Serializer import MemberParameter, MemberCookieParameter
 
 
 # 유저 엔드 포인트
 class UserView(APIView):
-    @swagger_auto_schema(tags=['회원 가입 (User POST)'], query_serializer=MemberParameter, responses={200: 'Success'})
     def post(self, request):
         """
             Login Server to API Server Post Communication for Adding Members
@@ -39,7 +34,6 @@ class UserView(APIView):
             }
         return JsonResponse(response_json)
 
-    @swagger_auto_schema(tags=['회원 조회 (User GET)'], query_serializer=MemberCookieParameter, responses={200: 'Success'})
     def get(self, request):
         """
             Login Server to API Server GET Communication for Login
@@ -59,7 +53,6 @@ class UserView(APIView):
             }
         return JsonResponse(response_json)
 
-    @swagger_auto_schema(tags=['회원 정보 수정 (User PUT)'], query_serializer=MemberParameter, responses={200: 'Success'})
     def put(self, request):
         """
             API Server to Client Server PUT communication for member information modification
@@ -85,7 +78,6 @@ class UserView(APIView):
         return JsonResponse(response_json)
 
 
-    @swagger_auto_schema(tags=['회원 삭제 (User DELETE)'], query_serializer=MemberCookieParameter, responses={200: 'Success'})
     def delete(self, request):
         """
             Login Server - DELETE communication between API Servers for membership withdrawal

@@ -19,35 +19,16 @@ from django.urls import path, include
 from Api.Views.UserView import UserView
 from Api.Views.LogPointViews import LogPointView
 from Api.Views.IssueView import IssueView
-from Api.Views.MatchDataView import MatchDataView
+# from Api.Views.MatchDataView import MatchDataView
 from Api.Views.EmsView import EmsView
 
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="IGO-Carpool Platform",
-        default_version='1.0.0',
-        description="API Official Document",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="mintwlsehtro@gmail.com"),
-        license=openapi.License(name="MIT"),
-    ),
-    public=True,
-    permission_classes=[permissions.AllowAny],
-)
 
 urlpatterns = [
-    path(r'swagger(?P<format>\.json|\.yaml)', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    path(r'swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path(r'redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc-v1'),
-
     path('admin/', admin.site.urls),
     path('api/user/', UserView.as_view()),
     path('api/point/', LogPointView.as_view()),
     path('api/issue/', IssueView.as_view()),
     path('api/ems/', EmsView.as_view()),
-    path('api/match/', MatchDataView.as_view())
+    # path('api/match/', MatchDataView.as_view())
 ]

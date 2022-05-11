@@ -1,14 +1,10 @@
 from django.http import JsonResponse
-from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
 from rest_framework.parsers import JSONParser
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
 
-from ..Validation.validators import CheckValidAccount
-from ..serializers import MemberSerializer
 from ..models import Member
+from ..Documentation.Swagger_Serializer import FindIDParm
 
 class EmsView(APIView):
     def get(self, request):
@@ -17,10 +13,14 @@ class EmsView(APIView):
         """
         tempdata = JSONParser().parse(request)
         try:
-            querySet = Member.objects.filter(
-                Q(user_Phone=tempdata['user_Phone']) & Q(user_Email=tempdata['user_Email']) & Q(user_Name=tempdata['user_Name'])
-                )
-            user_Id = str(querySet.get())
+            user_Id = str(list(
+                Member.objects.filter(
+                    Q(user_Phone=tempdata['user_Phone']) &
+                    Q(user_Email=tempdata['user_Email']) &
+                    Q(user_Name=tempdata['user_Name'])
+                ).values('user_Id')
+            )[0]['user_Id'])
+
             response_json = {
                 'success': True,
                 'user_Id' : user_Id,

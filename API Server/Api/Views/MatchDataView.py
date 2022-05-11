@@ -42,8 +42,10 @@ class MatchDataView(APIView):
                     'err': 'MatchData does not exist'
                 }
         else:
-
-        return JsonResponse(response_json)
+            response_json = {
+                'err': 'MatchData does not exist'
+            }
+            return JsonResponse(response_json)
     # def put(self, request):
     #     return JsonResponse(response_json)
     # def delete(self, request):

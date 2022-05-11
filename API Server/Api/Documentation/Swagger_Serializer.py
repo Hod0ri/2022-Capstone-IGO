@@ -15,6 +15,14 @@ class MemberParameter(serializers.ModelSerializer):
         model = Member
         fields = '__all__'
 
+class FindIDParm(serializers.ModelSerializer):
+    user_Name = serializers.CharField(help_text='User\'s Real Name')
+    user_Phone = serializers.CharField(help_text='User\'s Phone Number')
+    user_Email = serializers.CharField(help_text='User\'s Email Address')
+
+    class Meta:
+        model = Member
+        fields = '__all__'
 
 class MemberCookieParameter(serializers.ModelSerializer):
     user_Id = serializers.CharField(help_text='User\'s ID')
