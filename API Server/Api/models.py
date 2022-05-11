@@ -56,19 +56,23 @@ class MatchData(models.Model):
     """매칭 목록 테이블
     @:parameter
         mc_Driver : 운전자 ID
-        mc_Arrive : 출발 시간
+        mc_Arrive : 출발 장소
+        mc_ArriveTime : 출발 시간
         mc_Goal : 도착 장소
         mc_Price : 요금
         mc_Desc : 비고
+        mc_Match : 매칭 여부
     """
     mc_Driver = models.ForeignKey(
         "Member", related_name="MemberMatch",
         on_delete=models.CASCADE, db_column="mc_Driver"
     )
-    mc_Arrive = models.DateTimeField()
+    mc_Arrive = models.CharField(max_length=50)
+    mc_ArriveTime = models.DateTimeField()
     mc_Goal = models.CharField(max_length=50)
     mc_Price = models.IntegerField()
     mc_Desc = models.CharField(max_length=300, null=True)
+    mc_Match = models.BooleanField(default=False)
 
     def __str__(self):
         return self.mc_Driver

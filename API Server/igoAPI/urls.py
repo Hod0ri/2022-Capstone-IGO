@@ -17,8 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 from Api.Views.UserView import UserView
-from Api.Views.IssueView import IssueView
 from Api.Views.LogPointViews import LogPointView
+from Api.Views.IssueView import IssueView
+from Api.Views.MatchDataView import MatchDataView
 from Api.Views.EmsView import EmsView
 
 from rest_framework import permissions
@@ -32,7 +33,7 @@ schema_view = get_schema_view(
         description="API Official Document",
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="mintwlsehtro@gmail.com"),
-        license=openapi.License(name="mit"),
+        license=openapi.License(name="MIT"),
     ),
     public=True,
     permission_classes=[permissions.AllowAny],
@@ -47,5 +48,6 @@ urlpatterns = [
     path('api/user/', UserView.as_view()),
     path('api/point/', LogPointView.as_view()),
     path('api/issue/', IssueView.as_view()),
-    path('api/ems', EmsView.as_view()),
+    path('api/ems/', EmsView.as_view()),
+    path('api/match/', MatchDataView.as_view())
 ]
