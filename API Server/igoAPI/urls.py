@@ -19,6 +19,7 @@ from django.urls import path, include
 from Api.Views.UserView import UserView
 from Api.Views.IssueView import IssueView
 from Api.Views.LogPointViews import LogPointView
+from Api.Views.EmsView import EmsView
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -46,4 +47,5 @@ urlpatterns = [
     path('api/user/', UserView.as_view()),
     path('api/point/', LogPointView.as_view()),
     path('api/issue/', IssueView.as_view()),
+    path('api/ems', EmsView.as_view()),
 ]
