@@ -52,7 +52,7 @@ class MatchDataView(APIView):
         else:
             MatchLog = list(
                 MatchData.objects.filter(
-                    Q(mc_Driver=MemberObj['user_Id']) &
+                    Q(mc_Driver=MemberObj) &
                     Q(mc_Match=False)
                 ).values()
             )
@@ -66,7 +66,38 @@ class MatchDataView(APIView):
                     'err': 'MatchData does not exist'
                 }
         return JsonResponse(response_json)
-    # def put(self, request):
-    #     return JsonResponse(response_json)
-    # def delete(self, request):
-    #     return JsonResponse(response_json)
+
+    def put(self, request):
+        MemberObj = CheckUserID(request)
+        tempdata = JSONParser().parse(request)
+        tempdata['mc_Driver'] = MemberObj.user_Id
+        match_serializer = MatchDataSerializer(data=tempdata)
+        if match_serializer.is_valid():
+            match_serializer.save()
+            response_json = {
+                'success': True
+            }
+        else:
+            response_json = {
+                'err': match_serializer.errors
+            }
+
+        return JsonResponse(response_json)
+
+    def delete(self, request):
+        MemberObj = CheckUserID(request)
+        tempdata = JSONParser().parse(request)
+        delData = MatchData.objects.filter(
+            Q(mc_Driver=MemberObj) & Q(mc_Match=False)
+        )
+        if delData:
+            delData.delete()
+            response_json = {
+                'success': True
+            }
+        else:
+            response_json = {
+                'err': "MatchData does not exist"
+            }
+
+        return JsonResponse(response_json)
