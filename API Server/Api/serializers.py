@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Member, LogPoint, NoshowIssue, MatchData
+from .models import Member, LogPoint, NoshowIssue, MatchData, MatchMember
 
 
 class LogPointSerializer(serializers.ModelSerializer):
@@ -40,4 +40,10 @@ class LoginMemberSerializer(serializers.ModelSerializer):
 class MatchDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = MatchData
+        fields = '__all__'
+
+
+class MatchMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchMember
         fields = '__all__'

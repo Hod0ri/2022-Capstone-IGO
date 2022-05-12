@@ -19,10 +19,9 @@ from django.urls import path, include
 from Api.Views.UserView import UserView
 from Api.Views.LogPointViews import LogPointView
 from Api.Views.IssueView import IssueView
-# from Api.Views.MatchDataView import MatchDataView
+from Api.Views.MatchDataView import MatchDataView
 from Api.Views.EmsView import EmsView
-
-
+from Api.Views.MatchMemberView import MatchMemberView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +29,6 @@ urlpatterns = [
     path('api/point/', LogPointView.as_view()),
     path('api/issue/', IssueView.as_view()),
     path('api/ems/', EmsView.as_view()),
-    # path('api/match/', MatchDataView.as_view())
+    path('api/match/', MatchDataView.as_view()),
+    path('api/matchmember/', MatchMemberView.as_view())
 ]

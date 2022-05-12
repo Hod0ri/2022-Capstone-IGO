@@ -68,7 +68,7 @@ class MatchData(models.Model):
         on_delete=models.CASCADE, db_column="mc_Driver"
     )
     mc_Arrive = models.CharField(max_length=50)
-    mc_ArriveTime = models.DateTimeField()
+    mc_ArriveTime = models.DateTimeField(null=True)
     mc_Goal = models.CharField(max_length=50)
     mc_Price = models.IntegerField()
     mc_Desc = models.CharField(max_length=300, null=True)
@@ -93,7 +93,7 @@ class MatchMember(models.Model):
         mm_Match : 매칭 여부
     """
     mm_Driver = models.ForeignKey(
-        "MatchData", related_name="MatchDriver",
+        "Member", related_name="MemDriver",
         on_delete=models.CASCADE, db_column="mm_Driver"
     )
     mm_Member = models.ForeignKey(
