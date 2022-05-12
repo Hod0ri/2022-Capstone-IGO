@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
@@ -17,7 +18,7 @@ class MatchDataView(APIView):
             if match_serializer.is_valid():
                 match_serializer.save()
                 response_json = {
-                    'success': ''
+                    'success': True
                 }
             else:
                 response_json = {
@@ -28,24 +29,43 @@ class MatchDataView(APIView):
                 "err": "Driver err"
             }
         return JsonResponse(response_json)
+
     def get(self, request):
         MemberObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
         if tempdata['mc_Match']:
-            MatchLog = MatchData.objects.filter(mc_Driver=MemberObj,mc_Match=True).values()
+            MatchLog = list(
+                MatchData.objects.filter(
+                    Q(mc_Driver=MemberObj) &
+                    Q(mc_Match=True)
+                ).values()
+            )
+
             if MatchLog:
                 response_json = {
-                    'data': list(MatchLog)
+                    'data': MatchLog
                 }
             else:
                 response_json = {
                     'err': 'MatchData does not exist'
                 }
         else:
-            response_json = {
-                'err': 'MatchData does not exist'
-            }
-            return JsonResponse(response_json)
+            MatchLog = list(
+                MatchData.objects.filter(
+                    Q(mc_Driver=MemberObj['user_Id']) &
+                    Q(mc_Match=False)
+                ).values()
+            )
+
+            if MatchLog:
+                response_json = {
+                    'data': MatchLog
+                }
+            else:
+                response_json = {
+                    'err': 'MatchData does not exist'
+                }
+        return JsonResponse(response_json)
     # def put(self, request):
     #     return JsonResponse(response_json)
     # def delete(self, request):
