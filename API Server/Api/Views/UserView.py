@@ -2,10 +2,10 @@ from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
-from ..Validation.validators import CheckValidAccount
+from ..FunctionModules.validators import CheckValidAccount
 from ..serializers import MemberSerializer
 from ..models import Member
-from ..Validation.CookieJWT import CheckUserID
+from ..FunctionModules.CookieJWT import CheckUserID
 
 
 # 유저 엔드 포인트
@@ -21,7 +21,8 @@ class UserView(APIView):
             if not CheckValidAccount(tempdata):
                 member_serializer.save()
                 response_json = {
-                    'success': True
+                    'success': True,
+                    'err': ''
                 }
             else:
                 response_json = {
@@ -30,6 +31,7 @@ class UserView(APIView):
                 }
         else:
             response_json = {
+                'success': False,
                 'err': member_serializer.errors
             }
         return JsonResponse(response_json)
@@ -43,13 +45,14 @@ class UserView(APIView):
             ms = MemberSerializer(userData)
             response_json = {
                 'success': True,
-                'user_Nick': ms.data['user_Nick']
+                'user_Nick': ms.data['user_Nick'],
+                'err': ''
             }
             return JsonResponse(response_json)
         except Member.DoesNotExist:
             response_json = {
                 'success': False,
-                'err': 'Member.DoesNotExist'
+                'err': '사용자를 찾을 수 없습니다.'
             }
         return JsonResponse(response_json)
 
@@ -65,26 +68,35 @@ class UserView(APIView):
             if not CheckValidAccount(tempdata):
                 member_update_serializer.save()
                 response_json = {
-                    'success': True
+                    'success': True,
+                    'err': ''
                 }
             else:
                 response_json = {
+                    'success': False,
                     'err': CheckValidAccount(tempdata)
                 }
         else:
             response_json = {
+                'success': False,
                 'err': member_update_serializer.errors
             }
         return JsonResponse(response_json)
-
 
     def delete(self, request):
         """
             Login Server - DELETE communication between API Servers for membership withdrawal
         """
         userdata = CheckUserID(request)
-        userdata.delete()
-        response_json = {
-            'success': True
-        }
+        try:
+            userdata.delete()
+            response_json = {
+                'success': True,
+                'err': ''
+            }
+        except:
+            response_json = {
+                'success': False,
+                'err': '사용자를 찾을 수 없습니다.'
+            }
         return JsonResponse(response_json)

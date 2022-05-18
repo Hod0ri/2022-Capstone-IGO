@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 from ..serializers import LogPointSerializer
 from ..models import LogPoint
-from ..Validation.CookieJWT import CheckUserID
+from ..FunctionModules.CookieJWT import CheckUserID
 
 
 class LogPointView(APIView):
@@ -29,6 +29,7 @@ class LogPointView(APIView):
                 tempdata['pot_Id'] = MemberObj.user_Id
             else:
                 response_json = {
+                    'success': False,
                     'err': "Point 부족"
                 }
                 return JsonResponse(response_json)
@@ -38,14 +39,16 @@ class LogPointView(APIView):
             point_serializer.save()
             MemberObj.save()
             response_json = {
-                'success': True
+                'success': True,
+                'result': MemberObj.user_Point,
+                'err': ''
             }
         else:
             response_json = {
-               'err': point_serializer.errors
+                'success': False,
+                'err': point_serializer.errors
             }
         return JsonResponse(response_json)
-
 
     def get(self, request):
         '''
@@ -55,10 +58,13 @@ class LogPointView(APIView):
         logAll = LogPoint.objects.filter(pot_Id=MemberObj).values('pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount')
         if logAll:
             response_json = {
-                'data': list(logAll)
+                'success': True,
+                'result': list(logAll),
+                'err': ''
             }
         else:
             response_json = {
+                'success': False,
                 'err': ' LogPoint does not exist'
             }
         return JsonResponse(response_json)
