@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { RecoilRoot } from "recoil";
 import styled, { css } from "styled-components";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -50,15 +51,16 @@ const BodyContainer = styled.div`
   }
 `;
 const MyApp = ({ Component, pageProps }) => {
+  const route = useRouter();
   return (
     <>
       <ThemeProvider theme={theme}>
         <RecoilRoot>
           <GlobalStyles />
           <BodyContainer>
-            <Header />
+            <Header route={route} />
             <Component {...pageProps} />
-            <Navbar />
+            <Navbar route={route} />
           </BodyContainer>
         </RecoilRoot>
       </ThemeProvider>
