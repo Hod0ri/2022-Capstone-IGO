@@ -6,6 +6,7 @@ const ButtonStyle = styled.button`
   border : none;
   background: ${props=>props.theme.color.white};
   width: 20%;
+  cursor: pointer;
 `;
 
 const Button = ({children}) => {

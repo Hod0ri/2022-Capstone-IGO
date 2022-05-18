@@ -1,8 +1,8 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import Button from './NavbarButton';
-import { AiOutlineHome, AiOutlineCar } from 'react-icons/ai';
-import { RiCoinsLine, RiAccountCircleLine, RiAlarmWarningLine } from 'react-icons/ri';
+import { AiOutlineHome, AiOutlineCar, AiFillHome, AiFillCar } from 'react-icons/ai';
+import { RiCoinsLine, RiCoinsFill, RiAccountCircleLine, RiAccountCircleFill, RiAlarmWarningLine, RiAlarmWarningFill } from 'react-icons/ri';
 
 const NavbarStyle = styled.div`
   display: flex;
@@ -21,28 +21,30 @@ const NavbarStyle = styled.div`
 `;
 
 
-const Navbar = () => {
+
+
+const Navbar = ({ route }) => {
 
   return (
     <NavbarStyle>
       <Button>
-        <AiOutlineHome size='48'/>
+        {route.asPath === '/' ? <AiFillHome size='48'/> : <AiOutlineHome size='48'/>}
         <p>홈</p>
       </Button>
       <Button>
-        <RiAlarmWarningLine size='48' />
+      {route.asPath === '/report' ? <RiAlarmWarningFill size='48'/> : <RiAlarmWarningLine size='48'/>}
        <p>신고</p>
       </Button>
       <Button>
-        <AiOutlineCar size='48' /> 
+        {route.asPath === '/car' ? <AiFillCar size='48'/> : <AiOutlineCar size='48'/>}
         <p>카풀</p>
       </Button>
       <Button>
-        <RiCoinsLine size='48' />
+        {route.asPath === '/point' ? <RiCoinsFill size='48'/> : <RiCoinsLine size='48'/>}
         <p>포인트</p>
       </Button>
       <Button>
-        <RiAccountCircleLine size='48' />
+      {route.asPath === '/account' ? <RiAccountCircleFill size='48'/> : <RiAccountCircleLine size='48'/>}
         <p>마이페이지</p>
       </Button>
     </NavbarStyle>
