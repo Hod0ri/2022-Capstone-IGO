@@ -11,6 +11,7 @@ const HeaderStyles = styled.div`
   color: ${(props) => props.theme.color.white};
   display: flex;
   font-size: ${(props) => props.theme.fontSize.xl};
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const BackButton = styled.div`
