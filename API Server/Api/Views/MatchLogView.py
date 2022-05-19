@@ -56,7 +56,7 @@ class MatchLogView(APIView):
         # user = 운전자
         if MemberObj.user_Driver:
             MatchLog = list(
-                MatchData.objects.filter(Q(mc_Driver=MemberObj)).values()
+                MatchData.objects.filter(Q(mc_Driver=MemberObj.user_Id)).values()
             )
             if MatchLog:
                 response_json = {
@@ -69,7 +69,7 @@ class MatchLogView(APIView):
         # user = 탑승자
         else:
             MatchLog = list(
-                MatchMember.objects.filter(Q(mm_Member=MemberObj)).values()
+                MatchMember.objects.filter(Q(mm_Member=MemberObj.user_Id)).values()
             )
             if MatchLog:
                 response_json = {
