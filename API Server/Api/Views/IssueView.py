@@ -14,9 +14,9 @@ class IssueView(APIView):
         """
             Web Server to API Server Post Communication for Issue Report
         """
-        MemberObj = CheckUserID(request)
+        UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
-        tempdata['ns_Id'] = MemberObj.user_Id
+        tempdata['ns_Id'] = UserObj.user_Id
         tempdata['ns_Date'] = datetime.now()
         issue_serializer = IssueSerializer(data=tempdata)
         if issue_serializer.is_valid():
@@ -36,8 +36,8 @@ class IssueView(APIView):
         """
             Web Server to API Server GET Communication for Issue Check
         """
-        MemberObj = CheckUserID(request)
-        logAll = NoshowIssue.objects.filter(ns_Id=MemberObj).values('ns_Reason', 'ns_Target', 'ns_Etc',
+        UserObj = CheckUserID(request)
+        logAll = NoshowIssue.objects.filter(ns_Id=UserObj).values('ns_Reason', 'ns_Target', 'ns_Etc',
                                                                     'ns_Date', 'ns_Status')
         if logAll:
             response_json = {
@@ -56,12 +56,13 @@ class IssueView(APIView):
         """
             Web Server - DELETE communication between API Servers for Issue Clear/Delete
         """
-        MemberObj = CheckUserID(request)
-        delData = NoshowIssue.objects.get(ns_Id=MemberObj)
+        UserObj = CheckUserID(request)
+        delData = NoshowIssue.objects.get(ns_Id=UserObj)
         try:
             delData.delete()
             response_json = {
-                'success': True
+                'success': True,
+                'err': ''
             }
         except:
             response_json = {'success': False, 'err': '신고를 삭제할 수 없습니다.'}

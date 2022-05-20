@@ -62,6 +62,7 @@ class MatchData(models.Model):
         mc_Price : 요금
         mc_Desc : 비고
         mc_Match : 매칭 여부
+        mc_Count : 매칭 할 인원
     """
     mc_Driver = models.ForeignKey(
         "Member", related_name="MemberMatch",
@@ -73,6 +74,7 @@ class MatchData(models.Model):
     mc_Price = models.IntegerField()
     mc_Desc = models.CharField(max_length=300, null=True)
     mc_Match = models.BooleanField(default=False)
+    mc_Count = models.IntegerField(default=3)
 
     def __str__(self):
         return self.mc_Driver

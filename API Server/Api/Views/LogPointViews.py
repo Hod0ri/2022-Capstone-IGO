@@ -12,21 +12,21 @@ class LogPointView(APIView):
         '''
             Create Log what to change user Point
         '''
-        MemberObj = CheckUserID(request)
+        UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
 
         if "add" in tempdata['pot_Reason']:
-            pointAmount = MemberObj.user_Point + tempdata['pot_Change']
-            MemberObj.user_Point = pointAmount
+            pointAmount = UserObj.user_Point + tempdata['pot_Change']
+            UserObj.user_Point = pointAmount
             tempdata['pot_Amount'] = pointAmount
-            tempdata['pot_Id'] = MemberObj.user_Id
+            tempdata['pot_Id'] = UserObj.user_Id
 
         elif "use" in tempdata['pot_Reason']:
-            pointAmount = MemberObj.user_Point - tempdata['pot_Change']
+            pointAmount = UserObj.user_Point - tempdata['pot_Change']
             if pointAmount >= 0:
-                MemberObj.user_Point = pointAmount
+                UserObj.user_Point = pointAmount
                 tempdata['pot_Amount'] = pointAmount
-                tempdata['pot_Id'] = MemberObj.user_Id
+                tempdata['pot_Id'] = UserObj.user_Id
             else:
                 response_json = {
                     'success': False,
@@ -37,10 +37,10 @@ class LogPointView(APIView):
         point_serializer = LogPointSerializer(data=tempdata)
         if point_serializer.is_valid():
             point_serializer.save()
-            MemberObj.save()
+            UserObj.save()
             response_json = {
                 'success': True,
-                'result': MemberObj.user_Point,
+                'result': UserObj.user_Point,
                 'err': ''
             }
         else:
@@ -54,8 +54,8 @@ class LogPointView(APIView):
         '''
             Select(Show) Log what to change user Point
         '''
-        MemberObj = CheckUserID(request)
-        logAll = LogPoint.objects.filter(pot_Id=MemberObj).values('pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount')
+        UserObj = CheckUserID(request)
+        logAll = LogPoint.objects.filter(pot_Id=UserObj).values('pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount')
         if logAll:
             response_json = {
                 'success': True,
