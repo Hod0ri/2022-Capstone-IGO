@@ -78,6 +78,29 @@ class MatchView(APIView):
 
     def get(self, request):
         UserObj = CheckUserID(request)
-
-        return JsonResponse()
-
+        if UserObj.user_Driver:
+            MatchLog = list(
+                MatchMember.objects.filter(
+                    Q(mm_Driver=UserObj.user_Id) &
+                    Q(mm_Match=True)
+                ).values(
+                    'mm_Driver', 'mm_Member', 'mm_Pickup', 'mm_Goal', 'mm_Arrive', 'mm_Price', 'mm_Match'
+                )
+            )
+            if MatchLog:
+                response_json = {
+                    'success': True,
+                    'data': MatchLog,
+                    'err': ''
+                }
+            else:
+                response_json = {
+                    'success': False,
+                    'err': 'MatchData does not exist'
+                }
+        else:
+            response_json = {
+                'success': False,
+                'err': '운전자가 아닙니다.'
+            }
+        return JsonResponse(response_json)
