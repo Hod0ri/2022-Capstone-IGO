@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const ReservationButtonContainer = styled.div`
-  width: 90%;
+  width: 100%;
   height: 50px;
   display: flex;
   justify-content: space-around;

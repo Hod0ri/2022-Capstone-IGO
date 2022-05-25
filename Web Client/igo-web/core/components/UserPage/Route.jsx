@@ -3,18 +3,30 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import Clock from './icon/clock_icon.png';
 import DriveRoute from './DriveRoute';
+import Male from './icon/Male.png';
 
 const RoutContainer = styled.div`
-  width: 100%;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 15px;
+  &:nth-child(1) {
+    display: flex;
+    align-items: start;
+  }
+  .driveWrapper {
+    display: flex;
+  }
+  .driverImage {
+    margin-right: 20px;
+  }
 `;
 
 const DriveInfo = styled.div`
   display: flex;
-  width: 80%;
-  padding: 3px;
+  width: 100%;
+  padding: 5px;
   p {
     color: ${(props) => props.theme.color.lightgray};
   }
@@ -28,7 +40,12 @@ const DriveInfo = styled.div`
 const Route = ({ startPoint }) => {
   return (
     <RoutContainer>
-      <DriveRoute startPoint={startPoint} />
+      <div className="driveWrapper">
+        <div className="driverImage">
+          <Image src={Male} width={60} height={60} />
+        </div>
+        <DriveRoute startPoint={startPoint} />
+      </div>
       <DriveInfo>
         <Image
           className="Clock"

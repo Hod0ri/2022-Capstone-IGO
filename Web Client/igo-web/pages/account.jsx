@@ -1,5 +1,5 @@
-import React from "react";
-import UserPage from "../core/components/UserPage";
+import React from 'react';
+import UserPage from '../core/components/UserPage';
 
 const Account = () => {
   return (
