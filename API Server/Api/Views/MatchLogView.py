@@ -142,14 +142,26 @@ class MatchLogView(APIView):
         tempdata = JSONParser().parse(request)
 
         if UserObj.user_Driver:
-            MatchDataDel = MatchData.objects.get(mc_Driver=UserObj)
+            DriverLog = list(
+                MatchData.objects.filter(
+                    Q(mc_Driver=UserObj.user_Id) &
+                    Q(mc_Match=False)
+                ).values('id')
+            )[0]['id']
+            MatchDataDel = MatchData.objects.get(id=DriverLog)
             MatchDataDel.delete()
             response_json = {
                 'success': True,
                 'err': ''
             }
         else:
-            MatchMemberDel = MatchMember.objects.get(mm_Member=UserObj)
+            MemberLog = list(
+                MatchMember.objects.filter(
+                    Q(mm_Driver=UserObj.user_Id) &
+                    Q(mm_Match=False)
+                ).values('id')
+            )[0]['id']
+            MatchMemberDel = MatchMember.objects.get(id=MemberLog)
             MatchMemberDel.delete()
             response_json = {
                 'success': True,
