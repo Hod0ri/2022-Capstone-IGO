@@ -451,3 +451,57 @@
 |   err   | String |   ''    |
 
 </details>
+
+### 🚘 매칭 관리 (/match)
+
+<details>
+<summary>1. 매칭 등록 (POST)</summary>
+
+### Request Form
+
+|       TAG        | value  | required |
+| :--------------: | :----: | :------: |
+|     API URL      | /match |    -     |
+|      Method      |  POST  |    -     |
+| token (inCookie) | String |    ✔️    |
+
+### Response Form
+
+|   TAG   | value  | Example |
+| :-----: | :----: | :-----: |
+| success | String |  true   |
+|   err   | String |   ''    |
+
+</details>
+<details>
+<summary>2. 매칭 조회 (GET)</summary>
+
+### Request Form
+
+|       TAG        | value  | required |
+| :--------------: | :----: | :------: |
+|     API URL      | /match |    -     |
+|      Method      |  GET   |    -     |
+| token (inCookie) | String |    ✔️    |
+
+### Response Form
+
+|   TAG   | value  | Example  |
+| :-----: | :----: | :------: |
+| success | String |   true   |
+|  data   |  Json  | MatchLog |
+|   err   | String |    ''    |
+
+### Log Form(user = 운전자)
+
+|    TAG    |  value  |     Example      |
+| :-------: | :-----: | :--------------: |
+| mm_Driver | String  |      user1       |
+| mm_Member | String  |      user2       |
+| mm_Arrive |  Time   | 2022-05-30 10:10 |
+| mm_Pickup | String  |     보라매역     |
+|  mm_Goal  | String  |      대림대      |
+| mm_Price  | Integer |       2000       |
+| mm_Match  | Boolean |       true       |
+
+</details>
