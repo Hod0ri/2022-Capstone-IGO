@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from ..serializers import LogPointSerializer
 from ..models import LogPoint
 from ..FunctionModules.CookieJWT import CheckUserID
-
+from datetime import datetime
 
 class LogPointView(APIView):
     def post(self, request):
@@ -20,6 +20,7 @@ class LogPointView(APIView):
             UserObj.user_Point = pointAmount
             tempdata['pot_Amount'] = pointAmount
             tempdata['pot_Id'] = UserObj.user_Id
+            tempdata['pot_Date'] = datetime.now().strftime('%Y-%m-%d %H:%M')
 
         elif "use" in tempdata['pot_Reason']:
             pointAmount = UserObj.user_Point - tempdata['pot_Change']
@@ -27,6 +28,7 @@ class LogPointView(APIView):
                 UserObj.user_Point = pointAmount
                 tempdata['pot_Amount'] = pointAmount
                 tempdata['pot_Id'] = UserObj.user_Id
+                tempdata['pot_Date'] = datetime.now().strftime('%Y-%m-%d %H:%M')
             else:
                 response_json = {
                     'success': False,
