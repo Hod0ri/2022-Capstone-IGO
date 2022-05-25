@@ -43,6 +43,13 @@ const Home = () => {
         <p className="moreButton">더보기 {'>'}</p>
       </div>
       <UserPage />
+      <UserPage />
+      <UserPage />
+      <UserPage />
+      <UserPage />
+      <UserPage />
+      <UserPage />
+      <UserPage />
     </StyledDriverButton>
   );
 };

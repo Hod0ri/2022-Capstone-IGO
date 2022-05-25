@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
-import styled, { css } from "styled-components";
-import UserLogo from "../UserLogo";
-import Report from "./type/Report";
-import ModalCardButton from "./ModalCardButton";
-import Star from "./type/Star";
+import React, { useRef, useState } from 'react';
+import styled, { css } from 'styled-components';
+import UserLogo from '../UserLogo';
+import Report from './type/Report';
+import ModalCardButton from './ModalCardButton';
+import Star from './type/Star';
 const ModalCardPositionContainer = styled.div`
   display: flex;
   align-items: center;
@@ -51,8 +51,8 @@ const ModalCardContainer = styled.div`
   }
 `;
 
-const ModalCard = ({ type = "report", userNick = "닉네임X" }) => {
-  const [report, setReport] = useState("false");
+const ModalCard = ({ type = 'report', userNick = '닉네임X' }) => {
+  const [report, setReport] = useState('false');
   //모달상태
   const [display, setDisplay] = useState(true);
   return (
@@ -61,8 +61,8 @@ const ModalCard = ({ type = "report", userNick = "닉네임X" }) => {
         <div className="mt-30" />
         <UserLogo nickname={userNick} />
         <div className="mt-20" />
-        {type == "report" && <Report state={setReport} userNick={userNick} />}
-        {type == "star" && <Star />}
+        {type == 'report' && <Report state={setReport} userNick={userNick} />}
+        {type == 'star' && <Star />}
         <div className="mt-20" />
         <ModalCardButton
           report={report}

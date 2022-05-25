@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import Image from "next/image";
-import ButtonPlus from "./icon/buttonPlus.png";
-import Driver from "./icon/driver.png";
+import React from 'react';
+import styled from 'styled-components';
+import Image from 'next/image';
+import ButtonPlus from './icon/buttonPlus.png';
+import Driver from './icon/driver.png';
 
 const DriverButtonContainer = styled.button`
   border: none;
@@ -46,7 +46,7 @@ const DriverButton = () => {
           src={ButtonPlus}
           width={50}
           height={50}
-          alt={"ButtonPlus"}
+          alt={'ButtonPlus'}
         />
         <p className="title">카풀 기사 등록</p>
       </div>

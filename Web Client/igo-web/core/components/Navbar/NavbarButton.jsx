@@ -3,18 +3,14 @@ import styled from 'styled-components';
 
 const ButtonStyle = styled.button`
   display: inline-block;
-  border : none;
-  background: ${props=>props.theme.color.white};
+  border: none;
+  background: ${(props) => props.theme.color.white};
   width: 20%;
   cursor: pointer;
 `;
 
-const Button = ({children}) => {
-  return (
-    <ButtonStyle>
-      {children}
-    </ButtonStyle>
-  );
+const Button = ({ children }) => {
+  return <ButtonStyle>{children}</ButtonStyle>;
 };
 
 export default Button;

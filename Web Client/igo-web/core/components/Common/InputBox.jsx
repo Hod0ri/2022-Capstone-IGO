@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const InputStyle = styled.input`
   width: 100%;
@@ -15,7 +15,7 @@ const InputStyle = styled.input`
   }
 `;
 
-const InputBox = ({ placeholder = "", setValue = () => {}, type = "text" }) => {
+const InputBox = ({ placeholder = '', setValue = () => {}, type = 'text' }) => {
   return (
     <InputStyle
       placeholder={placeholder}

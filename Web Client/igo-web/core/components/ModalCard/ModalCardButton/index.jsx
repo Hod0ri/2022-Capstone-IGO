@@ -1,6 +1,6 @@
-import axios from "axios";
-import React from "react";
-import styled from "styled-components";
+import axios from 'axios';
+import React from 'react';
+import styled from 'styled-components';
 const ModalCardButtonContainer = styled.div`
   display: flex;
   width: 100%;
@@ -31,10 +31,10 @@ const ModalCardButton = ({ report, setState = () => {}, userNick }) => {
       <ButtonContainer
         onClick={async () =>
           await axios
-            .post("/api/issue", {
+            .post('/api/issue', {
               ns_Target: userNick,
-              ns_Reason: report ? "노쇼" : "기타",
-              ns_Etc: "",
+              ns_Reason: report ? '노쇼' : '기타',
+              ns_Etc: '',
             })
             .then(() => setState(false))
             .catch((e) => alert(`${e.code}로 인해 서버 통신에 실패했습니다!`))

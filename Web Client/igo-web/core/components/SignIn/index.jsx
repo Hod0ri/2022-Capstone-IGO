@@ -1,8 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-import Button from "../Common/Button";
-import InputBox from "../Common/InputBox";
-import { AiOutlineRight } from "react-icons/ai";
+import React from 'react';
+import styled from 'styled-components';
+import Button from '../Common/Button';
+import InputBox from '../Common/InputBox';
+import { AiOutlineRight } from 'react-icons/ai';
 
 const BodyStyle = styled.div`
   margin: 0 auto;
@@ -31,14 +31,14 @@ const SubArea = styled.div`
   }
 
   li::after {
-    content: "|";
+    content: '|';
     float: right;
     color: ${(props) => props.theme.color.gray};
     margin-right: -17px;
   }
 
   li:last-child::after {
-    content: "";
+    content: '';
   }
 `;
 
