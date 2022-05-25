@@ -7,69 +7,74 @@ const UsageHistoryContainer = styled.div`
   align-items: center;
   width: 100%;
   p {
-    font-size: ${props=>props.theme.fontSize.md};
+    font-size: ${(props) => props.theme.fontSize.md};
   }
+  border-top: 3px solid ${(props) => props.theme.color.lightgray};
 `;
 
 const PointHistory = styled.div`
-  border-top: 2px solid ${props=>props.theme.color.black};
-  border-bottom: 2px solid ${props=>props.theme.color.black};
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
-  height: 100px;
-  padding: 20px;
-  margin-top: 10px;
+  height: 90px;
   .leftDiv {
     display: flex;
     align-items: flex-start;
-    p{
-      &:nth-child(1){
-        font-size: ${props=>props.theme.fontSize.sm};
-        color : ${props=>props.theme.color.lightgray};
-      };
+    p {
+      &:nth-child(1) {
+        font-size: ${(props) => props.theme.fontSize.sm};
+        color: ${(props) => props.theme.color.lightgray};
+      }
       & + p {
         padding-left: 10px;
-      };
+      }
     }
-  };
+  }
   .rightDiv {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    .red{
-      color: ${props=>props.theme.color.red};
+    .red {
+      color: ${(props) => props.theme.color.red};
     }
-    .blue{
-      color: ${props=>props.theme.color.blue};
+    .blue {
+      color: ${(props) => props.theme.color.blue};
     }
-  };
-  & + & {
-      border-top: none;
-  };
+    p:nth-child(2) {
+      font-size: ${(props) => props.theme.fontSize.sm};
+      color: ${(props) => props.theme.color.lightgray};
+      margin-top: 10px;
+    }
+  }
 `;
 
-const UsageHistory = ({type="add", data={}}) => {
+const UsageHistory = ({ ...v }) => {
+  const { pot_Date, pot_Change, pot_Reaseon, pot_Amount } = v;
 
-  const point = 5000;
+  let today = pot_Date.slice(-2);
 
-  return(
-    <UsageHistoryContainer >
-      <div className='pointWrapContainer'>
-        <p>포인트 이용내역</p>
-      </div>
+  console.log(v);
+  return (
+    <UsageHistoryContainer>
       <PointHistory>
-        <div className='leftDiv'>
-          <p>04.03</p>
-          <p>{point.toLocaleString()}P {type==="add"?"쿠폰":"사용"}</p>
+        <div className="leftDiv">
+          <p>{`${pot_Date.slice(5, 7)}.${pot_Date.slice(8, 10)}`}</p>
+          <p>
+            {pot_Change.toLocaleString()}P{' '}
+            {pot_Reaseon === '충전' ? '충전' : '사용'}
+          </p>
         </div>
-        <div className='rightDiv'>
-          <p>6,500P</p>
-          <p className={`${type==="add"?"blue":"red"}`}>{type==="use"&&"-"}{point.toLocaleString()}P</p>
+        <div className="rightDiv">
+          <p className={`${pot_Reaseon === '충전' ? 'blue' : 'red'}`}>
+            {pot_Reaseon === '사용' && '-'}
+            {pot_Change.toLocaleString()}P
+          </p>
+          <p>{pot_Amount.toLocaleString()}P</p>
         </div>
       </PointHistory>
     </UsageHistoryContainer>
   );
-}
+};
 
 export default UsageHistory;
