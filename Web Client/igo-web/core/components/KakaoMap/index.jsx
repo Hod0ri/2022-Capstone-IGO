@@ -3,28 +3,29 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import locationData from "../../etc/location/station.json";
 
-const KakaoMap = ({ location = "대림" }) => {
+const KakaoMap = ({ location = "안양" }) => {
   const [loadKakao, setLoadKakao] = useState(false);
   const [fetchRouteErr, setFetchRouteErr] = useState(false);
   const [stateDatas, setStateDatas] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const { lat: latitude, lng: longitude } = locationData.filter(
-      (v) => v["name"] == location
+      (v) => v["name"] === location
     )[0];
 
     const target = [37.4035503, 126.930539];
     const loadKakaoMapScript = () => {
       const $script = document.createElement("script");
-
       $script.async = true;
       $script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_REST_API_KEY}&autoload=false`;
 
       const onLoadKakaoMap = () => {
         window.kakao.maps.load(async () => {
           //api 필요 요소 추출
+
           let data = await axios
-            .get("//apis-navi.kakaomobility.com/v1/directions", {
+            .get("https://apis-navi.kakaomobility.com/v1/directions", {
               headers: {
                 Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_FIND_REST_API_KEY}`,
               },
@@ -33,7 +34,7 @@ const KakaoMap = ({ location = "대림" }) => {
                 destination: `126.930539,37.4035503,name=대림대`,
               },
             })
-            .catch((e) => fetchRouteErr(true))
+            .catch((e) => setFetchRouteErr(true))
             .then((res) => res.data.routes[0]);
 
           //이동거리 및 시간 추출
@@ -45,7 +46,6 @@ const KakaoMap = ({ location = "대림" }) => {
             center: new window.kakao.maps.LatLng(bound.min_y, bound.min_x), // 지도상 최소 좌표
             level: 3, // 지도의 확대 레벨
           };
-
           //지도 생성
           const map = new window.kakao.maps.Map(mapContainer, mapOption);
 
@@ -123,9 +123,11 @@ const KakaoMap = ({ location = "대림" }) => {
       <KaKaoMapContainer>
         <StateContainer>
           <div id="kakaoMapDistance">
-            {Math.floor(stateDatas.distance / 1000)}Km
+            {Math.floor(stateDatas.distance / 1000) || "--"}Km
           </div>
-          <div>예상 소요시간 | {Math.round(stateDatas.duration / 60)}분</div>
+          <div>
+            예상 소요시간 | {Math.round(stateDatas.duration / 60) || "--"}분
+          </div>
         </StateContainer>
         <div id="map" />
       </KaKaoMapContainer>

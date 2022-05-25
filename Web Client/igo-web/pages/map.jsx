@@ -4,7 +4,9 @@ import Map from "../core/components/KakaoMap";
 const MapPage = () => {
   return (
     <>
-      <Map />
+      <div>
+        <Map location="대림" />
+      </div>
     </>
   );
 };
