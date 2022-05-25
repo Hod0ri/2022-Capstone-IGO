@@ -1,7 +1,10 @@
+import React from 'react';
+import MainPage from '../core/components/MainPage';
+
 const Home = () => {
   return (
     <>
-      <div>body</div>
+      <MainPage />
     </>
   );
 };
