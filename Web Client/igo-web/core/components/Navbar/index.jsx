@@ -22,7 +22,7 @@ const NavbarStyle = styled.div`
   display: flex;
   align-items: center;
   height: 97px;
-  max-width: 498px;
+  max-width: 500px;
   width: 100%;
   background: ${(props) => props.theme.color.white};
   position: fixed;
