@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
-import { RecoilRoot } from "recoil";
-import styled, { css } from "styled-components";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import reset from "styled-reset";
-import Header from "../core/components/Header";
-import Navbar from "../core/components/Navbar";
+import { useRouter } from 'next/router';
+import { RecoilRoot } from 'recoil';
+import styled, { css } from 'styled-components';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import reset from 'styled-reset';
+import Header from '../core/components/Header';
+import Navbar from '../core/components/Navbar';
 const GlobalStyles = createGlobalStyle`
   
   ${reset} 
@@ -17,22 +17,22 @@ const GlobalStyles = createGlobalStyle`
 `;
 const theme = {
   color: {
-    blue: "#01A6DE",
-    orange: "#F6961D",
-    green: "#8EC73C",
-    gray: "#707070",
-    lightgray: "#999999",
-    black: "#000000",
-    white: "#FFFFFF",
-    red: "#F93B3B",
-    yellow: "#FFE330",
+    blue: '#01A6DE',
+    orange: '#F6961D',
+    green: '#8EC73C',
+    gray: '#707070',
+    lightgray: '#999999',
+    black: '#000000',
+    white: '#FFFFFF',
+    red: '#F93B3B',
+    yellow: '#FFE330',
   },
   fontSize: {
-    xl: "40px",
-    lg: "26px",
-    md: "20px",
-    sm: "16px",
-    xs: "12px",
+    xl: '40px',
+    lg: '26px',
+    md: '20px',
+    sm: '16px',
+    xs: '12px',
   },
 };
 //
@@ -40,14 +40,17 @@ const theme = {
 const BodyContainer = styled.div`
   position: relative;
   width: 500px;
-  height: 100vh;
+  height: 100%;
   margin: 0 auto;
   border: 1px solid ${(props) => props.theme.color.red};
+  // header, navbar 포지션 영역
+  padding-top: 80px;
+  padding-bottom: 97px;
 
   @media screen and (max-width: 500px) {
     width: 100%;
     min-width: none;
-    height: 100vh;
+    height: 100%;
   }
 `;
 const MyApp = ({ Component, pageProps }) => {
