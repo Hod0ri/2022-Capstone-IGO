@@ -504,4 +504,16 @@
 | mm_Price  | Integer |       2000       |
 | mm_Match  | Boolean |       true       |
 
+### Log Form(user = 탑승자)
+
+|    TAG    |  value  |     Example      |
+| :-------: | :-----: | :--------------: |
+| mm_Driver | String  |      user1       |
+| mm_Member | String  |      user2       |
+| mm_Arrive |  Time   | 2022-05-30 10:10 |
+| mm_Pickup | String  |     보라매역     |
+|  mm_Goal  | String  |      대림대      |
+| mm_Price  | Integer |       2000       |
+| mm_Match  | Boolean |       true       |
+
 </details>
