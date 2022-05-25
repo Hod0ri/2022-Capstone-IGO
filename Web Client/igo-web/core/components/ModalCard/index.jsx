@@ -51,11 +51,7 @@ const ModalCardContainer = styled.div`
   }
 `;
 
-const ModalCard = ({
-  type = "report",
-  setState = () => {},
-  userNick = "닉네임X",
-}) => {
+const ModalCard = ({ type = "report", userNick = "닉네임X" }) => {
   const [report, setReport] = useState("false");
   //모달상태
   const [display, setDisplay] = useState(true);
