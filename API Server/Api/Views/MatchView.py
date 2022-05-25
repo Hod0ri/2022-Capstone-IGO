@@ -41,8 +41,8 @@ class MatchView(APIView):
                 MemberObj.mm_Match = True
                 MemberObj.save()
                 PointMember = Member.objects.get(user_Id=MemberObj.mm_Member)
-                MemberAmount = PointMember.user_Point - DriverObj.mc_Price
-                DriverAmount = UserObj.user_Point + DriverObj.mc_Price
+                MemberAmount = PointMember.user_Point - MemberObj.mm_Price
+                DriverAmount = UserObj.user_Point + MemberObj.mm_Price
 
                 PointMember.user_Point = MemberAmount
                 PointMember.save()
@@ -54,7 +54,7 @@ class MatchView(APIView):
                     pot_Id=Member.objects.get(user_Id=PointMember.user_Id),
                     pot_Amount=MemberAmount,
                     pot_Reason='매칭 결제',
-                    pot_Change=DriverObj.mc_Price
+                    pot_Change=MemberObj.mm_Price
                 )
                 MemberPointTable.save()
 
@@ -62,7 +62,7 @@ class MatchView(APIView):
                     pot_Id=Member.objects.get(user_Id=UserObj.user_Id),
                     pot_Amount=DriverAmount,
                     pot_Reason='매칭 충전',
-                    pot_Change=DriverObj.mc_Price
+                    pot_Change=MemberObj.mm_Price
                 )
                 DriverPointTable.save()
                 response_json = {
@@ -99,8 +99,23 @@ class MatchView(APIView):
                     'err': 'MatchData does not exist'
                 }
         else:
-            response_json = {
-                'success': False,
-                'err': '운전자가 아닙니다.'
-            }
+            MemberLog = list(
+                MatchMember.objects.filter(
+                    Q(mm_Member=UserObj.user_Id) &
+                    Q(mm_Match=True)
+                ).values(
+                    'mm_Driver', 'mm_Member', 'mm_Pickup', 'mm_Goal', 'mm_Arrive', 'mm_Price', 'mm_Match'
+                )
+            )
+            if MemberLog:
+                response_json = {
+                    'success': True,
+                    'data': MemberLog,
+                    'err': ''
+                }
+            else:
+                response_json = {
+                    'success': False,
+                    'err': 'MatchData does not exist'
+                }
         return JsonResponse(response_json)
