@@ -11,13 +11,13 @@ const UserPageContainer = styled.div`
   margin-top: 30px;
 `;
 
-const UserPage= () => {
-  return(
+const UserPage = ({ startPoint = '대림역' }) => {
+  return (
     <UserPageContainer>
       <UserLogo />
-      <Reservation />
+      <Reservation startPoint={startPoint} />
     </UserPageContainer>
   );
-}
+};
 
 export default UserPage;

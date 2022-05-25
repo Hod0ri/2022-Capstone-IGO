@@ -5,7 +5,7 @@ import ReservationButton from './ReservationButton';
 import Review from './Review';
 
 const ReservationContainer = styled.div`
-  border: 2px solid ${props=>props.theme.color.gray};
+  border: 2px solid ${(props) => props.theme.color.gray};
   margin-top: 20px;
   padding: 15px;
   display: flex;
@@ -16,17 +16,17 @@ const ReservationContainer = styled.div`
   width: 70%;
   max-height: 250px;
   height: auto;
-  background: ${props=>props.theme.color.white};
+  background: ${(props) => props.theme.color.white};
 `;
 
-const Reservation = () => {
-  return(
+const Reservation = (props) => {
+  return (
     <ReservationContainer>
-      <Route />
+      <Route {...props} />
       <ReservationButton />
       <Review />
     </ReservationContainer>
   );
-}
+};
 
 export default Reservation;
