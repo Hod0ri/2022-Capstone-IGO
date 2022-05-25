@@ -51,7 +51,11 @@ const ModalCardContainer = styled.div`
   }
 `;
 
-const ModalCard = ({ type = "report", setState = () => {} }) => {
+const ModalCard = ({
+  type = "report",
+  setState = () => {},
+  userNick = "닉네임X",
+}) => {
   const [report, setReport] = useState("false");
   //모달상태
   const [display, setDisplay] = useState(true);
@@ -59,12 +63,16 @@ const ModalCard = ({ type = "report", setState = () => {} }) => {
     <ModalCardPositionContainer view={display ? true : false}>
       <ModalCardContainer>
         <div className="mt-30" />
-        <UserLogo />
+        <UserLogo nickname={userNick} />
         <div className="mt-20" />
-        {type == "report" && <Report state={setReport} />}
+        {type == "report" && <Report state={setReport} userNick={userNick} />}
         {type == "star" && <Star />}
         <div className="mt-20" />
-        <ModalCardButton setState={setDisplay} />
+        <ModalCardButton
+          report={report}
+          setState={setDisplay}
+          userNick={userNick}
+        />
       </ModalCardContainer>
     </ModalCardPositionContainer>
   );

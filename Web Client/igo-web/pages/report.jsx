@@ -5,7 +5,7 @@ const Report = () => {
   return (
     <>
       {/* <div>신고페이지입니다.</div> */}
-      <ModalCard />
+      <ModalCard userNick={"방어운전"} />
     </>
   );
 };
