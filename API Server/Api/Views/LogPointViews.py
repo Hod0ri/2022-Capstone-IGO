@@ -57,11 +57,12 @@ class LogPointView(APIView):
             Select(Show) Log what to change user Point
         '''
         UserObj = CheckUserID(request)
-        logAll = LogPoint.objects.filter(pot_Id=UserObj).values('pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount')
+        logAll = list(LogPoint.objects.filter(pot_Id=UserObj).values(
+            'pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount'))
         if logAll:
             response_json = {
                 'success': True,
-                'result': list(logAll),
+                'result': logAll,
                 'err': ''
             }
         else:

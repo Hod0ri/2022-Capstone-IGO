@@ -39,7 +39,7 @@ class LogPoint(models.Model):
         "Member", related_name="MemberID",
         on_delete=models.CASCADE, db_column="pot_Id"
     )
-    pot_Date = models.DateTimeField(auto_now_add=True)
+    pot_Date = models.DateTimeField()
     pot_Amount = models.IntegerField(null=True)
     pot_Reason = models.CharField(max_length=20)
     pot_Change = models.IntegerField()

@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from Api.Views.SearchView import SearchView
 from Api.Views.UserView import UserView
 from Api.Views.LogPointViews import LogPointView
 from Api.Views.IssueView import IssueView
@@ -30,5 +31,6 @@ urlpatterns = [
     path('api/issue/', IssueView.as_view()),
     path('api/ems/', EmsView.as_view()),
     path('api/matchlog/', MatchLogView.as_view()),
-    path('api/match/', MatchView.as_view())
+    path('api/match/', MatchView.as_view()),
+    path('api/search/', SearchView.as_view())
 ]
