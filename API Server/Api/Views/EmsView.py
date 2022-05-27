@@ -7,9 +7,6 @@ from ..models import Member
 
 class EmsView(APIView):
     def get(self, request):
-        """
-            Find ID to User Info
-        """
         tempdata = JSONParser().parse(request)
         try:
             user_Id = str(list(

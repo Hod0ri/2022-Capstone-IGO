@@ -9,9 +9,6 @@ from datetime import datetime
 
 class LogPointView(APIView):
     def post(self, request):
-        '''
-            Create Log what to change user Point
-        '''
         UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
 
@@ -53,9 +50,6 @@ class LogPointView(APIView):
         return JsonResponse(response_json)
 
     def get(self, request):
-        '''
-            Select(Show) Log what to change user Point
-        '''
         UserObj = CheckUserID(request)
         logAll = list(LogPoint.objects.filter(pot_Id=UserObj).values(
             'pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount'))

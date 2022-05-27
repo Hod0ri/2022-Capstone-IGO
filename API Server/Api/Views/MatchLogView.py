@@ -13,7 +13,6 @@ class MatchLogView(APIView):
         UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
 
-        # user=운전자
         if UserObj.user_Driver:
             tempdata['mc_Driver'] = UserObj.user_Id
             match_serializer = MatchDataSerializer(data=tempdata)
@@ -28,8 +27,6 @@ class MatchLogView(APIView):
                     'success': False,
                     'err': match_serializer.errors
                 }
-
-        # user=탑승자
         else:
             tempdata['mm_Member'] = UserObj.user_Id
             matchdata = MatchData.objects.get(mc_Driver=tempdata['mm_Driver'])
@@ -57,8 +54,6 @@ class MatchLogView(APIView):
 
     def get(self, request):
         UserObj = CheckUserID(request)
-
-        # user = 운전자
         if UserObj.user_Driver:
             MatchLog = list(
                 MatchData.objects.filter(Q(mc_Driver=UserObj.user_Id)).values()
@@ -74,7 +69,6 @@ class MatchLogView(APIView):
                     'success': False,
                     'err': 'MatchData does not exist'
                 }
-        # user = 탑승자
         else:
             MatchLog = list(
                 MatchMember.objects.filter(Q(mm_Member=UserObj.user_Id)).values()

@@ -17,10 +17,6 @@ class IssueSerializer(serializers.ModelSerializer):
         model = NoshowIssue
         fields = '__all__'
 
-    # def to_representation(self, instance):
-    #     self.fields['ns_Id'] = MemberSerializer(read_only=True)
-    #     return super(IssueSerializer, self).to_representation(instance)
-
 
 class MemberSerializer(serializers.ModelSerializer):
     member = LogPointSerializer(many=True, read_only=True)

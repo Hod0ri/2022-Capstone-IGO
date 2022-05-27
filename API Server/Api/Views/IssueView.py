@@ -8,16 +8,12 @@ from ..models import NoshowIssue
 from ..FunctionModules.CookieJWT import CheckUserID
 
 
-# 유저 엔드 포인트
 class IssueView(APIView):
     def post(self, request):
-        """
-            Web Server to API Server Post Communication for Issue Report
-        """
         UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
         tempdata['ns_Id'] = UserObj.user_Id
-        tempdata['ns_Date'] = datetime.now()
+        tempdata['ns_Date'] = datetime.now().strftime('%Y-%m-%d %H:%M')
         issue_serializer = IssueSerializer(data=tempdata)
         if issue_serializer.is_valid():
             issue_serializer.save()
@@ -33,16 +29,14 @@ class IssueView(APIView):
         return JsonResponse(response_json)
 
     def get(self, request):
-        """
-            Web Server to API Server GET Communication for Issue Check
-        """
         UserObj = CheckUserID(request)
-        logAll = NoshowIssue.objects.filter(ns_Id=UserObj).values('ns_Reason', 'ns_Target', 'ns_Etc',
-                                                                    'ns_Date', 'ns_Status')
+        logAll = list(NoshowIssue.objects.filter(ns_Id=UserObj).values(
+            'ns_Reason', 'ns_Target', 'ns_Etc', 'ns_Date', 'ns_Status'
+        ))
         if logAll:
             response_json = {
                 'success': True,
-                'result': list(logAll),
+                'result': logAll,
                 'err': ''
             }
         else:
@@ -53,9 +47,6 @@ class IssueView(APIView):
         return JsonResponse(response_json)
 
     def delete(self, request):
-        """
-            Web Server - DELETE communication between API Servers for Issue Clear/Delete
-        """
         UserObj = CheckUserID(request)
         delData = NoshowIssue.objects.get(ns_Id=UserObj)
         try:

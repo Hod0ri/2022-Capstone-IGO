@@ -11,9 +11,6 @@ from ..FunctionModules.CookieJWT import CheckUserID
 # 유저 엔드 포인트
 class UserView(APIView):
     def post(self, request):
-        """
-            Login Server to API Server Post Communication for Adding Members
-        """
         tempdata = JSONParser().parse(request)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
         member_serializer = MemberSerializer(data=tempdata)
@@ -37,9 +34,6 @@ class UserView(APIView):
         return JsonResponse(response_json)
 
     def get(self, request):
-        """
-            Login Server to API Server GET Communication for Login
-        """
         UserObj = CheckUserID(request)
         try:
             ms = MemberSerializer(UserObj)
@@ -57,9 +51,6 @@ class UserView(APIView):
         return JsonResponse(response_json)
 
     def put(self, request):
-        """
-            API Server to Client Server PUT communication for member information modification
-        """
         UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
@@ -84,9 +75,6 @@ class UserView(APIView):
         return JsonResponse(response_json)
 
     def delete(self, request):
-        """
-            Login Server - DELETE communication between API Servers for membership withdrawal
-        """
         UserObj = CheckUserID(request)
         try:
             UserObj.delete()

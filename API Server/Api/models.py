@@ -129,7 +129,7 @@ class NoshowIssue(models.Model):
         "Member", related_name="MemberIssue",
         on_delete=models.CASCADE, db_column='ns_Id'
     )
-    ns_Date = models.DateTimeField(auto_now_add=True)
+    ns_Date = models.DateTimeField()
     ns_Target = models.ForeignKey(
         "Member", related_name="MemberTarget",
         on_delete=models.CASCADE, db_column='ns_Target'
