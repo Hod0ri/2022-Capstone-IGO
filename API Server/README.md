@@ -210,12 +210,12 @@
 
 ### Log Form
 
-|    TAG     |  value   |       Example       |
-| :--------: | :------: | :-----------------: |
-|  pot_Date  | datetime | 2022-01-01 00:00:00 |
-| pot_Change | Integer  |        +1000        |
-| pot_Reason |  String  |        충전         |
-| pot_Amount | Integer  |        3000         |
+|    TAG     |  value   |       Example        |
+| :--------: | :------: | :------------------: |
+|  pot_Date  | datetime | 2022-05-27T09:31:00Z |
+| pot_Reason |  String  |         add          |
+| pot_Change | Integer  |        10000         |
+| pot_Amount | Integer  |        30000         |
 
 </details>
 <br />
@@ -266,13 +266,13 @@
 
 ### Log Form
 
-|    TAG    |  value   |       Example       |
-| :-------: | :------: | :-----------------: |
-|  ns_Date  | datetime | 2022-01-01 00:00:00 |
-| ns_Target |  String  |        user2        |
-| ns_Reason |  String  |        노쇼         |
-|  ns_Etc   |  String  |         ''          |
-| ns_Status |  String  |      접수 대기      |
+|    TAG    |  value   |       Example        |
+| :-------: | :------: | :------------------: |
+|  ns_Date  | datetime | 2022-05-27T09:58:00Z |
+| ns_Target |  String  |        user2         |
+| ns_Reason |  String  |         노쇼         |
+|  ns_Etc   |  String  |          ''          |
+| ns_Status |  String  |      접수 대기       |
 
 </details>
 <br />
@@ -306,7 +306,7 @@
 | success | String |  true   |
 |   err   | String |   ''    |
 
-<br>
+<br />
 
 ## user = 탑승자
 
@@ -451,6 +451,7 @@
 |   err   | String |   ''    |
 
 </details>
+<br />
 
 ### 🚘 매칭 관리 (/match)
 
@@ -473,6 +474,7 @@
 |   err   | String |   ''    |
 
 </details>
+
 <details>
 <summary>2. 매칭 조회 (GET)</summary>
 
@@ -515,5 +517,29 @@
 |  mm_Goal  | String  |      대림대      |
 | mm_Price  | Integer |       2000       |
 | mm_Match  | Boolean |       true       |
+
+</details>
+<br />
+
+### 🚘 출발,도착 조회 (/search)
+
+<details>
+<summary>1. 출발,도착 조회 (GET)</summary>
+
+### Request Form
+
+|       TAG        |  value  | required |
+| :--------------: | :-----: | :------: |
+|     API URL      | /search |    -     |
+|      Method      |   GET   |    -     |
+| token (inCookie) | String  |    ✔️    |
+|   queryString    | String  |    ✔️    |
+
+### Response Form
+
+|   TAG   | value  | Example |
+| :-----: | :----: | :-----: |
+| success | String |  true   |
+|   err   | String |   ''    |
 
 </details>
