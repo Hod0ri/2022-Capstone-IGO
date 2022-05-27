@@ -14,6 +14,16 @@ class MatchLogView(APIView):
         tempdata = JSONParser().parse(request)
 
         if UserObj.user_Driver:
+            DriverLog = MatchData.objects.filter(
+                Q(mc_Driver=UserObj.user_Id) &
+                Q(mc_Match=False)
+            )
+            if DriverLog:
+                response_json = {
+                    "success": False,
+                    "err": "Match가 완료된 후 새로 게시 가능합니다."
+                }
+                return JsonResponse(response_json)
             tempdata['mc_Driver'] = UserObj.user_Id
             match_serializer = MatchDataSerializer(data=tempdata)
             if match_serializer.is_valid():
@@ -28,6 +38,16 @@ class MatchLogView(APIView):
                     'err': match_serializer.errors
                 }
         else:
+            MemberLog = MatchMember.objects.filter(
+                Q(mm_Member=UserObj.user_Id) &
+                Q(mm_Match=False)
+            )
+            if MemberLog:
+                response_json = {
+                    "success": False,
+                    "err": "Match가 완료된 후 새로 게시 가능합니다."
+                }
+                return JsonResponse(response_json)
             tempdata['mm_Member'] = UserObj.user_Id
             matchdata = MatchData.objects.get(mc_Driver=tempdata['mm_Driver'])
 
