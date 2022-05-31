@@ -30,7 +30,7 @@ class LogPoint(models.Model):
     """포인트 로그 테이블
         @:parameter
             pot_Id : 유저 고유 ID
-            pot_date : 포인트 변동 일시
+            pot_Date : 포인트 변동 일시
             pot_Amount : 변동 후 포인트
             pot_Reason : 포인트 변동 사유
             pot_Change : 포인트 변동량
@@ -39,7 +39,7 @@ class LogPoint(models.Model):
         "Member", related_name="MemberID",
         on_delete=models.CASCADE, db_column="pot_Id"
     )
-    pot_Date = models.DateTimeField(auto_now_add=True)
+    pot_Date = models.DateTimeField()
     pot_Amount = models.IntegerField(null=True)
     pot_Reason = models.CharField(max_length=20)
     pot_Change = models.IntegerField()
@@ -56,20 +56,25 @@ class MatchData(models.Model):
     """매칭 목록 테이블
     @:parameter
         mc_Driver : 운전자 ID
-        mc_Arrive : 출발 시간
+        mc_Arrive : 출발 장소
+        mc_ArriveTime : 출발 시간
         mc_Goal : 도착 장소
         mc_Price : 요금
         mc_Desc : 비고
+        mc_Match : 매칭 여부
+        mc_Count : 매칭 할 인원
     """
-    mc_Driver =models.ForeignKey(
+    mc_Driver = models.ForeignKey(
         "Member", related_name="MemberMatch",
-        on_delete=models.CASCADE, db_column="mc_Driver",
-        primary_key=True
+        on_delete=models.CASCADE, db_column="mc_Driver"
     )
-    mc_Arrive = models.DateTimeField()
-    mc_Goal = models.CharField(max_length=50, null=True)
+    mc_Arrive = models.CharField(max_length=50)
+    mc_ArriveTime = models.DateTimeField(null=True)
+    mc_Goal = models.CharField(max_length=50)
     mc_Price = models.IntegerField()
-    mc_Desc = models.CharField(max_length=50, null=True)
+    mc_Desc = models.CharField(max_length=300, null=True)
+    mc_Match = models.BooleanField(default=False)
+    mc_Count = models.IntegerField(default=3)
 
     def __str__(self):
         return self.mc_Driver
@@ -82,37 +87,26 @@ class MatchMember(models.Model):
     """매칭 간 사용자-운전자 목록 테이블
     @:parameter
         mm_Driver : 운전자 ID
-        mm_Member{n} : 탑승자 {n}
-        mm_Pickup{n} : 탑승자{n} 픽업 장소
+        mm_Member : 탑승자
+        mm_Pickup : 탑승자 픽업 장소
+        mm_Goal : 도착 장소
+        mm_Arrive : 출발 시간
+        mm_Price : 요금
+        mm_Match : 매칭 여부
     """
     mm_Driver = models.ForeignKey(
-        "Member", related_name="MemMatDri",
-        on_delete=models.CASCADE, db_column="mm_Driver",
-        primary_key=True
+        "Member", related_name="MemDriver",
+        on_delete=models.CASCADE, db_column="mm_Driver"
     )
-    mm_Member1 = models.ForeignKey(
-        "Member", related_name="MemMat1",
-        on_delete=models.CASCADE, db_column="mm_Member1",
-        unique=True
+    mm_Member = models.ForeignKey(
+        "Member", related_name="MemMat",
+        on_delete=models.CASCADE, db_column="mm_Member"
     )
-    mm_Pickup1 = models.CharField(max_length=50)
-    mm_Member2 = models.ForeignKey(
-        "Member", related_name="MemMat2",
-        on_delete=models.CASCADE, db_column="mm_Member2",
-        unique=True, null=True
-    )
-    mm_Pickup2 = models.CharField(max_length=50, null=True)
-    mm_Member3 = models.ForeignKey(
-        "Member", related_name="MemMat3",
-        on_delete=models.CASCADE, db_column="mm_Member3"
-    )
-    mm_Pickup3 = models.CharField(max_length=50, null=True)
-    mm_Member4 = models.ForeignKey(
-        "Member", related_name="MemMat4",
-        on_delete=models.CASCADE, db_column="mm_Member4",
-        unique=True, null=True
-    )
-    mm_Pickup4 = models.CharField(max_length=50, null=True)
+    mm_Pickup = models.CharField(max_length=50)
+    mm_Goal = models.CharField(max_length=50)
+    mm_Arrive = models.DateTimeField()
+    mm_Price = models.IntegerField()
+    mm_Match = models.BooleanField()
 
     def __str__(self):
         return self.mm_Driver
@@ -126,24 +120,23 @@ class NoshowIssue(models.Model):
     @:parameter
         ns_Id : 회원ID
         ns_Date : 신고시간
-        ns_Targer : 피신고자 ID
+        ns_Target : 피신고자 ID
         ns_Reason : 사유 카테고리
         ns_Etc : 특이사항
         ns_Status : 처리 여부
     """
     ns_Id = models.ForeignKey(
         "Member", related_name="MemberIssue",
-        on_delete=models.CASCADE, db_column='ns_Id',
-        primary_key=True
+        on_delete=models.CASCADE, db_column='ns_Id'
     )
-    ns_Date = models.DateTimeField(auto_now_add=True)
+    ns_Date = models.DateTimeField()
     ns_Target = models.ForeignKey(
         "Member", related_name="MemberTarget",
         on_delete=models.CASCADE, db_column='ns_Target'
     )
     ns_Reason = models.CharField(max_length=50)
     ns_Etc = models.CharField(max_length=300, null=True)
-    ns_Statis = models.CharField(max_length=50, default='접수대기')
+    ns_Status = models.CharField(max_length=50, default='접수대기')
 
     def __str__(self):
         return self.ns_Id
