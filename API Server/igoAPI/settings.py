@@ -85,7 +85,7 @@ DATABASES = {
        'NAME': 'igodata',
        'USER': 'postgres',
        'PASSWORD': '1234',
-       'HOST': 'localhost',
+       'HOST': 'postgres',
        'PORT': '',
    }
 }
