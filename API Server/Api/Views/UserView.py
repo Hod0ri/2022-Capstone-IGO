@@ -15,7 +15,7 @@ class UserView(APIView):
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
         member_serializer = MemberSerializer(data=tempdata)
         if member_serializer.is_valid():
-            if not CheckValidAccount(tempdata):
+            if len(CheckValidAccount(tempdata)) == 0:
                 member_serializer.save()
                 response_json = {
                     'success': True,
@@ -56,7 +56,7 @@ class UserView(APIView):
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
         member_update_serializer = MemberSerializer(UserObj, data=tempdata)
         if member_update_serializer.is_valid():
-            if not CheckValidAccount(tempdata):
+            if len(CheckValidAccount(tempdata)) == 0:
                 member_update_serializer.save()
                 response_json = {
                     'success': True,
