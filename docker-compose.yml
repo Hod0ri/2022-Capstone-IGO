@@ -30,7 +30,7 @@ services:
       && /wait-for-it.sh postgres:5432 -t 10
       && python manage.py makemigrations
       && python manage.py migrate
-      && python manage.py runserver"
+      && python manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
 
@@ -79,17 +79,19 @@ services:
     image: nginx:stable
     restart: always
     ports:
-    #- "80:80"
-    - "443:443"
+    - "80:80"
+    # - "443:443"
     environment:
       - TZ=Asia/Seoul
     volumes:
     - "./Login Server/nginx/conf.d:/etc/nginx/conf.d"
-    - "./Login Server/nginx/ssl:/etc/nginx/ssl"
+    - "./Login Server/nginx/ssl/:/etc/nginx/ssl/"
     links:
     - node
+    - backend
     depends_on:
     - node
+    - backend
     logging:
       options:
         max-size: "100m"
