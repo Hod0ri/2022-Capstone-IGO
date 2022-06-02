@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-ROOT_URLCONF = 'igoTest.urls'
+ROOT_URLCONF = 'igoAPI.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'igoTest.wsgi.application'
+WSGI_APPLICATION = 'igoAPI.wsgi.application'
 
 
 # Database
