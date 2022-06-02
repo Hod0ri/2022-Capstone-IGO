@@ -1,0 +1,98 @@
+version: "3.9"
+services:
+
+  ## ---API 서버--- ##
+  postgres:
+    container_name: IGO-API-postgresdb
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - TZ=Asia/Seoul
+      - POSTGRES_DB=igodata
+  backend:
+    platform: "linux/amd64"
+    container_name: IGO-API-backend
+    build:
+    #빌드 명령어가 실행될 디렉토리 경로
+      context: "./API Server/."
+      dockerfile : "./Dockerfile"
+    volumes:
+      - "./API Server/:/home/API_Server"
+    working_dir: /home/API_Server
+    links:
+      - postgres
+    command: >
+      bash -c "
+      chmod +x /wait-for-it.sh
+      && /wait-for-it.sh postgres:5432 -t 10
+      && python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+
+  ## ---Login 서버--- ##
+  mongodb:
+    container_name: IGO-Login-Mongodb
+    image: mongo
+    restart: always
+    ports:
+      - "3333:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - TZ=Asia/Seoul
+    volumes:
+      - "./Login Server/db/data:/data/db"
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"
+  node:
+    container_name: IGO-Node-Server
+    build:
+      context: "./Login Server"
+      dockerfile: "./server/Dockerfile.node.dev"
+    restart: always
+    volumes:
+    - "./Login Server/server/src:/usr/src/app/src"
+    ports:
+      - "23712:23712"
+    environment:
+      - TZ=Asia/Seoul
+      - NODE_ENV=development
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"
+
+  ## ---NGINX 서버--- ##
+  nginx:
+    container_name: IGO-Nginx
+    image: nginx:stable
+    restart: always
+    ports:
+    - "80:80"
+    # - "443:443"
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+    - "./Login Server/nginx/conf.d:/etc/nginx/conf.d"
+    - "./Login Server/nginx/ssl/:/etc/nginx/ssl/"
+    links:
+    - node
+    - backend
+    depends_on:
+    - node
+    - backend
+    logging:
+      options:
+        max-size: "100m"
+        max-file: "3"
