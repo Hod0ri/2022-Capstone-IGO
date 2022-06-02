@@ -47,14 +47,29 @@ userRouter.post("/", async (req, res) => {
     if (typeof user_Driver !== "boolean") return res.status(400).send({ success: false, err: "user_Driver must be boolean" });
     if (typeof user_Pw !== "string") return res.status(400).send({ success: false, err: "user_Pw must be string" });
 
-    const [getUserId, getUserNick] = await Promise.all([User.findOne({ user_Id }), User.findOne({ user_Nick })]);
-    if (!getUserId && !getUserNick) {
-      //const apiRegister = await axios.post("te");
-      const user = new User(req.body);
-      await user.save();
-      return res.status(200).send({ success: true });
+    let data;
+    await axios
+      .post("http://backend:8000/api/user/", req.body)
+      .then((res) => {
+        data = res.data;
+      })
+      .catch((e) => {
+        state = e;
+      });
+    console.log(data);
+
+    if (data.success) {
+      const [getUserId, getUserNick] = await Promise.all([User.findOne({ user_Id }), User.findOne({ user_Nick })]);
+      if (!getUserId && !getUserNick) {
+        //const apiRegister = await axios.post("te");
+        const user = new User(req.body);
+        await user.save();
+        return res.status(200).send({ success: true });
+      } else {
+        return res.status(400).send({ success: false, err: "user_Id or user_Nick is already in use" });
+      }
     } else {
-      return res.status(400).send({ success: false, err: "user_Id or user_Nick is already in use" });
+      return res.status(400).send({ success: data.success, err: data.err });
     }
   } catch (err) {
     console.log(err);

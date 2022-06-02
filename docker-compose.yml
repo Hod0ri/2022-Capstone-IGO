@@ -66,6 +66,7 @@ services:
       - NODE_ENV=development
     links:
       - mongodb
+      - backend
     depends_on:
       - mongodb
     logging:
