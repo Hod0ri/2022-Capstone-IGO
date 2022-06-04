@@ -23,7 +23,7 @@ services:
       - "./API Server/:/home/API_Server"
     working_dir: /home/API_Server
     links:
-      - postgresql
+      - postgresql:postgres
     command: >
       bash -c "
       chmod +x /wait-for-it.sh
