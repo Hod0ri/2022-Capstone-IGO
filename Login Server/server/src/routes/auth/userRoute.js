@@ -4,6 +4,7 @@ const { User } = require("../../models/User");
 const userRouter = Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+// const Axios = require("axios");
 const axios = require("axios");
 
 const JWT_SECRET_KEY = process.env.NODE_ENV === "development" ? "secret-key" : process.env.JWT_SECRET_KEY;
@@ -31,6 +32,11 @@ const verifyJwt = (token) => {
   });
 };
 
+const MainAPI = async (url = "/", method = "post", body = {}, cookie = "") =>
+  await axios({ url: `http://backend:8000/api/user${url}`, method: method, headers: { "X-Requested-With": "XMLHttpRequest", cookie: cookie && `jwt=${cookie}` }, data: body })
+    .then((res) => res.data)
+    .catch((err) => err.response);
+
 //회원가입
 userRouter.post("/", async (req, res) => {
   //만약 토큰이 있다면 삭제
@@ -47,14 +53,21 @@ userRouter.post("/", async (req, res) => {
     if (typeof user_Driver !== "boolean") return res.status(400).send({ success: false, err: "user_Driver must be boolean" });
     if (typeof user_Pw !== "string") return res.status(400).send({ success: false, err: "user_Pw must be string" });
 
-    const [getUserId, getUserNick] = await Promise.all([User.findOne({ user_Id }), User.findOne({ user_Nick })]);
-    if (!getUserId && !getUserNick) {
-      //const apiRegister = await axios.post("te");
-      const user = new User(req.body);
-      await user.save();
-      return res.status(200).send({ success: true });
+    //본 api 서버 통신
+
+    let data = await MainAPI("/", "post", req.body);
+    if (data.success) {
+      const [getUserId, getUserNick] = await Promise.all([User.findOne({ user_Id }), User.findOne({ user_Nick })]);
+      if (!getUserId && !getUserNick) {
+        //const apiRegister = await axios.post("te");
+        const user = new User(req.body);
+        await user.save();
+        return res.status(200).send({ success: true });
+      } else {
+        return res.status(400).send({ success: false, err: "user_Id or user_Nick is already in use" });
+      }
     } else {
-      return res.status(400).send({ success: false, err: "user_Id or user_Nick is already in use" });
+      return res.status(400).send({ success: false, err: data });
     }
   } catch (err) {
     console.log(err);
@@ -107,43 +120,6 @@ userRouter.post("/login", async (req, res) => {
         await user.save();
 
         return res.status(201).cookie("jwt", accessToken, cookieSettings.jwt).cookie("refreshToken", refreshToken, cookieSettings.exp).send({ success: true, user_Nick: user.user_Nick });
-
-        /*
-          const [reqCookieAccessToken, reqCookieRefreshToken] = await Promise.all([verifyJwt(req.cookies.jwt), verifyJwt(req.signedCookies.refreshToken)]);
-          //토큰과 현재 로그인 시도한 유저의 정보가 일치 하지 않을때
-          if (reqCookieRefreshToken && reqCookieRefreshToken !== user.user_Id) {
-            console.log(`비정상 로그인 감지 ${reqCookieRefreshToken} -!-> ${user.user_Id}`);
-            (user.token = ""), await user.save();
-            return res.status(400).clearCookie("jwt").clearCookie("refreshToken").send({ success: false, err: "비정상 로그인 감지" });
-          }
-          //jwt 발급
-          const [accessToken, refreshToken] = await Promise.all([
-            jwt.sign({ user_Id: user.user_Id }, SECRET_KEY, { expiresIn: "30m" }),
-            jwt.sign({ user_Id: user.user_Id }, SECRET_KEY, { expiresIn: "7d" }),
-          ]);
-
-          //토큰이 일치할때( 토큰이 존재 하는지 확인 )
-          if (reqCookieAccessToken && reqCookieAccessToken === reqCookieRefreshToken && user.token === req.signedCookies.refreshToken) {
-            res.header("Authorization", req.signedCookies.refreshToken);
-            return res.status(201).send({ success: true, user_Nick: user.user_Nick });
-          }
-          //access token 이 유효하지 않음
-          else if (!reqCookieAccessToken) {
-            //refreshToken까지 유효하지 않음
-            if (!reqCookieRefreshToken || reqCookieRefreshToken !== user.user_Id) {
-              user.token = refreshToken;
-              await user.save();
-              res.cookie("refreshToken", refreshToken, cookieSettings.exp);
-            }
-            return res.status(200).cookie("jwt", accessToken, cookieSettings.jwt).send({ success: true, user_Nick: user.user_Nick });
-          } else if (!reqCookieRefreshToken || user.token !== req.signedCookies.refreshToken) {
-            user.token = refreshToken;
-            user.save();
-            return res.status(200).cookie("refreshToken", refreshToken, cookieSettings.exp).send({ success: true, user_Nick: user.user_Nick });
-          } else {
-            return res.status(400).send({ success: false, err: "refreshToken id invalid" });
-          }
-          */
       });
     });
   } catch (err) {
@@ -155,7 +131,7 @@ userRouter.post("/login", async (req, res) => {
 userRouter.put("/", async (req, res) => {
   let { user_Id, user_Name, user_Nick, user_Driver, user_Phone, user_Email, user_Pw } = req.body;
 
-  if (user_Id || user_Name) return res.status(400).send({ success: false, err: "user_Id or user_Name can not change" });
+  // if (user_Id || user_Name) return res.status(400).send({ success: false, err: "user_Id or user_Name can not change" });
   if (user_Nick && typeof user_Nick !== "string") return res.status(400).send({ success: false, err: "user_Nick must be string" });
   if (user_Driver && typeof user_Driver !== "boolean") return res.status(400).send({ success: false, err: "user_Driver must be boolean" });
   if (user_Phone && typeof user_Phone !== "string") return res.status(400).send({ success: false, err: "user_Phone must be string" });
@@ -163,15 +139,19 @@ userRouter.put("/", async (req, res) => {
   if (user_Pw && typeof user_Pw !== "string") return res.status(400).send({ success: false, err: "user_Pw must be string" });
 
   user_Id = verifyJwt(req.cookies.jwt);
-  if (!user_Id) return res.status(400).clearCookie("jwt").send({ success: false, err: "login is invalid" });
-  //api 서버 통신 코드 작성 예정
 
-  if (user_Pw) {
-    req.body.user_Pw = await bcrypt.hash(user_Pw, 10);
+  let data = await MainAPI("/", "put", req.body, req.cookies.jwt);
+
+  if (data.success) {
+    if (!user_Id) return res.status(400).clearCookie("jwt").send({ success: false, err: "login is invalid" });
+    if (user_Pw) {
+      req.body.user_Pw = await bcrypt.hash(user_Pw, 10);
+    }
+    await User.findOneAndUpdate({ user_Id }, { $set: { ...req.body } });
+    return res.status(200).send({ success: true });
+  } else {
+    return res.status(data.status).send({ success: false, err: data.err });
   }
-
-  await User.findOneAndUpdate({ user_Id }, { $set: { ...req.body } });
-  return res.status(200).send({ success: true });
 });
 
 userRouter.delete("/", async (req, res) => {
@@ -179,13 +159,20 @@ userRouter.delete("/", async (req, res) => {
   if (!user_Pw) return res.status(400).send({ success: false, err: "user_Pw is required" });
   const [reqCookieAccessToken, reqCookieRefreshToken] = await Promise.all([verifyJwt(req.cookies.jwt), verifyJwt(req.signedCookies.refreshToken)]);
   if (reqCookieAccessToken && reqCookieRefreshToken && reqCookieAccessToken === reqCookieRefreshToken) {
-    const user = await User.findOne({ user_Id: reqCookieAccessToken });
-    if (!user) return res.status(400).clearCookie("jwt").clearCookie("refreshToken").send({ success: false, err: "user is not found, logout" });
-    user.comparePassword(user_Pw, async (err, isMatch) => {
-      if (!isMatch) return res.status(400).send({ success: false, err: "password mismatch" });
-      await user.delete();
-      return res.status(200).clearCookie("jwt").clearCookie("refreshToken").send({ success: true });
-    });
+    //메인 서버 통신
+    let data = await MainAPI("/", "delete", req.body, req.cookies.jwt);
+
+    if (data.success) {
+      const user = await User.findOne({ user_Id: reqCookieAccessToken });
+      if (!user) return res.status(400).clearCookie("jwt").clearCookie("refreshToken").send({ success: false, err: "user is not found, logout" });
+      user.comparePassword(user_Pw, async (err, isMatch) => {
+        if (!isMatch) return res.status(400).send({ success: false, err: "password mismatch" });
+        await user.delete();
+        return res.status(200).clearCookie("jwt").clearCookie("refreshToken").send({ success: true });
+      });
+    } else {
+      return res.status(data.status).clearCookie("jwt").clearCookie("refreshToken").send({ success: false, err: data.err });
+    }
   } else {
     return res.status(400).clearCookie("jwt").clearCookie("refreshToken").send({ success: false, err: "token is invalid" });
   }

@@ -2,8 +2,8 @@ version: "3.9"
 services:
 
   ## ---API 서버--- ##
-  postgres:
-    container_name: IGO-API-postgresdb
+  postgresql:
+    container_name: IGO-API-DB
     image: postgres
     restart: always
     ports:
@@ -12,9 +12,9 @@ services:
       - POSTGRES_PASSWORD=1234
       - TZ=Asia/Seoul
       - POSTGRES_DB=igodata
-  backend:
+  django:
     platform: "linux/amd64"
-    container_name: IGO-API-backend
+    container_name: IGO-API-Server
     build:
     #빌드 명령어가 실행될 디렉토리 경로
       context: "./API Server/."
@@ -36,7 +36,7 @@ services:
 
   ## ---Login 서버--- ##
   mongodb:
-    container_name: IGO-Login-Mongodb
+    container_name: IGO-Login-DB
     image: mongo
     restart: always
     ports:
@@ -45,14 +45,14 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
       - TZ=Asia/Seoul
-    volumes:
-      - "./Login Server/db/data:/data/db"
+    # volumes:
+      # - "./Login Server/db/data:/data/db"
     logging:
       options:
         max-size: "100m"
         max-file: "3"
   node:
-    container_name: IGO-Node-Server
+    container_name: IGO-Login-Server
     build:
       context: "./Login Server"
       dockerfile: "./server/Dockerfile.node.dev"
@@ -66,6 +66,7 @@ services:
       - NODE_ENV=development
     links:
       - mongodb
+      - backend
     depends_on:
       - mongodb
     logging:
@@ -79,8 +80,8 @@ services:
     image: nginx:stable
     restart: always
     ports:
-    - "80:80"
-    # - "443:443"
+    # - "80:80"
+    - "443:443"
     environment:
       - TZ=Asia/Seoul
     volumes:

@@ -12,6 +12,9 @@ RUN pip3 install psycopg2-binary
 RUN pip3 install wheel
 RUN pip3 install -r requirements.txt 
 
+##테스트
+# RUN pip install django-request-logging
+
 # 데베 연결 선행 필수 <- Dockerfile에서 판단 불가능
 # Database Migration
 # RUN python manage.py makemigrations

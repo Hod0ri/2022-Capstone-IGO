@@ -54,9 +54,11 @@ class UserView(APIView):
         UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
+        tempdata['user_Name'] = UserObj.user_Name
+        tempdata['user_Id'] = UserObj.user_Id
         member_update_serializer = MemberSerializer(UserObj, data=tempdata)
         if member_update_serializer.is_valid():
-            if len(CheckValidAccount(tempdata)) == 0:
+            if not CheckValidAccount(tempdata):
                 member_update_serializer.save()
                 response_json = {
                     'success': True,
