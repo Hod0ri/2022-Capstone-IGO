@@ -67,7 +67,7 @@ userRouter.post("/", async (req, res) => {
         return res.status(400).send({ success: false, err: "user_Id or user_Nick is already in use" });
       }
     } else {
-      return res.status(400).send({ success: false, err: data });
+      return res.status(data.status).send({ success: data.success, err: data.err });
     }
   } catch (err) {
     console.log(err);
@@ -150,7 +150,7 @@ userRouter.put("/", async (req, res) => {
     await User.findOneAndUpdate({ user_Id }, { $set: { ...req.body } });
     return res.status(200).send({ success: true });
   } else {
-    return res.status(data.status).send({ success: false, err: data.err });
+    return res.status(data.status).send({ success: data.success, err: data.err });
   }
 });
 
@@ -171,7 +171,7 @@ userRouter.delete("/", async (req, res) => {
         return res.status(200).clearCookie("jwt").clearCookie("refreshToken").send({ success: true });
       });
     } else {
-      return res.status(data.status).clearCookie("jwt").clearCookie("refreshToken").send({ success: false, err: data.err });
+      return res.status(data.status).clearCookie("jwt").clearCookie("refreshToken").send({ success: data.success, err: data.err });
     }
   } else {
     return res.status(400).clearCookie("jwt").clearCookie("refreshToken").send({ success: false, err: "token is invalid" });
