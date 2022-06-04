@@ -1,4 +1,4 @@
-const { Router, urlencoded } = require("express");
+const { Router, urlencoded, response } = require("express");
 const { User } = require("../../models/User");
 
 const userRouter = Router();
@@ -34,8 +34,8 @@ const verifyJwt = (token) => {
 
 const MainAPI = async (url = "/", method = "post", body = {}, cookie = "") =>
   await axios({ url: `http://backend:8000/api/user${url}`, method: method, headers: { "X-Requested-With": "XMLHttpRequest", cookie: cookie && `jwt=${cookie}` }, data: body })
-    .then((res) => res.data)
-    .catch((err) => err.response);
+    .then((res) => ({ ...res.data, status: res.status }))
+    .catch((err) => ({ status: err.response.status, ...err.response.data }));
 
 //회원가입
 userRouter.post("/", async (req, res) => {
@@ -56,6 +56,7 @@ userRouter.post("/", async (req, res) => {
     //본 api 서버 통신
 
     let data = await MainAPI("/", "post", req.body);
+    console.log(data);
     if (data.success) {
       const [getUserId, getUserNick] = await Promise.all([User.findOne({ user_Id }), User.findOne({ user_Nick })]);
       if (!getUserId && !getUserNick) {
@@ -137,11 +138,10 @@ userRouter.put("/", async (req, res) => {
   if (user_Phone && typeof user_Phone !== "string") return res.status(400).send({ success: false, err: "user_Phone must be string" });
   if (user_Email && typeof user_Email !== "string") return res.status(400).send({ success: false, err: "user_Email must be string" });
   if (user_Pw && typeof user_Pw !== "string") return res.status(400).send({ success: false, err: "user_Pw must be string" });
-
+  if (!req.cookies.jwt) return res.status(400).send({ success: false, err: "login must be need" });
   user_Id = verifyJwt(req.cookies.jwt);
 
   let data = await MainAPI("/", "put", req.body, req.cookies.jwt);
-
   if (data.success) {
     if (!user_Id) return res.status(400).clearCookie("jwt").send({ success: false, err: "login is invalid" });
     if (user_Pw) {
