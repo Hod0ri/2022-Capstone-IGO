@@ -23,7 +23,7 @@ services:
       - "./API Server/:/home/API_Server"
     working_dir: /home/API_Server
     links:
-      - postgres
+      - postgresql
     command: >
       bash -c "
       chmod +x /wait-for-it.sh
@@ -66,7 +66,7 @@ services:
       - NODE_ENV=development
     links:
       - mongodb
-      - backend
+      - django:backend
     depends_on:
       - mongodb
     logging:
@@ -89,10 +89,9 @@ services:
     - "./Login Server/nginx/ssl/:/etc/nginx/ssl/"
     links:
     - node
-    - backend
+    - django:backend
     depends_on:
     - node
-    - backend
     logging:
       options:
         max-size: "100m"
