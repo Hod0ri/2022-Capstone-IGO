@@ -14,7 +14,7 @@ const ButtonStyle = styled.button`
     return !size ? fontSize.lg : size == 'md' ? fontSize.md : fontSize.sm;
   }};
 
-  color: ${(props) => props.theme.color.white};
+  color: ${(props) => props.theme.color[props.fontColor]};
   background: ${(props) => props.theme.color[props.color]};
   border-radius: ${(props) => {
     let res = '';
@@ -38,6 +38,7 @@ const Button = ({
   children = '입력값x', //입력한 값이 존재하지 않을경우
   onClick = () => {}, //onclick func
   color = 'blue', //blue, orange, black, green
+  fontColor = 'white',
   size = '', //lg, md, sm
   round = '', //false,true
 }) => {
@@ -46,6 +47,7 @@ const Button = ({
       size={size}
       color={color}
       round={round}
+      fontColor={fontColor}
       onClick={() => onClick()}
     >
       {children}
