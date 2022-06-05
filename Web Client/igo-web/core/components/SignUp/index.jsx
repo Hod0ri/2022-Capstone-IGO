@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { fetchCreateUser } from '../../api/fetcherAuth';
 import Button from '../Common/Button';
 import InputBox from '../Common/InputBox';
 
@@ -19,17 +20,37 @@ const SignUp = () => {
 
   const router = useRouter();
   const onCreateUserId = async () => {
-    await axios
-      .post('https://igo.soplay.dev/api/auth/user/', inputData)
-      .then((res) => {
-        alert(`회원가입 성공`);
-        router.push('/');
-      })
-      .catch((err) => {
-        alert('입력값을 확인해 주세요!');
-        console.log(err.response.data.err.err);
-      });
+    if (inputData['user_Pw'] === checkPw) {
+      await fetchCreateUser(inputData)
+        .then((res) => {
+          if (res.data.status) {
+            alert(`회원가입 성공`);
+            router.push('/');
+          } else {
+            alert('입력값을 확인해 주세요!');
+          }
+        })
+        .catch((err) => {
+          alert('입력값을 확인해 주세요!');
+          console.log(err.response.data.err.success);
+        });
+    } else {
+      alert('입력값을 확인해 주세요!');
+    }
   };
+  let str = inputData['user_Phone'];
+
+  const filter = {
+    phone: (value) => {
+      let data = value.replace(/[^0-9]/g, '');
+      data = data.slice(0, 11);
+      if (data.length > 3) data = data.replace(/(^.{3})/g, '$1-');
+      if (data.length > 8) data = data.replace(/(^.{8})/g, '$1-');
+      return data;
+    },
+  };
+
+  console.log(inputData.user_Phone);
 
   return (
     <SignUpContainer>
@@ -132,7 +153,10 @@ const SignUp = () => {
         <InputBox
           type="phone"
           onChange={(e) =>
-            setInputData({ ...inputData, user_Phone: e.target.value })
+            setInputData({
+              ...inputData,
+              user_Phone: filter.phone(e.target.value),
+            })
           }
           value={inputData['user_Phone']}
         />
