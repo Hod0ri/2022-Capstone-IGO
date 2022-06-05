@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from django.db.models import Q
@@ -19,13 +20,13 @@ class EmsView(APIView):
 
             response_json = {
                 'success': True,
-                'user_Id' : user_Id,
+                'user_Id': user_Id,
                 'err': ''
             }
+            return JsonResponse(response_json, status=status.HTTP_200_OK)
         except:
             response_json = {
                 'success': False,
                 'err': 'Member.DoesNotExist'
             }
-            
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)

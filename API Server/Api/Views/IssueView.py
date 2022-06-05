@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from datetime import datetime
@@ -21,12 +22,13 @@ class IssueView(APIView):
                 'success': True,
                 'err': ''
             }
+            return JsonResponse(response_json, status=status.HTTP_201_CREATED)
         else:
             response_json = {
                 'success': False,
                 'err': issue_serializer.errors
             }
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
         UserObj = CheckUserID(request)
@@ -39,12 +41,13 @@ class IssueView(APIView):
                 'result': logAll,
                 'err': ''
             }
+            return JsonResponse(response_json, status=status.HTTP_200_OK)
         else:
             response_json = {
                 'success': False,
                 'err': 'NoshowIssue does not exist'
             }
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request):
         UserObj = CheckUserID(request)
@@ -55,6 +58,8 @@ class IssueView(APIView):
                 'success': True,
                 'err': ''
             }
+            return JsonResponse(response_json, status=status.HTTP_200_OK)
         except:
             response_json = {'success': False, 'err': '신고를 삭제할 수 없습니다.'}
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
+

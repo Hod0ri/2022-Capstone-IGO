@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.db.models import Q
 from django.http import JsonResponse
+from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from ..models import Member, MatchData, MatchMember, LogPoint
@@ -34,6 +35,7 @@ class MatchView(APIView):
                     'success': False,
                     'err': '매칭 인원이 초과 되었습니다.'
                 }
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
             else:
                 DriverObj.mc_Count -= 1
                 if DriverObj.mc_Count == 0:
@@ -54,7 +56,7 @@ class MatchView(APIView):
                 MemberPointTable = LogPoint(
                     pot_Id=Member.objects.get(user_Id=PointMember.user_Id),
                     pot_Amount=MemberAmount,
-                    pot_Date=datetime.now().strftime('%Y-%m-%d %H:%M'),
+                    pot_Date=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     pot_Reason='매칭 결제',
                     pot_Change=MemberObj.mm_Price
                 )
@@ -63,7 +65,7 @@ class MatchView(APIView):
                 DriverPointTable = LogPoint(
                     pot_Id=Member.objects.get(user_Id=UserObj.user_Id),
                     pot_Amount=DriverAmount,
-                    pot_Date=datetime.now().strftime('%Y-%m-%d %H:%M'),
+                    pot_Date=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     pot_Reason='매칭 충전',
                     pot_Change=MemberObj.mm_Price
                 )
@@ -72,12 +74,13 @@ class MatchView(APIView):
                     'success': True,
                     'err': ''
                 }
+                return JsonResponse(response_json, status=status.HTTP_201_CREATED)
         else:
             response_json = {
                 'success': False,
                 'err': '운전자가 아닙니다.'
             }
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
         UserObj = CheckUserID(request)
@@ -96,11 +99,13 @@ class MatchView(APIView):
                     'data': MatchLog,
                     'err': ''
                 }
+                return JsonResponse(response_json, status=status.HTTP_200_OK)
             else:
                 response_json = {
                     'success': False,
                     'err': 'MatchData does not exist'
                 }
+                return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
         else:
             MemberLog = list(
                 MatchMember.objects.filter(
@@ -116,9 +121,10 @@ class MatchView(APIView):
                     'data': MemberLog,
                     'err': ''
                 }
+                return JsonResponse(response_json, status=status.HTTP_200_OK)
             else:
                 response_json = {
                     'success': False,
                     'err': 'MatchData Does Not Exist'
                 }
-        return JsonResponse(response_json)
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)

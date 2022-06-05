@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.http import JsonResponse
+from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
@@ -23,7 +24,7 @@ class MatchLogView(APIView):
                     "success": False,
                     "err": "Match가 완료된 후 새로 게시 가능합니다."
                 }
-                return JsonResponse(response_json)
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
             tempdata['mc_Driver'] = UserObj.user_Id
             match_serializer = MatchDataSerializer(data=tempdata)
             if match_serializer.is_valid():
@@ -32,11 +33,13 @@ class MatchLogView(APIView):
                     'success': True,
                     'err': ''
                 }
+                return JsonResponse(response_json, status=status.HTTP_201_CREATED)
             else:
                 response_json = {
                     'success': False,
                     'err': match_serializer.errors
                 }
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
         else:
             MemberLog = MatchMember.objects.filter(
                 Q(mm_Member=UserObj.user_Id) &
@@ -47,7 +50,7 @@ class MatchLogView(APIView):
                     "success": False,
                     "err": "Match가 완료된 후 새로 게시 가능합니다."
                 }
-                return JsonResponse(response_json)
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
             tempdata['mm_Member'] = UserObj.user_Id
             matchdata = MatchData.objects.get(mc_Driver=tempdata['mm_Driver'])
 
@@ -60,17 +63,19 @@ class MatchLogView(APIView):
                         'success': True,
                         'err': ''
                     }
+                    return JsonResponse(response_json, status=status.HTTP_201_CREATED)
                 else:
                     response_json = {
                         'success': False,
                         'err': matchmember_serializer.errors
                     }
+                    return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
             else:
                 response_json = {
                     'success': False,
                     'err': 'MatchData does not exist'
                 }
-        return JsonResponse(response_json)
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
         UserObj = CheckUserID(request)
@@ -84,11 +89,13 @@ class MatchLogView(APIView):
                     'data': MatchLog,
                     'err': ''
                 }
+                return JsonResponse(response_json, status=status.HTTP_200_OK)
             else:
                 response_json = {
                     'success': False,
                     'err': 'MatchData does not exist'
                 }
+                return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
         else:
             MatchLog = list(
                 MatchMember.objects.filter(Q(mm_Member=UserObj.user_Id)).values()
@@ -99,13 +106,13 @@ class MatchLogView(APIView):
                     'data': MatchLog,
                     'err': ''
                 }
+                return JsonResponse(response_json, status=status.HTTP_200_OK)
             else:
                 response_json = {
                     'success': False,
                     'err': 'MatchMember does not exist'
                 }
-
-        return JsonResponse(response_json)
+                return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request):
         UserObj = CheckUserID(request)
@@ -120,11 +127,13 @@ class MatchLogView(APIView):
                     'success': True,
                     'err': ''
                 }
+                return JsonResponse(response_json, status=status.HTTP_201_CREATED)
             else:
                 response_json = {
                     'success': False,
                     'err': match_serializer.errors
                 }
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
         else:
             tempdata['mm_Member'] = UserObj.user_Id
             matchdata = MatchData.objects.get(mc_Driver=tempdata['mm_Driver'])
@@ -138,47 +147,55 @@ class MatchLogView(APIView):
                         'success': True,
                         'err': ''
                     }
+                    return JsonResponse(response_json, status=status.HTTP_201_CREATED)
                 else:
                     response_json = {
                         'success': False,
                         'err': matchmember_serializer.errors
                     }
+                    return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
             else:
                 response_json = {
                     'success': False,
                     'err': 'MatchData does not exist'
                 }
-
-        return JsonResponse(response_json)
+                return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request):
         UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
-
-        if UserObj.user_Driver:
-            DriverLog = list(
-                MatchData.objects.filter(
-                    Q(mc_Driver=UserObj.user_Id) &
-                    Q(mc_Match=False)
-                ).values('id')
-            )[0]['id']
-            MatchDataDel = MatchData.objects.get(id=DriverLog)
-            MatchDataDel.delete()
+        try:
+            if UserObj.user_Driver:
+                DriverLog = list(
+                    MatchData.objects.filter(
+                        Q(mc_Driver=UserObj.user_Id) &
+                        Q(mc_Match=False)
+                    ).values('id')
+                )[0]['id']
+                MatchDataDel = MatchData.objects.get(id=DriverLog)
+                MatchDataDel.delete()
+                response_json = {
+                    'success': True,
+                    'err': ''
+                }
+                return JsonResponse(response_json, status=status.HTTP_200_OK)
+            else:
+                MemberLog = list(
+                    MatchMember.objects.filter(
+                        Q(mm_Driver=UserObj.user_Id) &
+                        Q(mm_Match=False)
+                    ).values('id')
+                )[0]['id']
+                MatchMemberDel = MatchMember.objects.get(id=MemberLog)
+                MatchMemberDel.delete()
+                response_json = {
+                    'success': True,
+                    'err': ''
+                }
+                return JsonResponse(response_json, status=status.HTTP_200_OK)
+        except:
             response_json = {
-                'success': True,
+                'success': False,
                 'err': ''
             }
-        else:
-            MemberLog = list(
-                MatchMember.objects.filter(
-                    Q(mm_Driver=UserObj.user_Id) &
-                    Q(mm_Match=False)
-                ).values('id')
-            )[0]['id']
-            MatchMemberDel = MatchMember.objects.get(id=MemberLog)
-            MatchMemberDel.delete()
-            response_json = {
-                'success': True,
-                'err': ''
-            }
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
