@@ -1,11 +1,11 @@
 import re
 
 # Regex Patterns
-email_Pattern = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
-phoneNum_Pattern = re.compile(r'\d{3}-\d{3,4}-\d{4}')
-name_Pattern = re.compile(r'[ㄱ-ㅣ가-힣]{2,10}')
-nick_Pattern = re.compile(r'[ㄱ-ㅣ가-힣a-zA-Z]{2,10}')
-id_Pattern = re.compile(r'[a-zA-Z0-9]{5,50}')
+email_Pattern = re.compile(r'^([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+$')
+phoneNum_Pattern = re.compile(r'^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$')
+name_Pattern = re.compile(r'^[가-힣]{2,10}$')
+nick_Pattern = re.compile(r'^[가-힣a-zA-Z]+[가-힣a-zA-Z0-9]{2,10}$')
+id_Pattern = re.compile(r'^[a-z]+[a-z0-9]{5,50}$')
 
 
 def CheckValidAccount(inputData):
