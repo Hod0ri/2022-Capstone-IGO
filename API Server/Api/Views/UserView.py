@@ -21,17 +21,19 @@ class UserView(APIView):
                     'success': True,
                     'err': ''
                 }
+                return JsonResponse(response_json)
             else:
                 response_json = {
                     'success': False,
                     'err': CheckValidAccount(tempdata)
                 }
+                return JsonResponse(response_json, status=400)
         else:
             response_json = {
                 'success': False,
                 'err': member_serializer.errors
             }
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=400)
 
     def get(self, request):
         UserObj = CheckUserID(request)
@@ -53,12 +55,13 @@ class UserView(APIView):
     def put(self, request):
         UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
+        print(tempdata)
         tempdata['user_Driver'] = 1 if tempdata.get('user_Driver') else 0
         tempdata['user_Name'] = UserObj.user_Name
         tempdata['user_Id'] = UserObj.user_Id
         member_update_serializer = MemberSerializer(UserObj, data=tempdata)
         if member_update_serializer.is_valid():
-            if not CheckValidAccount(tempdata):
+            if len(CheckValidAccount(tempdata)) == 0:
                 member_update_serializer.save()
                 response_json = {
                     'success': True,
