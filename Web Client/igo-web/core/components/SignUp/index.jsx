@@ -1,8 +1,7 @@
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { fetchCreateUser } from '../../api/fetcherAuth';
+import fetchAuth from '../../api/fetchAuth';
 import Button from '../Common/Button';
 import InputBox from '../Common/InputBox';
 
@@ -21,7 +20,8 @@ const SignUp = () => {
   const router = useRouter();
   const onCreateUserId = async () => {
     if (inputData['user_Pw'] === checkPw) {
-      await fetchCreateUser(inputData)
+      await fetchAuth
+        .create(inputData)
         .then((res) => {
           if (res.data.status) {
             alert(`회원가입 성공`);
@@ -32,13 +32,12 @@ const SignUp = () => {
         })
         .catch((err) => {
           alert('입력값을 확인해 주세요!');
-          console.log(err.response.data.err.success);
+          console.log(err.response.data);
         });
     } else {
       alert('입력값을 확인해 주세요!');
     }
   };
-  let str = inputData['user_Phone'];
 
   const filter = {
     phone: (value) => {
@@ -49,8 +48,6 @@ const SignUp = () => {
       return data;
     },
   };
-
-  console.log(inputData.user_Phone);
 
   return (
     <SignUpContainer>
