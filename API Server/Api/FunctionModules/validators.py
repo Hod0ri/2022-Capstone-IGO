@@ -4,8 +4,8 @@ import re
 email_Pattern = re.compile(r'^([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+$')
 phoneNum_Pattern = re.compile(r'^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$')
 name_Pattern = re.compile(r'^[가-힣]{2,10}$')
-nick_Pattern = re.compile(r'^[가-힣a-zA-Z]+[가-힣a-zA-Z0-9]{2,10}$')
-id_Pattern = re.compile(r'^[a-z]+[a-z0-9]{5,50}$')
+nick_Pattern = re.compile(r'^[가-힣a-zA-Z]+[가-힣a-zA-Z0-9]{1,9}$')
+id_Pattern = re.compile(r'^[a-z]+[a-z0-9]{4,49}$')
 
 
 def CheckValidAccount(inputData):
