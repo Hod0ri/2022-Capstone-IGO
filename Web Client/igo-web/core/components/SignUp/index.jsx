@@ -1,11 +1,17 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import fetchAuth from '../../api/fetchAuth';
+import { fetchAuth } from '../../api/fetchAuth';
+import { checkValue } from '../../etc/checkValue';
+
 import Button from '../Common/Button';
 import InputBox from '../Common/InputBox';
 
 const SignUp = () => {
+  //router import
+  const router = useRouter();
+
+  //inputData
   const [inputData, setInputData] = useState({
     user_Id: '',
     user_Nick: '',
@@ -15,30 +21,10 @@ const SignUp = () => {
     user_Phone: '',
     user_Email: '',
   });
+  //checkPw 입력값
   const [checkPw, setCheckPw] = useState('');
 
-  const router = useRouter();
-  const onCreateUserId = async () => {
-    if (inputData['user_Pw'] === checkPw) {
-      await fetchAuth
-        .create(inputData)
-        .then((res) => {
-          if (res.data.status) {
-            alert(`회원가입 성공`);
-            router.push('/');
-          } else {
-            alert('입력값을 확인해 주세요!');
-          }
-        })
-        .catch((err) => {
-          alert('입력값을 확인해 주세요!');
-          console.log(err.response.data);
-        });
-    } else {
-      alert('입력값을 확인해 주세요!');
-    }
-  };
-
+  //전화번호 입력값 수정용 필터
   const filter = {
     phone: (value) => {
       let data = value.replace(/[^0-9]/g, '');
@@ -47,6 +33,45 @@ const SignUp = () => {
       if (data.length > 8) data = data.replace(/(^.{8})/g, '$1-');
       return data;
     },
+  };
+
+  //서버 전송전 정규 판단식 함수
+
+  const onCreateUserId = async () => {
+    let checkState = true;
+
+    //입력값 정규 필터링
+    [
+      'user_Id',
+      'user_Nick',
+      'user_Email',
+      'user_Name',
+      'user_Phone',
+      'user_Pw',
+    ].forEach((str) => {
+      if (!checkValue[str](inputData[str])) {
+        checkState = false;
+        return;
+      }
+    });
+
+    if (inputData['user_Pw'] === checkPw && checkState) {
+      await fetchAuth
+        .create(inputData)
+        .then((res) => {
+          if (res.data.success) {
+            alert(`회원가입 성공`);
+            router.push('/');
+          } else {
+            alert('입력값을 확인해 주세요!');
+          }
+        })
+        .catch((err) => {
+          alert('입력값을 확인해 주세요!');
+        });
+    } else {
+      alert('입력값을 확인해 주세요!');
+    }
   };
 
   return (
@@ -93,7 +118,7 @@ const SignUp = () => {
           )}
         </p>
         <InputBox
-          placeholder="8~20자 영문,숫자,특수문자 중 2가지 이상"
+          placeholder="8자 이상, 최소 하나의 문자, 숫자, 특수문자"
           type="password"
           onChange={(e) =>
             setInputData({ ...inputData, user_Pw: e.target.value })
