@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Common/Button';
 import InputBox from '../Common/InputBox';
 import { AiOutlineRight } from 'react-icons/ai';
+import { checkValue } from '../../etc/checkValue';
+import { fetchAuth } from '../../api/fetchAuth';
+
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useSetRecoilState } from 'recoil';
+import { atomUserName } from '../../atoms/loginState';
 
 const BodyStyle = styled.div`
   margin: 0 auto;
@@ -54,15 +61,60 @@ const ServiceArea = styled.div`
   }
 `;
 
-const index = () => {
+const SignIn = () => {
+  const router = useRouter();
+  const [inputData, setInputData] = useState({ user_Id: '', user_Pw: '' });
+  const setUserNick = useSetRecoilState(atomUserName);
+  const onLoginClick = async () => {
+    let checkState = true;
+    ['user_Id', 'user_Pw'].forEach((str) => {
+      if (!checkValue[str](inputData[str])) {
+        checkState = false;
+        return;
+      }
+    });
+
+    if (checkState) {
+      await fetchAuth
+        .login(inputData)
+        .then((res) => {
+          //상태 저장
+          setUserNick(res.data.user_Nick);
+
+          alert(`${res.data.user_Nick}님 환영합니다!`);
+          router.push('/');
+        })
+        .catch((err) => {
+          alert(`아이디 혹은 비밀번호를 확인해 주세요 !`);
+          //로그 확인
+          console.log(err.response.data.err);
+        });
+    } else {
+      alert('아이디 혹은 비밀번호를 확인해 주세요 !');
+    }
+  };
   return (
     <>
       <BodyStyle>
-        <p>이메일</p>
-        <InputBox placeholder="example@igo.com" type="email" />
+        <p>아이디</p>
+        <InputBox
+          placeholder="아이디 입력"
+          type="email"
+          value={inputData.user_Id}
+          onChange={(e) =>
+            setInputData({ ...inputData, user_Id: e.target.value })
+          }
+        />
 
         <p>비밀번호</p>
-        <InputBox placeholder="비밀번호 입력" type="password" />
+        <InputBox
+          placeholder="비밀번호 입력"
+          type="password"
+          value={inputData.user_Pw}
+          onChange={(e) =>
+            setInputData({ ...inputData, user_Pw: e.target.value })
+          }
+        />
 
         <SubArea>
           <ul>
@@ -73,12 +125,14 @@ const index = () => {
               <a href="#">비밀번호 찾기</a>
             </li>
             <li>
-              <a href="#">회원가입</a>
+              <Link href="/signup">
+                <a>회원가입</a>
+              </Link>
             </li>
           </ul>
         </SubArea>
 
-        <Button>로그인</Button>
+        <Button onClick={() => onLoginClick()}>로그인</Button>
 
         <ServiceArea>
           <a href="#">1:1 문의하기</a>
@@ -94,4 +148,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default SignIn;
