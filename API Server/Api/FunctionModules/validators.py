@@ -41,10 +41,4 @@ def CheckValidAccount(inputData):
     else:
         exceptions_reason.append('Id')
 
-    # # Driver Checker
-    # if re.match(id_Pattern, inputData['user_Driver']):
-    #     pass
-    # else:
-    #     exceptions_reason.append('Driver')
-
     return exceptions_reason

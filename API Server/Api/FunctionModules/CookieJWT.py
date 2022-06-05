@@ -1,5 +1,4 @@
 import jwt
-import base64
 from django.http import HttpResponse
 from jwt import ExpiredSignatureError
 from ..models import Member

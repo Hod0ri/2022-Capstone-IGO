@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 
@@ -21,19 +22,19 @@ class UserView(APIView):
                     'success': True,
                     'err': ''
                 }
-                return JsonResponse(response_json)
+                return JsonResponse(response_json, status=status.HTTP_201_CREATED)
             else:
                 response_json = {
                     'success': False,
                     'err': CheckValidAccount(tempdata)
                 }
-                return JsonResponse(response_json, status=400)
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
         else:
             response_json = {
                 'success': False,
                 'err': member_serializer.errors
             }
-            return JsonResponse(response_json, status=400)
+            return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
         UserObj = CheckUserID(request)
@@ -44,13 +45,13 @@ class UserView(APIView):
                 'user_Nick': ms.data['user_Nick'],
                 'err': ''
             }
-            return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_200_OK)
         except Member.DoesNotExist:
             response_json = {
                 'success': False,
                 'err': '사용자를 찾을 수 없습니다.'
             }
-        return JsonResponse(response_json)
+        return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request):
         UserObj = CheckUserID(request)
@@ -67,17 +68,19 @@ class UserView(APIView):
                     'success': True,
                     'err': ''
                 }
+                return JsonResponse(response_json, status=status.HTTP_201_CREATED)
             else:
                 response_json = {
                     'success': False,
                     'err': CheckValidAccount(tempdata)
                 }
+                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
         else:
             response_json = {
                 'success': False,
                 'err': member_update_serializer.errors
             }
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request):
         UserObj = CheckUserID(request)
@@ -87,9 +90,10 @@ class UserView(APIView):
                 'success': True,
                 'err': ''
             }
+            return JsonResponse(response_json, status=status.HTTP_200_OK)
         except:
             response_json = {
                 'success': False,
                 'err': '사용자를 찾을 수 없습니다.'
             }
-        return JsonResponse(response_json)
+            return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
