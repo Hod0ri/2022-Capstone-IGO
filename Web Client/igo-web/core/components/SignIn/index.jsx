@@ -9,7 +9,7 @@ import { fetchAuth } from '../../api/fetchAuth';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
-import { atomUserName } from '../../atoms/loginState';
+import { atomUserNick } from '../../atoms/loginState';
 
 const BodyStyle = styled.div`
   margin: 0 auto;
@@ -64,7 +64,7 @@ const ServiceArea = styled.div`
 const SignIn = () => {
   const router = useRouter();
   const [inputData, setInputData] = useState({ user_Id: '', user_Pw: '' });
-  const setUserNick = useSetRecoilState(atomUserName);
+  const setUserNick = useSetRecoilState(atomUserNick);
   const onLoginClick = async () => {
     let checkState = true;
     ['user_Id', 'user_Pw'].forEach((str) => {
@@ -80,8 +80,6 @@ const SignIn = () => {
         .then((res) => {
           //상태 저장
           setUserNick(res.data.user_Nick);
-
-          alert(`${res.data.user_Nick}님 환영합니다!`);
           router.push('/');
         })
         .catch((err) => {

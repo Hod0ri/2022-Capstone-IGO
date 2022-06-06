@@ -1,8 +1,12 @@
+import { ApiError } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
-import { RecoilRoot } from 'recoil';
+import { useEffect } from 'react';
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 import styled, { css } from 'styled-components';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import reset from 'styled-reset';
+import { fetchAuth } from '../core/api/fetchAuth';
+import { atomUserNick } from '../core/atoms/loginState';
 import Header from '../core/components/Header';
 import Navbar from '../core/components/Navbar';
 const GlobalStyles = createGlobalStyle`
@@ -53,12 +57,35 @@ const BodyContainer = styled.div`
     height: 100%;
   }
 `;
+
+//로그인 상태 확인
+const LoginCheck = ({ route }) => {
+  const [userNick, setUserNick] = useRecoilState(atomUserNick);
+  useEffect(() => {
+    const getLoginState = async () => {
+      await fetchAuth
+        .refresh()
+        .then((res) => {
+          userNick || setUserNick(res.data.user_Nick);
+        })
+        .catch((e) => {
+          fetchAuth.logout().catch((e) => {});
+          route.push('/signin');
+        });
+    };
+
+    ['/signin', '/signup'].includes(route.asPath) || getLoginState();
+  });
+};
+
 const MyApp = ({ Component, pageProps }) => {
   const route = useRouter();
+
   return (
     <>
       <ThemeProvider theme={theme}>
         <RecoilRoot>
+          <LoginCheck route={route} />
           <GlobalStyles />
           <BodyContainer>
             <Header route={route} />

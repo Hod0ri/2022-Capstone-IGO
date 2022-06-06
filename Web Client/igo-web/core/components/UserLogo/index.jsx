@@ -4,7 +4,7 @@ import Femail from './icon/female.png';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { atomUserName } from '../../atoms/loginState';
+import { atomUserNick } from '../../atoms/loginState';
 
 const UserLogoContainer = styled.div`
   width: 80px;
@@ -18,7 +18,7 @@ const UserLogoContainer = styled.div`
 `;
 
 const UserLogo = ({ icon = 'mail' }) => {
-  const user_Nick = useRecoilValue(atomUserName);
+  const user_Nick = useRecoilValue(atomUserNick);
   return (
     <UserLogoContainer>
       <Image
