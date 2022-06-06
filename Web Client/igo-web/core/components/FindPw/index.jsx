@@ -1,7 +1,7 @@
-import React from "react";
-import FindId from "../FindId";
-import InputBox from "../Common/InputBox";
-import styled from "styled-components";
+import React from 'react';
+import FindId from '../FindId';
+import InputBox from '../Common/InputBox';
+import styled from 'styled-components';
 
 const FindPwArea = styled.div`
   margin: 0 auto;

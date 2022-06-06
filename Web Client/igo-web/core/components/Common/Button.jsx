@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const ButtonStyle = styled.button`
   border: none;
@@ -7,18 +7,18 @@ const ButtonStyle = styled.button`
   transition: 0.25s;
 
   height: ${(props) =>
-    `${!props.size ? "50" : props.size == "md" ? "40" : "30"}px`};
+    `${!props.size ? '50' : props.size == 'md' ? '40' : '30'}px`};
   font-size: ${(props) => {
     const size = props.size;
     const fontSize = props.theme.fontSize;
-    return !size ? fontSize.lg : size == "md" ? fontSize.md : fontSize.sm;
+    return !size ? fontSize.lg : size == 'md' ? fontSize.md : fontSize.sm;
   }};
 
-  color: ${(props) => props.theme.color.white};
+  color: ${(props) => props.theme.color[props.fontColor]};
   background: ${(props) => props.theme.color[props.color]};
   border-radius: ${(props) => {
-    let res = "";
-    const height = !props.size ? 50 : props.size == "md" ? 40 : 30;
+    let res = '';
+    const height = !props.size ? 50 : props.size == 'md' ? 40 : 30;
     res = props.round ? height : height / 4;
     return `${res}px`;
   }};
@@ -35,17 +35,19 @@ const ButtonStyle = styled.button`
 `;
 
 const Button = ({
-  children = "입력값x", //입력한 값이 존재하지 않을경우
+  children = '입력값x', //입력한 값이 존재하지 않을경우
   onClick = () => {}, //onclick func
-  color = "blue", //blue, orange, black, green
-  size = "", //lg, md, sm
-  round = "", //false,true
+  color = 'blue', //blue, orange, black, green
+  fontColor = 'white',
+  size = '', //lg, md, sm
+  round = '', //false,true
 }) => {
   return (
     <ButtonStyle
       size={size}
       color={color}
       round={round}
+      fontColor={fontColor}
       onClick={() => onClick()}
     >
       {children}

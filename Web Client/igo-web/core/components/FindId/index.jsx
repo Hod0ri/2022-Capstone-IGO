@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import InputBox from "../Common/InputBox";
-import Button from "../Common/Button";
+import React from 'react';
+import styled from 'styled-components';
+import InputBox from '../Common/InputBox';
+import Button from '../Common/Button';
 
 const BodyStyle = styled.div`
   margin: 0 auto;

@@ -43,10 +43,9 @@ const ReportCard = styled.button`
   `}
 `;
 
-const Report = ({ state }) => {
+const Report = ({ state, userNick = "닉네임X" }) => {
   const [report, setReport] = useState(true);
   const [etc, setEtc] = useState(false);
-  const user = "igo";
   const onClick = (boolean) => {
     if (boolean) {
       state("true");
@@ -71,7 +70,7 @@ const Report = ({ state }) => {
       <div className="mt-10" />
       <div className="flex report">
         <Image src={Siren} width={35} height={35} alt={"Siren"} />
-        <p>{user}님을 신고하시겠습니까?</p>
+        <p>{userNick}님을 신고하시겠습니까?</p>
       </div>
     </ReportCardContainer>
   );
