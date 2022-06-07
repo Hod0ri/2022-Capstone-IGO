@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from ..FunctionModules.validators import CheckValidAccount
 from ..serializers import MemberSerializer
-from ..models import Member
+from ..models import Member, LogPoint
 from ..FunctionModules.CookieJWT import CheckUserID
 
 
@@ -18,6 +18,7 @@ class UserView(APIView):
         if member_serializer.is_valid():
             if len(CheckValidAccount(tempdata)) == 0:
                 member_serializer.save()
+                LogPoint.objects.create(pot_ID=member_serializer.data['user_Id'], pot_Amount=0, pot_Reason='회원가입', pot_Change=0)
                 response_json = {
                     'success': True,
                     'err': ''
