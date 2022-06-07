@@ -69,7 +69,7 @@ class LogPointView(APIView):
             #     'success': False,
             #     'err': ' LogPoint does not exist'
             # }
-            LogPoint.objects.create(pot_Id=UserObj, pot_Amount=0, pot_Reason='add', pot_Change=0)
+            LogPoint.objects.create(pot_Id=UserObj, pot_Amount=0, pot_Reason='add', pot_Change=0, pot_Date=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             logAll = list(LogPoint.objects.filter(pot_Id=UserObj).values(
             'pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount'))
             # return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
