@@ -8,7 +8,7 @@ from ..models import Member
 def CheckUserID(request):
     token = ""
     for s in request.META['HTTP_COOKIE'].split(';'):
-        if s[0:4] == 'jwt=':
+        if s.strip()[0:4]=='jwt=':
             token = s[4:]
             break
     try:
