@@ -9,7 +9,7 @@ def CheckUserID(request):
     token = ""
     for s in request.META['HTTP_COOKIE'].split(';'):
         if s.strip()[0:4]=='jwt=':
-            token = s[4:]
+            token = s.strip()[4:]
             break
     try:
         token = jwt.decode(token, 'secret-key', algorithms='HS256')
