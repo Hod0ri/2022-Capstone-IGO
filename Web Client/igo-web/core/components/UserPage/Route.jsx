@@ -42,7 +42,7 @@ const Route = ({ startPoint }) => {
     <RoutContainer>
       <div className="driveWrapper">
         <div className="driverImage">
-          <Image src={Male} width={60} height={60} />
+          <Image alt={'사용자'} src={Male} width={60} height={60} />
         </div>
         <DriveRoute startPoint={startPoint} />
       </div>

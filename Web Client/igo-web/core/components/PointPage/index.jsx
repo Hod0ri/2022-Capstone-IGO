@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import CurrentPoint from './CurrentPoint';
 import UsageHistory from './UsageHistory';
 import axios from 'axios';
+import { fetchApi } from '../../api/fetchApi';
 
 const PointPageContainer = styled.div`
   margin-top: 15px;
@@ -19,10 +20,10 @@ const PointPage = () => {
   const [point, setPoint] = useState('');
   useEffect(() => {
     const getPoint = async () => {
-      await axios
-        .get('http://localhost:8080/api/point')
+      await fetchApi.point
+        .get()
         .then((res) => {
-          setPoint(res.data);
+          setPoint(res.data.result);
         })
         .catch((e) => {
           console.log(e);
@@ -33,10 +34,6 @@ const PointPage = () => {
   return (
     <PointPageContainer>
       <CurrentPoint pot_Amount={point && point.result[0].pot_Amount} />
-      {point &&
-        point.result.map((v, index) => {
-          return <UsageHistory {...v} key={index} />;
-        })}
       {point &&
         point.result.map((v, index) => {
           return <UsageHistory {...v} key={index} />;
