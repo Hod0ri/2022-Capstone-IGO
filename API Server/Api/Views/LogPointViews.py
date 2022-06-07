@@ -58,9 +58,13 @@ class LogPointView(APIView):
             return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        UserObj = CheckUserID(request)
-        logAll = list(LogPoint.objects.filter(pot_Id=UserObj).values(
-            'pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount'))
+        UserObj = CheckUserID(request)  
+        try:
+            logAll = list(LogPoint.objects.filter(pot_Id=UserObj).values(
+                'pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount'))
+        except:
+            LogPoint.objects.create(pot_Id=UserObj.user_Id, pot_Amount=0, pot_Reason='add', pot_Change=0)
+
         if logAll:
             response_json = {
                 'success': True,

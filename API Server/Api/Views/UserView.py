@@ -18,7 +18,6 @@ class UserView(APIView):
         if member_serializer.is_valid():
             if len(CheckValidAccount(tempdata)) == 0:
                 member_serializer.save()
-                LogPoint.objects.create(pot_Id=member_serializer.data['user_Id'], pot_Amount=0, pot_Reason='add', pot_Change=0)
                 response_json = {
                     'success': True,
                     'err': ''
