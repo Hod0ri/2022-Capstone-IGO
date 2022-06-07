@@ -59,22 +59,25 @@ class LogPointView(APIView):
 
     def get(self, request):
         UserObj = CheckUserID(request)  
-        try:
-            logAll = list(LogPoint.objects.filter(pot_Id=UserObj).values(
-                'pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount'))
-        except:
-            LogPoint.objects.create(pot_Id=UserObj.user_Id, pot_Amount=0, pot_Reason='add', pot_Change=0)
+        logAll = list(LogPoint.objects.filter(pot_Id=UserObj).values(
+            'pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount'))
 
         if logAll:
-            response_json = {
+            pass
+        else:
+            # response_json = {
+            #     'success': False,
+            #     'err': ' LogPoint does not exist'
+            # }
+            LogPoint.objects.create(pot_Id=UserObj.user_Id, pot_Amount=0, pot_Reason='add', pot_Change=0)
+            logAll = list(LogPoint.objects.filter(pot_Id=UserObj).values(
+            'pot_Date', 'pot_Reason', 'pot_Change', 'pot_Amount'))
+            # return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
+
+        response_json = {
                 'success': True,
                 'result': logAll,
                 'err': ''
             }
-            return JsonResponse(response_json, status=status.HTTP_200_OK)
-        else:
-            response_json = {
-                'success': False,
-                'err': ' LogPoint does not exist'
-            }
-            return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
+        
+        return JsonResponse(response_json, status=status.HTTP_200_OK)
