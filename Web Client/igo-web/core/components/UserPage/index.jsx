@@ -30,10 +30,9 @@ const UserPage = ({ startPoint = '안양' }) => {
   return (
     <UserPageContainer>
       {/* <Reservation startPoint={startPoint} /> */}
-      {/* <Payment startPoint={startPoint} /> */}
-      {point && (
+      {/* {point && (
         <Payment startPoint={startPoint} pot_Amount={point[0].pot_Amount} />
-      )}
+      )} */}
     </UserPageContainer>
   );
 };

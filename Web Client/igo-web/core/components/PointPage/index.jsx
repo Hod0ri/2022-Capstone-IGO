@@ -25,17 +25,15 @@ const PointPage = () => {
         .then((res) => {
           setPoint(res.data.result);
         })
-        .catch((e) => {
-          console.log(e);
-        });
+        .catch((e) => {});
     };
     !point && getPoint();
   }, [point]);
   return (
     <PointPageContainer>
-      <CurrentPoint pot_Amount={point && point.result[0].pot_Amount} />
+      <CurrentPoint pot_Amount={point && point[0].pot_Amount} />
       {point &&
-        point.result.map((v, index) => {
+        point.map((v, index) => {
           return <UsageHistory {...v} key={index} />;
         })}
     </PointPageContainer>
