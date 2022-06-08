@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import useSWR from 'swr';
-import { atomUserNick } from '../atoms/loginState';
+import { atomUserDriver, atomUserNick } from '../atoms/loginState';
 
 export default function useLoginState() {
-  const fetcher = (url) => axios.get(url).then((res) => res.data.user_Nick);
+  const fetcher = (url) => axios.get(url).then((res) => res.data);
   const setUserNick = useSetRecoilState(atomUserNick);
+  const setUserDriver = useSetRecoilState(atomUserDriver);
   let loginState = false;
   const { data, error } = useSWR(
     'https://igo.soplay.dev/api/auth/user',
@@ -13,7 +14,8 @@ export default function useLoginState() {
   );
   if (!error && data) {
     loginState = true;
-    setUserNick(data);
+    setUserNick(data.user_Nick);
+    setUserDriver(data.user_Driver);
   }
 
   return { loginState };
