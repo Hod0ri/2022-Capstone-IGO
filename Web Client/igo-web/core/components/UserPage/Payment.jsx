@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DriveRoute from './DriveRoute';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Male from '../UserLogo/icon/male.png';
 import StateContainer from '../KakaoMap';
 import Button from '../Common/Button';
+import { fetchApi } from '../../api/fetchApi';
+import { useRecoilValue } from 'recoil';
+import useLoginState from '../../hooks/useLoginState';
 
 const PaymentContainer = styled.div`
   display: flex;
@@ -71,39 +74,55 @@ const PaymentInfoContainer = styled.div`
   }
 `;
 
-const Payment = ({ startPoint, pot_Amount, userNick = '닉네임X' }) => {
-  const mm_Price = 2000;
+const Payment = ({ startPoint, userNick = '닉네임X' }) => {
+  const { isLoading } = useLoginState();
+  const [data, setData] = useState('');
+  useEffect(() => {
+    const getPoint = async () => {
+      await fetchApi.point
+        .get()
+        .then((res) => {
+          setData(res.data.result[0]);
+        })
+        .catch((e) => {});
+    };
+    isLoading && !data && getPoint();
+  }, [data, isLoading]);
+
+  const mm_Price = 0;
   return (
-    <PaymentContainer>
-      <h1>예약결제</h1>
-      <DriveRouteContainer>
-        <div className="userLogo">
-          <Image alt={'사용자'} src={Male} width={65} height={65} />
-          <p>{userNick}</p>
-        </div>
-        <DriveRoute size={'25px'} startPoint={startPoint} />
-        {/* <StateContainer location={startPoint} /> */}
-      </DriveRouteContainer>
-      <PaymentInfoContainer>
-        <div className="paymentInfo">
-          <p>보유 포인트</p>
-          <p>{pot_Amount.toLocaleString()}p</p>
-        </div>
-        <div className="paymentInfo">
-          <p>요금정보</p>
-          <p>{mm_Price.toLocaleString()}p</p>
-        </div>
-        <div className="paymentInfo">
-          <p>잔여 요금</p>
-          <p>{(pot_Amount - mm_Price).toLocaleString()}p</p>
-        </div>
-        <div className="totalPayment">
-          <p>총 결제금액</p>
-          <p>{mm_Price.toLocaleString()}p</p>
-        </div>
-      </PaymentInfoContainer>
-      <Button>예약하기</Button>
-    </PaymentContainer>
+    data && (
+      <PaymentContainer>
+        <h1>예약결제</h1>
+        <DriveRouteContainer>
+          <div className="userLogo">
+            <Image alt={'사용자'} src={Male} width={65} height={65} />
+            <p>{userNick}</p>
+          </div>
+          <DriveRoute size={'25px'} startPoint={startPoint} />
+          {/* <StateContainer location={startPoint} /> */}
+        </DriveRouteContainer>
+        <PaymentInfoContainer>
+          <div className="paymentInfo">
+            <p>보유 포인트</p>
+            <p>{data.pot_Amount.toLocaleString()}p</p>
+          </div>
+          <div className="paymentInfo">
+            <p>요금정보</p>
+            <p>{mm_Price.toLocaleString()}p</p>
+          </div>
+          <div className="paymentInfo">
+            <p>잔여 요금</p>
+            <p>{(data.pot_Amount - mm_Price).toLocaleString()}p</p>
+          </div>
+          <div className="totalPayment">
+            <p>총 결제금액</p>
+            <p>{mm_Price.toLocaleString()}p</p>
+          </div>
+        </PaymentInfoContainer>
+        <Button>예약하기</Button>
+      </PaymentContainer>
+    )
   );
 };
 

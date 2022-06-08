@@ -12,27 +12,10 @@ const UserPageContainer = styled.div`
 `;
 
 const UserPage = ({ startPoint = '안양' }) => {
-  const [point, setPoint] = useState('');
-  useEffect(() => {
-    const getPoint = async () => {
-      await fetchApi.point
-        .get()
-        .then((res) => {
-          console.log(res.data.result);
-          setPoint(res.data.result);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    };
-    !point && getPoint();
-  }, [point]);
   return (
     <UserPageContainer>
       {/* <Reservation startPoint={startPoint} /> */}
-      {/* {point && (
-        <Payment startPoint={startPoint} pot_Amount={point[0].pot_Amount} />
-      )} */}
+      {<Payment startPoint={startPoint} />}
     </UserPageContainer>
   );
 };
