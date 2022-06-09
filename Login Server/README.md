@@ -39,11 +39,11 @@
 
 ### mongodb env
 
-|          envName           |   value    |
-| :------------------------: | :--------: |
-| MONGO_INITDB_ROOT_USERNAME |    root    |
-| MONGO_INITDB_ROOT_PASSWORD |    root    |
-|             TZ             | Asia/Seoul |
+|          envName           | defaultValue |
+| :------------------------: | :----------: |
+| MONGO_INITDB_ROOT_USERNAME |     root     |
+| MONGO_INITDB_ROOT_PASSWORD |     root     |
+|             TZ             |  Asia/Seoul  |
 
 #### compass 접속 주소
 
@@ -92,6 +92,37 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 |  success  | boolean |       -       |
 | user_Nick | String  | success state |
 |    err    | String  |   err state   |
+
+</details>
+
+---
+
+### 1-2. 닉네임 중복 확인 ( get )
+
+<details>
+<summary>Request</summary>
+
+|   TAG   |           value           | required |
+| :-----: | :-----------------------: | :------: |
+| API URL | /api/auth/user/check/nick |    -     |
+|  query  |         user_Nick         |    v     |
+| Method  |            GET            |    -     |
+
+###### 요청 url의 최종 형태는 다음과 같다.
+
+```
+https://도메인/api/auth/user/check/nick?user_Nick=확인할닉네임
+```
+
+</details>
+
+<details>
+<summary>Response</summary>
+
+|   TAG   |  value  |   note   |
+| :-----: | :-----: | :------: |
+| success | boolean |    -     |
+| isUsing | boolean | 사용여부 |
 
 </details>
 
@@ -228,36 +259,5 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 | :-----: | :-----: | :-------: |
 | success | boolean |     -     |
 |   err   | String  | err state |
-
-</details>
-
----
-
-### 5. 닉네임 중복 확인 ( get )
-
-<details>
-<summary>Request</summary>
-
-|   TAG   |           value           | required |
-| :-----: | :-----------------------: | :------: |
-| API URL | /api/auth/user/check/nick |    -     |
-|  query  |         user_Nick         |    v     |
-| Method  |            GET            |    -     |
-
-###### 요청 url의 최종 형태는 다음과 같다.
-
-```
-https://도메인/api/auth/user/check/nick?user_Nick=확인할닉네임
-```
-
-</details>
-
-<details>
-<summary>Response</summary>
-
-|   TAG   |  value  |   note   |
-| :-----: | :-----: | :------: |
-| success | boolean |    -     |
-| isUsing | boolean | 사용여부 |
 
 </details>
