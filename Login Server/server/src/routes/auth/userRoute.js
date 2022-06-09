@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 // const Axios = require("axios");
 const axios = require("axios");
 
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "secret-key";
+const JWT_SECRET_KEY = process.env.SECRET_JWT_KEY || "secret-key";
 const cookieSettings = {
   jwt: {
     //쿠키를 세션 쿠키로 변경
