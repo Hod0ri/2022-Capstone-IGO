@@ -1,14 +1,12 @@
-import { ApiError } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
-import styled, { css } from 'styled-components';
+import { RecoilRoot } from 'recoil';
+import styled from 'styled-components';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import reset from 'styled-reset';
-import { fetchAuth } from '../core/api/fetchAuth';
-import { atomUserNick } from '../core/atoms/loginState';
 import Header from '../core/components/Header';
 import Navbar from '../core/components/Navbar';
+import useLoginState from '../core/hooks/useLoginState';
 const GlobalStyles = createGlobalStyle`
   
   ${reset} 
@@ -59,22 +57,20 @@ const BodyContainer = styled.div`
 `;
 
 //로그인 상태 확인
-const LoginCheck = ({ route }) => {
-  const [userNick, setUserNick] = useRecoilState(atomUserNick);
+const LoginState = () => {
+  const route = useRouter();
+  const { loginState } = useLoginState();
   useEffect(() => {
-    const getLoginState = async () => {
-      await fetchAuth
-        .refresh()
-        .then((res) => {
-          userNick || setUserNick(res.data.user_Nick);
-        })
-        .catch((e) => {
-          fetchAuth.logout().catch((e) => {});
-          route.push('/signin');
-        });
-    };
-
-    ['/signin', '/signup'].includes(route.asPath) || getLoginState();
+    if (loginState) {
+      if (route.asPath === '/signin' || route.asPath === '/signup') {
+        route.push('/');
+      }
+    } else {
+      //로그인 실패 상태
+      if (!(route.asPath === '/signin' || route.asPath === '/signup')) {
+        route.push('/signin');
+      }
+    }
   });
 };
 
@@ -85,9 +81,9 @@ const MyApp = ({ Component, pageProps }) => {
     <>
       <ThemeProvider theme={theme}>
         <RecoilRoot>
-          <LoginCheck route={route} />
           <GlobalStyles />
           <BodyContainer>
+            <LoginState />
             <Header route={route} />
             <Component {...pageProps} />
             <Navbar route={route} />

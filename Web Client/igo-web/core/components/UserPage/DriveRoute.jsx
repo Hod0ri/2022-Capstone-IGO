@@ -10,27 +10,29 @@ const DriveRouteContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  height: 60px;
-  margin-bottom: 20px;
+  /* height: 60px; */
+  /* margin-bottom: 20px; */
   p {
     color: ${(props) => props.theme.color.lightgray};
-    /* font-size: ${(props) => props.theme.fontSize.sm}; */
+    padding-left: 10px;
+    /* font-size: 18px; */
   }
+  color: ${(props) => props.theme.color.lightgray};
 `;
 
 const DrivePoint = styled.div`
   display: flex;
 `;
 
-const DriveRoute = ({ startPoint }) => {
+const DriveRoute = ({ size, startPoint }) => {
   return (
     <DriveRouteContainer>
       <DrivePoint>
         <Image
           className="MapPin"
           src={MapPin}
-          width={15}
-          height={15}
+          width={size}
+          height={size}
           alt={'MapPin'}
         />
         <p>{startPoint}</p>
@@ -38,16 +40,16 @@ const DriveRoute = ({ startPoint }) => {
       <Image
         className="ArrowDown"
         src={ArrowDown}
-        width={15}
-        height={15}
+        width={size}
+        height={size}
         alt={'ArrowDown'}
       />
       <DrivePoint>
         <Image
           className="Flag"
           src={Flag}
-          width={15}
-          height={15}
+          width={size}
+          height={size}
           alt={'Flag'}
         />
         <p>대림대학교</p>

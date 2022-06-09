@@ -50,11 +50,8 @@ const PointHistory = styled.div`
 `;
 
 const UsageHistory = ({ ...v }) => {
-  const { pot_Date, pot_Change, pot_Reaseon, pot_Amount } = v;
+  const { pot_Date, pot_Change, pot_Reason, pot_Amount } = v;
 
-  let today = pot_Date.slice(-2);
-
-  console.log(v);
   return (
     <UsageHistoryContainer>
       <PointHistory>
@@ -62,12 +59,12 @@ const UsageHistory = ({ ...v }) => {
           <p>{`${pot_Date.slice(5, 7)}.${pot_Date.slice(8, 10)}`}</p>
           <p>
             {pot_Change.toLocaleString()}P{' '}
-            {pot_Reaseon === '충전' ? '충전' : '사용'}
+            {pot_Reason === 'add' ? '충전' : '사용'}
           </p>
         </div>
         <div className="rightDiv">
-          <p className={`${pot_Reaseon === '충전' ? 'blue' : 'red'}`}>
-            {pot_Reaseon === '사용' && '-'}
+          <p className={`${pot_Reason === 'add' ? 'blue' : 'red'}`}>
+            {pot_Reason === 'use' && '-'}
             {pot_Change.toLocaleString()}P
           </p>
           <p>{pot_Amount.toLocaleString()}P</p>

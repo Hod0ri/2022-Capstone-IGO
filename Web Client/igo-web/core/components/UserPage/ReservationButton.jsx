@@ -3,15 +3,14 @@ import styled from 'styled-components';
 
 const ReservationButtonContainer = styled.div`
   width: 100%;
-  height: 50px;
+  height: 100%;
   display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  margin-bottom: 5px;
+  justify-content: space-between;
 `;
 
 const ButtonContainer = styled.button`
-  width: 120px;
+  width: 135px;
+  height: 40px;
   border-radius: 30px;
   border: none;
   color: ${(props) => props.theme.color.white};
