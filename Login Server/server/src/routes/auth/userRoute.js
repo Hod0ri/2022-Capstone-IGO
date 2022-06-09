@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 // const Axios = require("axios");
 const axios = require("axios");
 
-const JWT_SECRET_KEY = process.env.NODE_ENV === "development" ? "secret-key" : process.env.JWT_SECRET_KEY;
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "secret-key";
 const cookieSettings = {
   jwt: {
     //쿠키를 세션 쿠키로 변경
@@ -95,7 +95,7 @@ userRouter.get("/", async (req, res) => {
       if (user) {
         const accessToken = jwt.sign({ user_Id: user.user_Id }, JWT_SECRET_KEY, { expiresIn: "30m" });
         console.log(`${user.user_Id} access token 재발급`);
-        return res.status(201).cookie("jwt", accessToken, cookieSettings.jwt).send({ success: true, user_Nick: user.user_Nick });
+        return res.status(201).cookie("jwt", accessToken, cookieSettings.jwt).send({ success: true, user_Nick: user.user_Nick, user_Driver: user.user_Driver });
       } else {
         return res.status(400).clearCookie("jwt").clearCookie("refreshToken").send({ success: false, err: "invalid access" });
       }
@@ -130,7 +130,11 @@ userRouter.post("/login", async (req, res) => {
         //db저장
         await user.save();
 
-        return res.status(201).cookie("jwt", accessToken, cookieSettings.jwt).cookie("refreshToken", refreshToken, cookieSettings.exp).send({ success: true, user_Nick: user.user_Nick });
+        return res
+          .status(201)
+          .cookie("jwt", accessToken, cookieSettings.jwt)
+          .cookie("refreshToken", refreshToken, cookieSettings.exp)
+          .send({ success: true, user_Nick: user.user_Nick, user_Driver: user.user_Driver });
       });
     });
   } catch (err) {
@@ -200,6 +204,16 @@ userRouter.get("/logout", async (req, res) => {
     user_Id && (await User.findOneAndUpdate({ user_Id }, { $set: { token: "" } }));
   }
   return res.status(200).clearCookie("jwt").clearCookie("refreshToken").send({ success: true });
+});
+
+userRouter.get("/check/nick", async (req, res) => {
+  const { user_Nick } = req.query;
+  const user = await User.findOne({ user_Nick });
+  if (user) {
+    return res.status(200).send({ success: true, isUsing: true });
+  } else {
+    return res.status(200).send({ success: true, isUsing: false });
+  }
 });
 
 module.exports = { userRouter };

@@ -22,6 +22,10 @@ services:
     volumes:
       - "./API Server/:/home/API_Server"
     working_dir: /home/API_Server
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_JWT_KEY=${SECRET_JWT_KEY}
     links:
       - postgresql:postgres
     command: >
@@ -31,8 +35,6 @@ services:
       && python manage.py makemigrations
       && python manage.py migrate
       && python manage.py runserver 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
 
   ## ---Login 서버--- ##
   mongodb:
@@ -42,8 +44,8 @@ services:
     ports:
       - "3333:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_ID}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PW}
       - TZ=Asia/Seoul
     # volumes:
       # - "./Login Server/db/data:/data/db"
@@ -64,6 +66,10 @@ services:
     environment:
       - TZ=Asia/Seoul
       - NODE_ENV=development
+      - SECRET_JWT_KEY=${SECRET_JWT_KEY}
+      - COOKIE_SECRET_KEY=${COOKIE_SECRET_KEY}
+      - MONGO_ROOT_ID=${XphYoDQYTEKCRB}
+      - MONGO_ROOT_PW=${MONGO_ROOT_PW}
     links:
       - mongodb
       - django:backend
