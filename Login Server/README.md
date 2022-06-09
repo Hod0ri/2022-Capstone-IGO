@@ -230,3 +230,34 @@ mongodb://root:root@localhost:27017/loginService?authSource=admin&readPreference
 |   err   | String  | err state |
 
 </details>
+
+---
+
+### 5. 닉네임 중복 확인 ( get )
+
+<details>
+<summary>Request</summary>
+
+|   TAG   |           value           | required |
+| :-----: | :-----------------------: | :------: |
+| API URL | /api/auth/user/check/nick |    -     |
+|  query  |         user_Nick         |    v     |
+| Method  |            GET            |    -     |
+
+###### 요청 url의 최종 형태는 다음과 같다.
+
+```
+https://도메인/api/auth/user/check/nick?user_Nick=확인할닉네임
+```
+
+</details>
+
+<details>
+<summary>Response</summary>
+
+|   TAG   |  value  |   note   |
+| :-----: | :-----: | :------: |
+| success | boolean |    -     |
+| isUsing | boolean | 사용여부 |
+
+</details>

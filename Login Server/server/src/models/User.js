@@ -7,6 +7,7 @@ const UserSchema = new Schema(
     user_Nick: { type: String, required: true, unique: true },
     user_Pw: { type: String, required: true },
     user_Email: { type: String, required: true },
+    user_Driver: { type: Boolean, default: false },
     token: { type: String, default: "" },
   },
   { timestamps: true }
