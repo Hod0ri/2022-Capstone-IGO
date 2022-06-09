@@ -6,7 +6,7 @@ axios.defaults.withCredentials = true;
 export const fetchApi = {
   point: {
     post: async (data) => await axios.post(`${BASE_URL}/point/`, data),
-    get: async () => await axios.get(`${BASE_URL}/api/point/`),
+    get: async () => await axios.get(`${BASE_URL}/point/`),
   },
   issue: {
     post: async (data) => await axios.post(`${BASE_URL}/issue/`, data),
