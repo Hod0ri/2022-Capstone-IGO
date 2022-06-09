@@ -9,10 +9,10 @@ from Api.models import MatchData
 class SearchView(APIView):
     def get(self, request):
         if CheckUserID(request):
-            goal = request.GET.get['goal']
-            arrive = request.GET.get['arrive']
+            goal = str(request.GET.get('goal'))
+            arrive = str(request.GET.get('arrive'))
             if goal:
-                SearchGoal = list(MatchData.objects.filter(mc_Goal=goal))
+                SearchGoal = list(MatchData.objects.filter(mc_Goal=goal).values())
                 if SearchGoal:
                     response_json = {
                         'success': True,
@@ -27,7 +27,7 @@ class SearchView(APIView):
                     }
                     return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
             else:
-                SearchArrive = list(MatchData.objects.filter(mc_Arrive=arrive))
+                SearchArrive = list(MatchData.objects.filter(mc_Arrive=arrive).values())
                 if SearchArrive:
                     response_json = {
                         'success': True,
@@ -46,4 +46,4 @@ class SearchView(APIView):
                 'success': False,
                 'err': 'Member Does Not Exist'
             }
-        return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
