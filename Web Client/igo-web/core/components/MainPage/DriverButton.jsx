@@ -37,9 +37,9 @@ const DriverButtonContainer = styled.button`
   }
 `;
 
-const DriverButton = () => {
+const DriverButton = ({ ...props }) => {
   return (
-    <DriverButtonContainer>
+    <DriverButtonContainer {...props}>
       <div>
         <Image
           className="plus"

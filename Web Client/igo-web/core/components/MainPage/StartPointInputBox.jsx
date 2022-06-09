@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { fetchApi } from '../../api/fetchApi';
 import locationData from '../../etc/location/station.json';
 
 const ModalCardPositionContainer = styled.div`
@@ -88,9 +89,24 @@ const ButtonContainer = styled.div`
 `;
 
 const StartPointInputBox = ({ setIsTrue }) => {
+  const onClickPostMatch = async () => {
+    const startPointData = {
+      mc_Arrive: `${startPoint}`,
+      mc_ArriveTime: `${startTime}`,
+      mc_Goal: '대림대학교',
+      mc_Price: `${price}`,
+    };
+    await fetchApi.matchlog
+      .post(startPointData)
+      .then(() => {
+        setIsTrue(false);
+      })
+      .catch((e) => {});
+  };
   const [searchPoint, setSearchPoint] = useState('');
   const [startPoint, setStartPoint] = useState('');
-
+  const [price, setPrice] = useState('');
+  const [startTime, setStartTime] = useState('');
   return (
     <ModalCardPositionContainer>
       <ModalCardContainer>
@@ -109,11 +125,6 @@ const StartPointInputBox = ({ setIsTrue }) => {
           >
             입력
           </button>
-          {/* {console.log(locationData[0].name.includes('녹'))} */}
-          {/* {console.log(
-            locationData.filter((v) => v['name'].includes(startPoint))
-          )} */}
-          {console.log(startPoint)}
           <datalist id="route">
             {searchPoint != '' &&
               locationData
@@ -129,17 +140,29 @@ const StartPointInputBox = ({ setIsTrue }) => {
         </RouteContainer>
         <TimeContainer>
           <p>
-            출발 시간 : <input type="time" id="startTime"></input>
-          </p>
-          <p>
-            도착 시간 : <input type="time" id="arriveTime"></input>{' '}
+            출발 시간 :{' '}
+            <input
+              type="datetime-local"
+              id="startTime"
+              onChange={(e) => setStartTime(e.target.value)}
+            ></input>
+            {/* {console.log(startTime.split('T').join(' '))} */}
           </p>
         </TimeContainer>
         <p>
-          요금 : <input id="price" type="text"></input>원
+          요금 :{' '}
+          <input
+            id="price"
+            type="text"
+            onChange={(e) => setPrice(e.target.value)}
+          ></input>
+          원
         </p>
+        {console.log(price)}
         <ModalCardButtonContainer>
-          <ButtonContainer>확인</ButtonContainer>
+          <ButtonContainer onClick={() => onClickPostMatch()}>
+            확인
+          </ButtonContainer>
           <ButtonContainer onClick={() => setIsTrue(false)}>
             취소
           </ButtonContainer>

@@ -83,13 +83,14 @@ const Payment = ({ startPoint, userNick = '닉네임X' }) => {
         .get()
         .then((res) => {
           setData(res.data.result[0]);
+          console.log(res.data.result);
         })
         .catch((e) => {});
     };
-    isLoading && !data && getPoint();
+    !isLoading && !data && getPoint();
   }, [data, isLoading]);
 
-  const mm_Price = 0;
+  const mc_Price = 0;
   return (
     data && (
       <PaymentContainer>
@@ -109,15 +110,15 @@ const Payment = ({ startPoint, userNick = '닉네임X' }) => {
           </div>
           <div className="paymentInfo">
             <p>요금정보</p>
-            <p>{mm_Price.toLocaleString()}p</p>
+            <p>{mc_Price.toLocaleString()}p</p>
           </div>
           <div className="paymentInfo">
             <p>잔여 요금</p>
-            <p>{(data.pot_Amount - mm_Price).toLocaleString()}p</p>
+            <p>{(data.pot_Amount - mc_Price).toLocaleString()}p</p>
           </div>
           <div className="totalPayment">
             <p>총 결제금액</p>
-            <p>{mm_Price.toLocaleString()}p</p>
+            <p>{mc_Price.toLocaleString()}p</p>
           </div>
         </PaymentInfoContainer>
         <Button>예약하기</Button>

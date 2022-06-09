@@ -52,8 +52,6 @@ const PointHistory = styled.div`
 const UsageHistory = ({ ...v }) => {
   const { pot_Date, pot_Change, pot_Reason, pot_Amount } = v;
 
-  let today = pot_Date.slice(-2);
-
   return (
     <UsageHistoryContainer>
       <PointHistory>
