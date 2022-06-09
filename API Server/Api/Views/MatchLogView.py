@@ -15,50 +15,21 @@ class MatchLogView(APIView):
         tempdata = JSONParser().parse(request)
 
         if UserObj.user_Driver:
-            DriverLog = MatchData.objects.filter(
+            DriverLog = list(MatchData.objects.filter(
                 Q(mc_Driver=UserObj.user_Id) &
                 Q(mc_Match=False)
-            )
+            ).values())
             if DriverLog:
                 response_json = {
                     "success": False,
                     "err": "Match가 완료된 후 새로 게시 가능합니다."
                 }
                 return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
-            tempdata['mc_Driver'] = UserObj.user_Id
-            match_serializer = MatchDataSerializer(data=tempdata)
-            if match_serializer.is_valid():
-                match_serializer.save()
-                response_json = {
-                    'success': True,
-                    'err': ''
-                }
-                return JsonResponse(response_json, status=status.HTTP_201_CREATED)
             else:
-                response_json = {
-                    'success': False,
-                    'err': match_serializer.errors
-                }
-                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            MemberLog = MatchMember.objects.filter(
-                Q(mm_Member=UserObj.user_Id) &
-                Q(mm_Match=False)
-            )
-            if MemberLog:
-                response_json = {
-                    "success": False,
-                    "err": "Match가 완료된 후 새로 게시 가능합니다."
-                }
-                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
-            tempdata['mm_Member'] = UserObj.user_Id
-            matchdata = MatchData.objects.get(mc_Driver=tempdata['mm_Driver'])
-
-            if matchdata:
-                tempdata['mm_Driver'] = matchdata.mc_Driver
-                matchmember_serializer = MatchMemberSerializer(data=tempdata)
-                if matchmember_serializer.is_valid():
-                    matchmember_serializer.save()
+                tempdata['mc_Driver'] = UserObj.user_Id
+                match_serializer = MatchDataSerializer(data=tempdata)
+                if match_serializer.is_valid():
+                    match_serializer.save()
                     response_json = {
                         'success': True,
                         'err': ''
@@ -67,15 +38,46 @@ class MatchLogView(APIView):
                 else:
                     response_json = {
                         'success': False,
-                        'err': matchmember_serializer.errors
+                        'err': match_serializer.errors
                     }
                     return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
-            else:
+        else:
+            MemberLog = list(MatchMember.objects.filter(
+                Q(mm_Member=UserObj.user_Id) &
+                Q(mm_Match=False)
+            ).values())
+            if MemberLog:
                 response_json = {
-                    'success': False,
-                    'err': 'MatchData does not exist'
+                    "success": False,
+                    "err": "Match가 완료된 후 새로 게시 가능합니다."
                 }
                 return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                tempdata['mm_Member'] = UserObj.user_Id
+                matchdata = MatchData.objects.get(mc_Driver=tempdata['mm_Driver'])
+
+                if matchdata:
+                    tempdata['mm_Driver'] = matchdata.mc_Driver
+                    matchmember_serializer = MatchMemberSerializer(data=tempdata)
+                    if matchmember_serializer.is_valid():
+                        matchmember_serializer.save()
+                        response_json = {
+                            'success': True,
+                            'err': ''
+                        }
+                        return JsonResponse(response_json, status=status.HTTP_201_CREATED)
+                    else:
+                        response_json = {
+                            'success': False,
+                            'err': matchmember_serializer.errors
+                        }
+                        return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    response_json = {
+                        'success': False,
+                        'err': 'MatchData does not exist'
+                    }
+                    return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
         UserObj = CheckUserID(request)
