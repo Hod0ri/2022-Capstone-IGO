@@ -4,7 +4,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const { userRouter } = require("./routes/auth/userRoute");
-const MONGO_ROOT_DATA = process.env.NODE_ENV === "development" ? "root:root" : process.env.MONGO_ROOT_DATA;
+const MONGO_ROOT_DATA = process.env.MONGO_ROOT_ID ? "root:root" : `${process.env.MONGO_ROOT_ID}:${process.env.MONGO_ROOT_PW}`;
 const MONGO_URI = `mongodb://${MONGO_ROOT_DATA}@mongodb/LoginServer?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false`;
 const COOKIE_SECRET_KEY = process.env.NODE_ENV === "development" ? "cookie-key" : process.env.COOKIE_SECRET_KEY;
 const cors = require("cors");
