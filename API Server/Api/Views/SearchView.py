@@ -9,10 +9,10 @@ from Api.models import MatchData
 class SearchView(APIView):
     def get(self, request):
         if CheckUserID(request):
-            goal = request.GET.get('goal')
-            arrive = request.GET.get('arrive')
+            goal = request.GET.get['goal']
+            arrive = request.GET.get['arrive']
             if goal:
-                SearchGoal = list(MatchData.objects.filter(mc_goal=goal))
+                SearchGoal = list(MatchData.objects.filter(mc_Goal=goal))
                 if SearchGoal:
                     response_json = {
                         'success': True,
