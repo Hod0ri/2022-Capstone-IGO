@@ -1,3 +1,4 @@
+from django.core.exceptions import FieldError, FieldDoesNotExist
 from django.db import transaction
 from django.db.models import Q
 from django.http import JsonResponse
@@ -83,48 +84,75 @@ class MatchView(APIView):
             return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        UserObj = CheckUserID(request)
+        # UserObj = CheckUserID(request)
+        UserObj = Member.objects.get(user_Id='user12')
         if UserObj.user_Driver:
-            MatchLog = list(
-                MatchMember.objects.filter(
-                    Q(mm_Driver=UserObj.user_Id) &
-                    Q(mm_Match=True)
-                ).values(
-                    'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Price', 'mm_Match'
+            try:
+                MatchLog = list(
+                    MatchMember.objects.filter(
+                        Q(mm_Driver=UserObj.user_Id) &
+                        Q(mm_Match=True)
+                    ).values(
+                        'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Price', 'mm_Match'
+                    )
                 )
-            )
-            if MatchLog:
-                response_json = {
-                    'success': True,
-                    'data': MatchLog,
-                    'err': ''
-                }
-                return JsonResponse(response_json, status=status.HTTP_200_OK)
-            else:
+                if MatchLog:
+                    response_json = {
+                        'success': True,
+                        'data': MatchLog,
+                        'err': ''
+                    }
+                    return JsonResponse(response_json, status=status.HTTP_200_OK)
+                else:
+                    response_json = {
+                        'success': False,
+                        'err': 'MatchData does not exist'
+                    }
+                    return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
+            except FieldDoesNotExist:
                 response_json = {
                     'success': False,
-                    'err': 'MatchData does not exist'
+                    'err': 'FieldDoesNotExist'
+                }
+                return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
+            except FieldError:
+                response_json = {
+                    'success': False,
+                    'err': 'FieldError'
                 }
                 return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
         else:
-            MemberLog = list(
-                MatchMember.objects.filter(
-                    Q(mm_Member=UserObj.user_Id) &
-                    Q(mm_Match=True)
-                ).values(
-                    'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Price', 'mm_Match'
+            try:
+                MemberLog = list(
+                    MatchMember.objects.filter(
+                        Q(mm_Member=UserObj.user_Id) &
+                        Q(mm_Match=True)
+                    ).values(
+                        'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Price', 'mm_Match'
+                    )
                 )
-            )
-            if MemberLog:
-                response_json = {
-                    'success': True,
-                    'data': MemberLog,
-                    'err': ''
-                }
-                return JsonResponse(response_json, status=status.HTTP_200_OK)
-            else:
+                if MemberLog:
+                    response_json = {
+                        'success': True,
+                        'data': MemberLog,
+                        'err': ''
+                    }
+                    return JsonResponse(response_json, status=status.HTTP_200_OK)
+                else:
+                    response_json = {
+                        'success': False,
+                        'err': 'MatchData Does Not Exist'
+                    }
+                    return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
+            except FieldDoesNotExist:
                 response_json = {
                     'success': False,
-                    'err': 'MatchData Does Not Exist'
+                    'err': 'FieldDoesNotExist'
                 }
-                return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
+            except FieldError:
+                response_json = {
+                    'success': False,
+                    'err': 'FieldError'
+                }
+                return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
