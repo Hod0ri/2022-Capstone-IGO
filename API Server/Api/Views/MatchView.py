@@ -45,8 +45,8 @@ class MatchView(APIView):
                 MemberObj.mm_Match = True
                 MemberObj.save()
                 PointMember = Member.objects.get(user_Id=MemberObj.mm_Member)
-                MemberAmount = PointMember.user_Point - MemberObj.mm_Price
-                DriverAmount = UserObj.user_Point + MemberObj.mm_Price
+                MemberAmount = PointMember.user_Point - DriverObj.mc_Price
+                DriverAmount = UserObj.user_Point + DriverObj.mc_Price
 
                 PointMember.user_Point = MemberAmount
                 PointMember.save()
@@ -59,7 +59,7 @@ class MatchView(APIView):
                     pot_Amount=MemberAmount,
                     pot_Date=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     pot_Reason='매칭 결제',
-                    pot_Change=MemberObj.mm_Price
+                    pot_Change=DriverObj.mc_Price
                 )
                 MemberPointTable.save()
 
@@ -68,7 +68,7 @@ class MatchView(APIView):
                     pot_Amount=DriverAmount,
                     pot_Date=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     pot_Reason='매칭 충전',
-                    pot_Change=MemberObj.mm_Price
+                    pot_Change=DriverObj.mc_Price
                 )
                 DriverPointTable.save()
                 response_json = {
@@ -88,11 +88,8 @@ class MatchView(APIView):
         if UserObj.user_Driver:
             try:
                 MatchLog = list(
-                    MatchMember.objects.filter(
-                        Q(mm_Driver=UserObj.user_Id) &
-                        Q(mm_Match=True)
-                    ).values(
-                        'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Price', 'mm_Match'
+                    MatchMember.objects.filter(mm_Driver=UserObj.user_Id).values(
+                        'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Match'
                     )
                 )
                 if MatchLog:
@@ -123,11 +120,8 @@ class MatchView(APIView):
         else:
             try:
                 MemberLog = list(
-                    MatchMember.objects.filter(
-                        Q(mm_Member=UserObj.user_Id) &
-                        Q(mm_Match=True)
-                    ).values(
-                        'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Price', 'mm_Match'
+                    MatchMember.objects.filter(mm_Member=UserObj.user_Id).values(
+                        'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Match'
                     )
                 )
                 if MemberLog:
