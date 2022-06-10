@@ -84,8 +84,7 @@ class MatchView(APIView):
             return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        # UserObj = CheckUserID(request)
-        UserObj = Member.objects.get(user_Id='user12')
+        UserObj = CheckUserID(request)
         if UserObj.user_Driver:
             try:
                 MatchLog = list(
