@@ -8,8 +8,9 @@ import { fetchAuth } from '../../api/fetchAuth';
 
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { atomUserNick } from '../../atoms/loginState';
+import Loading from '../Common/Loading';
 
 const BodyStyle = styled.div`
   margin: 0 auto;
@@ -60,13 +61,16 @@ const ServiceArea = styled.div`
     font-size: 25px;
   }
 `;
-
 const SignIn = () => {
   const router = useRouter();
   const [inputData, setInputData] = useState({ user_Id: '', user_Pw: '' });
-  const setUserNick = useSetRecoilState(atomUserNick);
+
+  const [userNickaa, setUserNick] = useRecoilState(atomUserNick);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isData, setisData] = useState(false);
   const onLoginClick = async () => {
     let checkState = true;
+
     ['user_Id', 'user_Pw'].forEach((str) => {
       if (!checkValue[str](inputData[str])) {
         checkState = false;
@@ -75,74 +79,82 @@ const SignIn = () => {
     });
 
     if (checkState) {
+      setIsLoading(true);
       await fetchAuth
         .login(inputData)
         .then((res) => {
           //상태 저장
           setUserNick(res.data.user_Nick);
-          router.push('/');
+          setIsLoading(false);
+          setisData(true);
+          setTimeout(() => {
+            router.push('/');
+          }, 200);
         })
         .catch((err) => {
           alert(`아이디 혹은 비밀번호를 확인해 주세요 !`);
+          setIsLoading(false);
           //로그 확인
-          console.log(err.response.data.err);
+          // console.log(err.response.data.err);
         });
     } else {
       alert('아이디 혹은 비밀번호를 확인해 주세요 !');
     }
   };
-  return (
-    <>
-      <BodyStyle>
-        <p>아이디</p>
-        <InputBox
-          placeholder="아이디 입력"
-          type="email"
-          value={inputData.user_Id}
-          onChange={(e) =>
-            setInputData({ ...inputData, user_Id: e.target.value })
-          }
-        />
+  const userNick = useRecoilValue(atomUserNick);
+  console.log(userNick);
+  return isData ? (
+    <Loading />
+  ) : (
+    <BodyStyle>
+      <p>아이디</p>
+      <InputBox
+        placeholder="아이디 입력"
+        type="email"
+        value={inputData.user_Id}
+        onChange={(e) =>
+          setInputData({ ...inputData, user_Id: e.target.value })
+        }
+      />
 
-        <p>비밀번호</p>
-        <InputBox
-          placeholder="비밀번호 입력"
-          type="password"
-          value={inputData.user_Pw}
-          onChange={(e) =>
-            setInputData({ ...inputData, user_Pw: e.target.value })
-          }
-        />
+      <p>비밀번호</p>
+      <InputBox
+        placeholder="비밀번호 입력"
+        type="password"
+        value={inputData.user_Pw}
+        onChange={(e) =>
+          setInputData({ ...inputData, user_Pw: e.target.value })
+        }
+      />
 
-        <SubArea>
-          <ul>
-            <li>
-              <a href="#">아이디 찾기</a>
-            </li>
-            <li>
-              <a href="#">비밀번호 찾기</a>
-            </li>
-            <li>
-              <Link href="/signup">
-                <a>회원가입</a>
-              </Link>
-            </li>
-          </ul>
-        </SubArea>
+      <SubArea>
+        <ul>
+          <li>
+            <a href="#">아이디 찾기</a>
+          </li>
+          <li>
+            <a href="#">비밀번호 찾기</a>
+          </li>
+          <li>
+            <Link href="/signup">
+              <a>회원가입</a>
+            </Link>
+          </li>
+        </ul>
+      </SubArea>
 
-        <Button onClick={() => onLoginClick()}>로그인</Button>
+      <Button onClick={() => onLoginClick()}>로그인</Button>
 
-        <ServiceArea>
-          <a href="#">1:1 문의하기</a>
-          <AiOutlineRight className="RightBtn" />
-        </ServiceArea>
+      <ServiceArea>
+        <a href="#">1:1 문의하기</a>
+        <AiOutlineRight className="RightBtn" />
+      </ServiceArea>
 
-        <ServiceArea>
-          <a href="#">고객센터</a>
-          <AiOutlineRight className="RightBtn" />
-        </ServiceArea>
-      </BodyStyle>
-    </>
+      <ServiceArea>
+        <a href="#">고객센터</a>
+        <AiOutlineRight className="RightBtn" />
+      </ServiceArea>
+    </BodyStyle>
   );
 };
 

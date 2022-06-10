@@ -1,20 +1,20 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import styled from 'styled-components';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import reset from 'styled-reset';
 import Header from '../core/components/Header';
 import Navbar from '../core/components/Navbar';
-import useLoginState from '../core/hooks/useLoginState';
 const GlobalStyles = createGlobalStyle`
-  
   ${reset} 
-  
+  html{
+    position : relative;
+  }
   * ,body{
     font-family: 'Noto Sans KR', sans-serif;
     box-sizing: border-box;
     outline: none;
+    
   }
 `;
 const theme = {
@@ -55,25 +55,6 @@ const BodyContainer = styled.div`
     height: 100%;
   }
 `;
-
-//로그인 상태 확인
-const LoginState = () => {
-  const route = useRouter();
-  const { loginState } = useLoginState();
-  useEffect(() => {
-    if (loginState) {
-      if (route.asPath === '/signin' || route.asPath === '/signup') {
-        route.push('/');
-      }
-    } else {
-      //로그인 실패 상태
-      if (!(route.asPath === '/signin' || route.asPath === '/signup')) {
-        route.push('/signin');
-      }
-    }
-  });
-};
-
 const MyApp = ({ Component, pageProps }) => {
   const route = useRouter();
 
@@ -83,7 +64,6 @@ const MyApp = ({ Component, pageProps }) => {
         <RecoilRoot>
           <GlobalStyles />
           <BodyContainer>
-            <LoginState />
             <Header route={route} />
             <Component {...pageProps} />
             <Navbar route={route} />
