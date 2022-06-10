@@ -1,11 +1,11 @@
-import { useRouter } from 'next/router';
+import { useRouter, withRouter } from 'next/router';
 import React from 'react';
 import useLoginState from '../../hooks/useLoginState';
 import Loading from './Loading';
 
-const Auth = ({ auth = false, children }) => {
+const Auth = ({ auth = false, children, router }) => {
   const { loginState, isLoading } = useLoginState();
-  const router = useRouter();
+  // const router = useRouter();
   const notLoginPages = ['/signin', '/signup'];
   if (isLoading) return <Loading />;
   if ((loginState && auth) || (!loginState && !auth)) {
@@ -14,12 +14,12 @@ const Auth = ({ auth = false, children }) => {
     //로그아웃상태의 페이지 진입시
     const isInner = notLoginPages.includes(router.asPath);
     if (auth) {
-      router.push('/signin');
+      typeof window !== 'undefined' && router.push('/signin');
     } else {
-      router.push('/');
+      typeof window !== 'undefined' && router.push('/');
     }
   }
   return <Loading />;
 };
 
-export default Auth;
+export default withRouter(Auth);
