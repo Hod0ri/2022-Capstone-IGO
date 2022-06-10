@@ -15,7 +15,8 @@ class SearchView(APIView):
             if arrive:
                 SearchArrive = list(MatchData.objects.filter(
                     Q(mc_Arrive=arrive) &
-                    ~Q(mc_Driver=UserObj.user_Id)
+                    ~Q(mc_Driver=UserObj.user_Id) &
+                    Q(mc_Match=False)
                 ).values(
                     "mc_Driver", "mc_Arrive", "mc_ArriveTime", "mc_Goal", "mc_Price", "mc_Desc", "mc_Count"
                 ))
@@ -34,7 +35,7 @@ class SearchView(APIView):
                     return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
 
             else:
-                SearchAll = list(MatchData.objects.filter(~Q(mc_Driver=UserObj.user_Id)).values(
+                SearchAll = list(MatchData.objects.filter(~Q(mc_Driver=UserObj.user_Id) & Q(mc_Match=False)).values(
                     "mc_Driver", "mc_Arrive", "mc_ArriveTime", "mc_Goal", "mc_Price", "mc_Desc", "mc_Count"
                 ))
                 if SearchAll:
