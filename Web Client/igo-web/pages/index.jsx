@@ -6,6 +6,7 @@ import StartPointInputBox from '../core/components/MainPage/StartPointInputBox';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { atomUserDriver } from '../core/atoms/loginState';
 import { fetchApi } from '../core/api/fetchApi';
+import Auth from '../core/components/Common/Auth';
 
 const StyledDriverButton = styled.div`
   margin-top: 50px;
@@ -32,14 +33,13 @@ const Home = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTrue, setIsTrue] = useState(false);
   const userDriver = useRecoilValue(atomUserDriver);
-
+  console.log(userDriver);
   useEffect(() => {
     const getData = async () => {
       await fetchApi.search
         .get()
         .then((res) => {
           setMatchData(res.data);
-          // console.log(res.data);
         })
         .catch((e) => {
           console.log(e.response);
@@ -48,21 +48,19 @@ const Home = () => {
     inputValue ? getData(inputValue) : getData();
   }, [inputValue]);
   return (
-    <StyledDriverButton>
-      {userDriver && <DriverButton onClick={() => setIsTrue(true)} />}
-      <div className="moreListContainer">
-        <p className="moreTitle">더 많은 카풀 정보들을 만나보세요!</p>
-      </div>
-      {isTrue && <StartPointInputBox setIsTrue={setIsTrue} />}
-      {matchData &&
-        matchData.data.map((v, index) => {
-          return <UserPage type={'home'} {...v} key={index} />;
-        })}
-      {/* {point &&
-        point.map((v, index) => {
-          return <UsageHistory {...v} key={index} />;
-        })} */}
-    </StyledDriverButton>
+    <Auth auth={true}>
+      <StyledDriverButton>
+        {userDriver && <DriverButton onClick={() => setIsTrue(true)} />}
+        <div className="moreListContainer">
+          <p className="moreTitle">더 많은 카풀 정보들을 만나보세요!</p>
+        </div>
+        {isTrue && <StartPointInputBox setIsTrue={setIsTrue} />}
+        {matchData &&
+          matchData.data.map((v, index) => {
+            return <UserPage type={'home'} {...v} key={index} />;
+          })}
+      </StyledDriverButton>
+    </Auth>
   );
 };
 
