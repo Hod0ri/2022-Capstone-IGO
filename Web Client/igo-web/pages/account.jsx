@@ -13,10 +13,7 @@ const Account = () => {
   const user_Nick = useRecoilValue(atomUserNick);
 
   const [inputData, setInputData] = useState({
-    user_Id: '',
     user_Nick: '',
-    user_Name: '',
-    user_Pw: '',
     user_Driver: false,
     user_Phone: '',
     user_Email: '',
@@ -39,32 +36,29 @@ const Account = () => {
     let checkState = true;
 
     //입력값 정규 필터링
-    [
-      'user_Id',
-      'user_Nick',
-      'user_Email',
-      'user_Name',
-      'user_Phone',
-      'user_Pw',
-    ].forEach((str) => {
+    ['user_Nick', 'user_Email', 'user_Phone'].forEach((str) => {
       if (!checkValue[str](inputData[str])) {
         checkState = false;
         return;
       }
     });
 
-    await fetchAuth
-      .update(inputData)
-      .then((res) => {
-        if (res.data.success) {
-          alert('수정 되었습니다.');
-        } else {
+    if (checkState) {
+      await fetchAuth
+        .update(inputData)
+        .then((res) => {
+          if (res.data.success) {
+            alert('수정 되었습니다.');
+          } else {
+            alert('입력값을 확인해 주세요!');
+          }
+        })
+        .catch((err) => {
           alert('입력값을 확인해 주세요!');
-        }
-      })
-      .catch((err) => {
-        alert('입력값을 확인해 주세요!');
-      });
+        });
+    } else {
+      alert('입력값을 확인해 주세요!');
+    }
   };
 
   return (
@@ -73,11 +67,22 @@ const Account = () => {
         <UserLogo />
         <div className="inputBox">
           <p>이메일</p>
-          <InputBox placeholder="example@igo.com" />
-          <p>이름</p>
-          <InputBox placeholder="홍길동" />
+          <InputBox
+            placeholder="example@igo.com"
+            type="email"
+            onChange={(e) =>
+              setInputData({ ...inputData, user_Email: e.target.value })
+            }
+            value={inputData['user_Email']}
+          />
           <p>닉네임</p>
-          <InputBox placeholder={user_Nick || '닉네임x'} />
+          <InputBox
+            placeholder={user_Nick || '닉네임x'}
+            onChange={(e) =>
+              setInputData({ ...inputData, user_Nick: e.target.value })
+            }
+            value={inputData['user_Nick']}
+          />
           <p>휴대전화</p>
           <InputBox
             type="phone"
