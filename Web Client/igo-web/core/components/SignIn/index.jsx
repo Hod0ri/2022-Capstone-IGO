@@ -128,10 +128,14 @@ const SignIn = () => {
       <SubArea>
         <ul>
           <li>
-            <a href="#">아이디 찾기</a>
+            <Link href="/findid">
+              <a>아이디 찾기</a>
+            </Link>
           </li>
           <li>
-            <a href="#">비밀번호 찾기</a>
+            <Link href="/findpw">
+              <a>비밀번호 찾기</a>
+            </Link>
           </li>
           <li>
             <Link href="/signup">
