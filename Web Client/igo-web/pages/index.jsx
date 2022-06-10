@@ -29,22 +29,24 @@ const StyledDriverButton = styled.div`
 
 const Home = () => {
   const [matchData, setMatchData] = useState('');
-  const getData = async () => {
-    await fetchApi.search
-      .get()
-      .then((res) => {
-        setMatchData(res.data);
-        console.log(res.data);
-      })
-      .catch((e) => {
-        console.log(e.response);
-      });
-  };
-  getData('독산');
+  const [inputValue, setInputValue] = useState('');
   const [isTrue, setIsTrue] = useState(false);
-  // const [userDriver, setUserDriver] = useRecoilState(atomUserDriver);
   const userDriver = useRecoilValue(atomUserDriver);
-  console.log(isTrue);
+
+  useEffect(() => {
+    const getData = async () => {
+      await fetchApi.search
+        .get()
+        .then((res) => {
+          setMatchData(res.data);
+          // console.log(res.data);
+        })
+        .catch((e) => {
+          console.log(e.response);
+        });
+    };
+    inputValue ? getData(inputValue) : getData();
+  }, [inputValue]);
   return (
     <StyledDriverButton>
       {userDriver && <DriverButton onClick={() => setIsTrue(true)} />}
@@ -52,7 +54,14 @@ const Home = () => {
         <p className="moreTitle">더 많은 카풀 정보들을 만나보세요!</p>
       </div>
       {isTrue && <StartPointInputBox setIsTrue={setIsTrue} />}
-      <UserPage type={'home'} matchData={matchData} />
+      {matchData &&
+        matchData.data.map((v, index) => {
+          return <UserPage type={'home'} {...v} key={index} />;
+        })}
+      {/* {point &&
+        point.map((v, index) => {
+          return <UsageHistory {...v} key={index} />;
+        })} */}
     </StyledDriverButton>
   );
 };

@@ -21,10 +21,10 @@ const ReservationContainer = styled.div`
   background: ${(props) => props.theme.color.white};
 `;
 
-const Reservation = (props) => {
+const Reservation = ({ ...v }) => {
   return (
     <ReservationContainer>
-      <Route {...props} />
+      <Route {...v} />
       {/* <ReservationButton /> */}
       <Button color="green" round="true">
         예약하기

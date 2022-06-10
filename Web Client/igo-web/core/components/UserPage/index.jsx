@@ -11,11 +11,10 @@ const UserPageContainer = styled.div`
   justify-content: center;
 `;
 
-const UserPage = ({ startPoint = '안양' }) => {
+const UserPage = ({ type, ...v }) => {
   return (
     <UserPageContainer>
-      {/* <Reservation startPoint={startPoint} /> */}
-      {<Payment startPoint={startPoint} />}
+      {type === 'home' ? <Reservation {...v} /> : <Payment {...v} />}
     </UserPageContainer>
   );
 };
