@@ -8,14 +8,14 @@ import Button from '../Common/Button';
 import { fetchApi } from '../../api/fetchApi';
 import { useRecoilValue } from 'recoil';
 import useLoginState from '../../hooks/useLoginState';
+import { atomMatchDetail } from '../../atoms/matchState';
+import { useRouter } from 'next/router';
 
 const PaymentContainer = styled.div`
   display: flex;
-  /* border: 1px solid black; */
   max-width: 400px;
   width: 100%;
   flex-direction: column;
-  /* padding: 15px; */
   h1 {
     font-size: ${(props) => props.theme.fontSize.lg};
     border-bottom: 2px solid ${(props) => props.theme.color.lightgray};
@@ -65,18 +65,38 @@ const PaymentInfoContainer = styled.div`
     color: ${(props) => props.theme.color.black};
   }
   div {
-    /* & {
-      padding-bottom: 15px;
-    } */
     & {
       border-top: 2px solid ${(props) => props.theme.color.lightgray};
     }
   }
 `;
 
-const Payment = ({ startPoint, userNick = '닉네임X' }) => {
+const Payment = () => {
+  const detailData = useRecoilValue(atomMatchDetail);
+  const { mc_Driver, mc_Arrive, mc_Price } = detailData;
+  const route = useRouter();
   const { isLoading } = useLoginState();
   const [data, setData] = useState('');
+  const [pickUp, setPickUp] = useState('');
+  console.log(pickUp);
+  const onClickPostReservation = async () => {
+    const userReservationData = {
+      mm_Driver: `${mc_Driver}`,
+      mm_ArriveTime: `${pickUp}`,
+      mm_Arrive: `${mc_Arrive}`,
+      mm_Goal: '대림대학교',
+      mm_Match: 'false',
+    };
+    await fetchApi.matchlog
+      .post(userReservationData)
+      .then(() => {
+        route.push('/car');
+      })
+      .catch((e) => {
+        e.response;
+      });
+  };
+
   useEffect(() => {
     const getPoint = async () => {
       await fetchApi.point
@@ -90,18 +110,24 @@ const Payment = ({ startPoint, userNick = '닉네임X' }) => {
     !isLoading && !data && getPoint();
   }, [data, isLoading]);
 
-  const mc_Price = 0;
   return (
     data && (
       <PaymentContainer>
         <h1>예약결제</h1>
+        <p>
+          예상 탑승시간 :{' '}
+          <input
+            id="pickUp"
+            type="datetime-local"
+            onChange={(e) => setPickUp(e.target.value)}
+          ></input>
+        </p>
         <DriveRouteContainer>
           <div className="userLogo">
             <Image alt={'사용자'} src={Male} width={65} height={65} />
-            <p>{userNick}</p>
+            <p>{mc_Driver}</p>
           </div>
-          <DriveRoute size={'25px'} startPoint={startPoint} />
-          {/* <StateContainer location={startPoint} /> */}
+          <DriveRoute size={'25px'} startPoint={mc_Arrive} />
         </DriveRouteContainer>
         <PaymentInfoContainer>
           <div className="paymentInfo">
@@ -113,15 +139,15 @@ const Payment = ({ startPoint, userNick = '닉네임X' }) => {
             <p>{mc_Price.toLocaleString()}p</p>
           </div>
           <div className="paymentInfo">
-            <p>잔여 요금</p>
+            <p>예상 잔여 요금</p>
             <p>{(data.pot_Amount - mc_Price).toLocaleString()}p</p>
           </div>
           <div className="totalPayment">
-            <p>총 결제금액</p>
+            <p>예상 결제금액</p>
             <p>{mc_Price.toLocaleString()}p</p>
           </div>
         </PaymentInfoContainer>
-        <Button>예약하기</Button>
+        <Button onClick={() => onClickPostReservation()}>예약 신청하기</Button>
       </PaymentContainer>
     )
   );

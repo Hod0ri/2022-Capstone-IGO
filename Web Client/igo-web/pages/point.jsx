@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Auth from '../core/components/Common/Auth';
 import PointPage from '../core/components/PointPage';
 
 const PointPageContainer = styled.div`
@@ -8,9 +9,11 @@ const PointPageContainer = styled.div`
 
 const Point = () => {
   return (
-    <PointPageContainer>
-      <PointPage />
-    </PointPageContainer>
+    <Auth auth={true}>
+      <PointPageContainer>
+        <PointPage />
+      </PointPageContainer>
+    </Auth>
   );
 };
 

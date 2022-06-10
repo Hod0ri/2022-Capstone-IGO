@@ -38,7 +38,10 @@ const DriveInfo = styled.div`
   }
 `;
 const Route = ({ ...v }) => {
-  const { mc_Arrive, mc_ArriveTime } = v;
+  const { type } = v;
+  const { mc_Arrive, mc_ArriveTime, mm_Arrive, mm_ArriveTime } = v;
+  const Arrive = type === 'home' ? mc_Arrive : mm_Arrive;
+  const ArriveTime = type === 'home' ? mc_ArriveTime : mm_ArriveTime;
   let day = new Date(mc_ArriveTime);
   const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
   let week = WEEKDAY[day.getDay()];
@@ -48,7 +51,7 @@ const Route = ({ ...v }) => {
         <div className="driverImage">
           <Image alt={'사용자'} src={Male} width={60} height={60} />
         </div>
-        <DriveRoute startPoint={mc_Arrive} />
+        <DriveRoute startPoint={Arrive} />
       </div>
       <DriveInfo>
         <Image
@@ -59,14 +62,14 @@ const Route = ({ ...v }) => {
           alt={'Clock'}
         />
         <p>
-          {mc_ArriveTime.slice(5, 10)}({week}) {mc_ArriveTime.slice(11, 13)}시{' '}
-          {mc_ArriveTime.slice(14, 16)}분 출발
+          {ArriveTime.slice(5, 10)}({week}) {ArriveTime.slice(11, 13)}시{' '}
+          {ArriveTime.slice(14, 16)}분 출발
         </p>
       </DriveInfo>
       <DriveInfo>
         <p>
-          {mc_ArriveTime.slice(11, 13)}시 {mc_ArriveTime.slice(14, 16)}분에
-          카풀하실 분 구합니다.
+          {ArriveTime.slice(11, 13)}시 {ArriveTime.slice(14, 16)}분에 카풀하실
+          분 구합니다.
         </p>
       </DriveInfo>
     </RoutContainer>

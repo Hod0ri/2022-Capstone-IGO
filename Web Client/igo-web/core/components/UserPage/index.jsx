@@ -11,10 +11,14 @@ const UserPageContainer = styled.div`
   justify-content: center;
 `;
 
-const UserPage = ({ type, ...v }) => {
+const UserPage = ({ type, confirm, ...v }) => {
   return (
     <UserPageContainer>
-      {type === 'home' ? <Reservation {...v} /> : <Payment {...v} />}
+      {type === 'home' || type === 'car' ? (
+        <Reservation type={type} confirm={confirm} {...v} />
+      ) : (
+        <Payment {...v} />
+      )}
     </UserPageContainer>
   );
 };

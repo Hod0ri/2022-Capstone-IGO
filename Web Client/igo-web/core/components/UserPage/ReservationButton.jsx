@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fetchApi } from '../../api/fetchApi';
 
 const ReservationButtonContainer = styled.div`
   width: 100%;
@@ -31,12 +32,29 @@ const ButtonContainer = styled.button`
 `;
 
 const ReservationButton = () => {
+  const onClickPostMatch = async () => {
+    await fetchApi.match
+      .post()
+      .then(() => {
+        location.reload();
+      })
+      .catch((e) => e.response);
+  };
+  const onClickPostCancel = async () => {
+    await fetchApi.matchlog
+      .delete()
+      .then((res) => {
+        console.log(res.data);
+        location.reload();
+      })
+      .catch((e) => e.response);
+  };
   return (
     <ReservationButtonContainer>
-      <ButtonContainer className="confirm">
+      <ButtonContainer className="confirm" onClick={() => onClickPostMatch()}>
         <p>예약확인</p>
       </ButtonContainer>
-      <ButtonContainer className="cancel">
+      <ButtonContainer className="cancel" onClick={() => onClickPostCancel()}>
         <p>예약취소</p>
       </ButtonContainer>
     </ReservationButtonContainer>

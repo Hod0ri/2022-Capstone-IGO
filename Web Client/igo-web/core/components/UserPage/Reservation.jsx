@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import Route from './Route';
 import ReservationButton from './ReservationButton';
 import Review from './Review';
 import Button from '../Common/Button';
+import Route from './Route';
+import { useSetRecoilState } from 'recoil';
+import { atomMatchDetail } from '../../atoms/matchState';
+import { useRouter } from 'next/router';
 
 const ReservationContainer = styled.div`
   border: 2px solid ${(props) => props.theme.color.gray};
@@ -22,13 +25,25 @@ const ReservationContainer = styled.div`
 `;
 
 const Reservation = ({ ...v }) => {
+  const setMatchData = useSetRecoilState(atomMatchDetail);
+  const { type, confirm } = v;
+  const route = useRouter();
   return (
     <ReservationContainer>
       <Route {...v} />
-      {/* <ReservationButton /> */}
-      <Button color="green" round="true">
-        예약하기
-      </Button>
+      {type === 'car' && confirm === false && <ReservationButton />}
+      {type === 'home' && (
+        <Button
+          color="green"
+          round="true"
+          onClick={() => {
+            setMatchData(v);
+            route.push('/car/detail');
+          }}
+        >
+          예약하기
+        </Button>
+      )}
       <Review />
     </ReservationContainer>
   );

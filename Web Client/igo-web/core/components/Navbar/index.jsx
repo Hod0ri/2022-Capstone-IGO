@@ -60,7 +60,7 @@ const Navbar = ({ route }) => {
       </Button>
       <Button>
         <a onClick={() => route.push('/car')}>
-          {route.asPath === '/car' ? (
+          {route.asPath === '/car' || route.asPath === '/car/detail' ? (
             <AiFillCar size="48" />
           ) : (
             <AiOutlineCar size="48" />

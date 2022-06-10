@@ -24,6 +24,7 @@ export const fetchApi = {
   },
   search: {
     //현재 기능은 출발지만 구현되어 있어서 쿼리로 arrive만 보낸다
-    get: async (query) => await axios.get(`${BASE_URL}/search?arrive=${query}`),
+    get: async (query) =>
+      await axios.get(`${BASE_URL}/search?arrive=${query ? query : ''}`),
   },
 };

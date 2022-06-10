@@ -33,7 +33,6 @@ const Home = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTrue, setIsTrue] = useState(false);
   const userDriver = useRecoilValue(atomUserDriver);
-  console.log(userDriver);
   useEffect(() => {
     const getData = async () => {
       await fetchApi.search
