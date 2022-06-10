@@ -71,7 +71,7 @@
 |   TAG   | value  |         Example          |
 | :-----: | :----: | :----------------------: |
 | success | String |          false           |
-|   err   | String | user_Nick is not Defined |
+|   err   | String |      user_Nick error     |
 
 </details>
 
@@ -90,9 +90,9 @@
 
 |    TAG    | value  |          Example           |
 | :-------: | :----: | :------------------------: |
-|  success  | String |           false            |
-| user_Nick | String |            None            |
-|  errMsg   | String | 'user_Nick is not Defined' |
+|  success  | String |           true             |
+| user_Nick | String |            junseong        |
+|   err     | String | '' |
 
 </details>
 <details>
@@ -103,10 +103,9 @@
 |       TAG        |  value  | required |
 | :--------------: | :-----: | :------: |
 |     API URL      |  /user  |    -     |
-|      Method      |  POST   |    -     |
+|      Method      |  PUT   |    -     |
 | token (inCookie) | String  |    ✔️    |
 |    user_Nick     | String  |    ✔️    |
-|    user_Name     | String  |    ✔️    |
 |   user_Driver    | Boolean |    ✔️    |
 |    user_Phone    | String  |    ✔️    |
 |    user_Email    | String  |    ✔️    |
@@ -115,8 +114,8 @@
 
 |   TAG   | value  |          Example          |
 | :-----: | :----: | :-----------------------: |
-| success | String |           false           |
-|   err   | String | user_Phone is not Defined |
+| success | String |           true           |
+|   err   | String |  ''                  |
 
 </details>
 <details>
@@ -127,15 +126,15 @@
 |       TAG        | value  | required |
 | :--------------: | :----: | :------: |
 |     API URL      | /user  |    -     |
-|      Method      |  GET   |    -     |
-| token (inCookie) | String |    ✔️    |
+|      Method      |  DELETE|    -     |
+| token (inCookie) | String |    ✔️   |
 
 ### Response Form
 
 |   TAG   | value  | Example |
 | :-----: | :----: | :-----: |
 | success | String |  true   |
-| errMsg  | String |   ''    |
+| err  | String |   ''    |
 
 </details>
 <details>
@@ -175,7 +174,6 @@
 |     API URL      |  /point  |    -     |
 |      Method      |   POST   |    -     |
 | token (inCookie) |  String  |    ✔️    |
-|     pot_Date     | datetime |    ✔️    |
 |    pot_Change    | Integer  |    ✔️    |
 |    pot_Reason    |  String  |    ✔️    |
 
@@ -205,7 +203,7 @@
 |   TAG   | value  | Example |
 | :-----: | :----: | :-----: |
 | success | String |  true   |
-| result  |  Json  | All Log |
+| result  |  Json  |  All log |
 |   err   | String |   ''    |
 
 ### Log Form
@@ -296,7 +294,7 @@
 |     mc_Goal      |  String   |          |
 |     mc_Price     |  Integer  |    ✔️    |
 |     mc_Desc      |  String   |          |
-|     mc_Match     |  Boolean  |          |
+|     mc_Match     |  Boolean  |    ✔️   |
 |     mc_Count     |  Integer  |          |
 
 ### Response Form
@@ -318,11 +316,10 @@
 |      Method      |   POST    |    -     |
 | token (inCookie) |  String   |    ✔️    |
 |    mm_Driver     |  String   |    ✔️    |
-|    mm_Arrive     |   Time    |    ✔️    |
-|    mm_Pickup     |  String   |    ✔️    |
+|    mm_ArriveTime  |   Time   |    ✔️   |
+|    mm_Arrive     |  String   |    ✔️    |
 |     mm_Goal      |  String   |          |
-|     mm_Price     |  Integer  |    ✔️    |
-|     mm_Match     |  Boolean  |          |
+|     mm_Match     |  Boolean  |    ✔️    |
 
 ### Response Form
 
@@ -370,10 +367,9 @@
 | :-------: | :-----: | :--------------: |
 | mm_Driver | String  |      user1       |
 | mm_Member | String  |      user2       |
-| mm_Arrive |  Time   | 2022-05-30 10:10 |
-| mm_Pickup | String  |     보라매역     |
+| mm_ArriveTime |  Time   | 2022-05-30 10:10 |
+| mm_Arrive | String  |     보라매역     |
 |  mm_Goal  | String  |      대림대      |
-| mm_Price  | Integer |       2000       |
 | mm_Match  | Boolean |      false       |
 
 </details>
@@ -417,10 +413,9 @@
 |      Method      |    PUT    |    -     |
 | token (inCookie) |  String   |    ✔️    |
 |    mm_Driver     |  String   |    ✔️    |
-|    mm_Arrive     |   Time    |    ✔️    |
-|    mm_Pickup     |  String   |    ✔️    |
+|    mm_ArriveTime     |   Time    |    ✔️    |
+|    mm_Arrive     |  String   |    ✔️    |
 |     mm_Goal      |  String   |          |
-|     mm_Price     |  Integer  |    ✔️    |
 |     mm_Match     |  Boolean  |          |
 
 ### Response Form
@@ -498,12 +493,11 @@
 
 |    TAG    |  value  |     Example      |
 | :-------: | :-----: | :--------------: |
-| mm_Driver | String  |      user1       |
+| mm_Driver | String  |      user1 (user)      |
 | mm_Member | String  |      user2       |
-| mm_Arrive |  Time   | 2022-05-30 10:10 |
-| mm_Pickup | String  |     보라매역     |
+| mm_ArriveTime |  Time   | 2022-05-30 10:10 |
+| mm_Arrive | String  |     보라매역     |
 |  mm_Goal  | String  |      대림대      |
-| mm_Price  | Integer |       2000       |
 | mm_Match  | Boolean |       true       |
 
 ### Log Form(user = 탑승자)
@@ -511,11 +505,10 @@
 |    TAG    |  value  |     Example      |
 | :-------: | :-----: | :--------------: |
 | mm_Driver | String  |      user1       |
-| mm_Member | String  |      user2       |
-| mm_Arrive |  Time   | 2022-05-30 10:10 |
-| mm_Pickup | String  |     보라매역     |
+| mm_Member | String  |      user2(user)       |
+| mm_ArriveTime |  Time   | 2022-05-30 10:10 |
+| mm_Arrive | String  |     보라매역     |
 |  mm_Goal  | String  |      대림대      |
-| mm_Price  | Integer |       2000       |
 | mm_Match  | Boolean |       true       |
 
 </details>
@@ -533,13 +526,26 @@
 |     API URL      | /search |    -     |
 |      Method      |   GET   |    -     |
 | token (inCookie) | String  |    ✔️    |
-|   queryString    | String  |    ✔️    |
+|   queryString(arrive)    | String  |    ✔️    |
 
 ### Response Form
 
 |   TAG   | value  | Example |
 | :-----: | :----: | :-----: |
 | success | String |  true   |
+|   data   | String |   All log   |
 |   err   | String |   ''    |
+
+### Log Form
+
+|    TAG    |  value  |     Example      |
+| :-------: | :-----: | :--------------: |
+|     mc_Driver     |  String   |          |
+|    mc_Arrive     |  String   |    ✔️    |
+|  mc_ArriveTime   |   Time    |    ✔️    |
+|     mc_Goal      |  String   |          |
+|     mc_Price     |  Integer  |    ✔️    |
+|     mc_Desc      |  String   |          |
+|     mc_Count     |  Integer  |          |
 
 </details>
