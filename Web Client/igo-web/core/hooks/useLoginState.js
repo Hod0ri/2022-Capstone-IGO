@@ -14,10 +14,15 @@ export default function useLoginState() {
     'https://igo.soplay.dev/api/auth/user',
     fetcher
   );
-  if (!data) {
-    isLoading = true;
-  }
-  if (!error && data) {
+  // if (!data) {
+  //   isLoading = true;
+  // }
+  if (error) {
+    loginState = false;
+    isLoading = false;
+    setUserNick('');
+    setUserDriver('');
+  } else if (data) {
     loginState = true;
     isLoading = false;
     setUserNick(data.user_Nick);

@@ -7,7 +7,6 @@ const Auth = ({ auth = false, children }) => {
   const { loginState, isLoading } = useLoginState();
   const router = useRouter();
   const notLoginPages = ['/signin', '/signup'];
-  console.log('isLoading : ', isLoading);
   if (isLoading) return <Loading />;
   if ((loginState && auth) || (!loginState && !auth)) {
     return children;

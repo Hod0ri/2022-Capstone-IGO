@@ -2,16 +2,20 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { fetchAuth } from '../core/api/fetchAuth';
+import Auth from '../core/components/Common/Auth';
 import SignIn from '../core/components/SignIn';
+import useLoginState from '../core/hooks/useLoginState';
 
 const SignInPage = () => {
   const [state, setState] = useState(false);
+
   const router = useRouter();
   useEffect(() => {
     const logout = async () => {
       await fetchAuth
         .refresh()
-        .then((res) => {
+        .then(() => {
+          useLoginState();
           router.push('/');
         })
         .catch((e) => {});
@@ -19,7 +23,11 @@ const SignInPage = () => {
     !state && logout();
   }, [state]);
 
-  return <SignIn />;
+  return (
+    <Auth>
+      <SignIn />
+    </Auth>
+  );
 };
 
 export default SignInPage;

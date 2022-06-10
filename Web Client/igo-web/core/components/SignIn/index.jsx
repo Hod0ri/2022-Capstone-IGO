@@ -87,9 +87,7 @@ const SignIn = () => {
           setUserNick(res.data.user_Nick);
           setIsLoading(false);
           setisData(true);
-          setTimeout(() => {
-            router.push('/');
-          }, 200);
+          router.reload('/');
         })
         .catch((err) => {
           alert(`아이디 혹은 비밀번호를 확인해 주세요 !`);
