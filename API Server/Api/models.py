@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Member(models.Model):
     """회원 정보 테이블
     @:parameter
@@ -88,9 +89,9 @@ class MatchMember(models.Model):
     @:parameter
         mm_Driver : 운전자 ID
         mm_Member : 탑승자
-        mm_Pickup : 탑승자 픽업 장소
+        mm_Arrive : 탑승자 픽업 장소
         mm_Goal : 도착 장소
-        mm_Arrive : 출발 시간
+        mm_ArriveTimeTime : 출발 시간
         mm_Price : 요금
         mm_Match : 매칭 여부
     """
@@ -102,9 +103,9 @@ class MatchMember(models.Model):
         "Member", related_name="MemMat",
         on_delete=models.CASCADE, db_column="mm_Member"
     )
-    mm_Pickup = models.CharField(max_length=50)
+    mm_Arrive = models.CharField(max_length=50)
     mm_Goal = models.CharField(max_length=50)
-    mm_Arrive = models.DateTimeField()
+    mm_ArriveTime = models.DateTimeField()
     mm_Price = models.IntegerField()
     mm_Match = models.BooleanField()
 

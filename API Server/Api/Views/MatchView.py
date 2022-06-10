@@ -90,7 +90,7 @@ class MatchView(APIView):
                     Q(mm_Driver=UserObj.user_Id) &
                     Q(mm_Match=True)
                 ).values(
-                    'mm_Driver', 'mm_Member', 'mm_Pickup', 'mm_Goal', 'mm_Arrive', 'mm_Price', 'mm_Match'
+                    'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Price', 'mm_Match'
                 )
             )
             if MatchLog:
@@ -112,7 +112,7 @@ class MatchView(APIView):
                     Q(mm_Member=UserObj.user_Id) &
                     Q(mm_Match=True)
                 ).values(
-                    'mm_Driver', 'mm_Member', 'mm_Pickup', 'mm_Goal', 'mm_Arrive', 'mm_Price', 'mm_Match'
+                    'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Price', 'mm_Match'
                 )
             )
             if MemberLog:
