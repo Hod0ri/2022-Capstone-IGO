@@ -91,8 +91,7 @@ class MatchMember(models.Model):
         mm_Member : 탑승자
         mm_Arrive : 탑승자 픽업 장소
         mm_Goal : 도착 장소
-        mm_ArriveTimeTime : 출발 시간
-        mm_Price : 요금
+        mm_ArriveTime: 출발 시간
         mm_Match : 매칭 여부
     """
     mm_Driver = models.ForeignKey(
@@ -106,7 +105,6 @@ class MatchMember(models.Model):
     mm_Arrive = models.CharField(max_length=50)
     mm_Goal = models.CharField(max_length=50)
     mm_ArriveTime = models.DateTimeField()
-    mm_Price = models.IntegerField()
     mm_Match = models.BooleanField()
 
     def __str__(self):
