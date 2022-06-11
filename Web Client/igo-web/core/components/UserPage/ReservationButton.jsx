@@ -31,7 +31,8 @@ const ButtonContainer = styled.button`
   }
 `;
 
-const ReservationButton = () => {
+const ReservationButton = ({ ...v }) => {
+  const { mm_Member } = v;
   const onClickPostMatch = async () => {
     await fetchApi.match
       .post()
@@ -42,9 +43,8 @@ const ReservationButton = () => {
   };
   const onClickPostCancel = async () => {
     await fetchApi.matchlog
-      .delete()
-      .then((res) => {
-        console.log(res.data);
+      .delete(mm_Member)
+      .then(() => {
         location.reload();
       })
       .catch((e) => e.response);

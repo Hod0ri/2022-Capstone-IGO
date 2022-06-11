@@ -78,11 +78,10 @@ const Payment = () => {
   const { isLoading } = useLoginState();
   const [data, setData] = useState('');
   const [pickUp, setPickUp] = useState('');
-  console.log(pickUp);
   const onClickPostReservation = async () => {
     const userReservationData = {
       mm_Driver: `${mc_Driver}`,
-      mm_ArriveTime: `${pickUp}`,
+      mm_ArriveTime: `${pickUp.split('T').join(' ')}`,
       mm_Arrive: `${mc_Arrive}`,
       mm_Goal: '대림대학교',
       mm_Match: 'false',

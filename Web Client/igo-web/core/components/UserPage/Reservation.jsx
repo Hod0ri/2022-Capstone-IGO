@@ -31,7 +31,7 @@ const Reservation = ({ onClickReport, ...v }) => {
   return (
     <ReservationContainer>
       <Route {...v} />
-      {type === 'car' && confirm === false && <ReservationButton />}
+      {type === 'car' && confirm === false && <ReservationButton {...v} />}
       {type === 'home' && (
         <Button
           color="green"

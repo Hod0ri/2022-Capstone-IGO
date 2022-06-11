@@ -41,6 +41,9 @@ const PointHistory = styled.div`
     .blue {
       color: ${(props) => props.theme.color.blue};
     }
+    .green {
+      color: ${(props) => props.theme.color.green};
+    }
     p:nth-child(2) {
       font-size: ${(props) => props.theme.fontSize.sm};
       color: ${(props) => props.theme.color.lightgray};
@@ -59,11 +62,23 @@ const UsageHistory = ({ ...v }) => {
           <p>{`${pot_Date.slice(5, 7)}.${pot_Date.slice(8, 10)}`}</p>
           <p>
             {pot_Change.toLocaleString()}P{' '}
-            {pot_Reason === 'add' ? '충전' : '사용'}
+            {pot_Reason === 'add'
+              ? '충전'
+              : pot_Reason === '매칭 충전'
+              ? '매칭 충전'
+              : '사용'}
           </p>
         </div>
         <div className="rightDiv">
-          <p className={`${pot_Reason === 'add' ? 'blue' : 'red'}`}>
+          <p
+            className={`${
+              pot_Reason === 'add'
+                ? 'blue'
+                : pot_Reason === '매칭 충전'
+                ? 'green'
+                : 'red'
+            }`}
+          >
             {pot_Reason === 'use' && '-'}
             {pot_Change.toLocaleString()}P
           </p>

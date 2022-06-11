@@ -12,7 +12,15 @@ const CarPageContainer = styled.div`
     margin-top: 25px;
     margin-left: 75px;
     font-size: ${(props) => props.theme.fontSize.md};
-    /* border: 1px solid black; */
+  }
+`;
+const NonCarPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  p {
+    margin: 100px auto;
+    font-size: ${(props) => props.theme.fontSize.lg};
   }
 `;
 const Car = () => {
@@ -23,7 +31,6 @@ const Car = () => {
         .get()
         .then((res) => {
           setReservationData(res.data);
-          console.log(reservationData);
         })
         .catch((e) => {
           console.log(e.response);
@@ -34,26 +41,32 @@ const Car = () => {
 
   return (
     <Auth auth={true}>
-      <CarPageContainer>
-        <h1>예약 확정 대기 목록</h1>
-        {reservationData &&
-          reservationData.data
-            .filter((e) => e['mm_Match'] === false)
-            .map((v, index) => {
-              return (
-                <UserPage type={'car'} confirm={false} {...v} key={index} />
-              );
-            })}
-        <h1>예약 확정 목록</h1>
-        {reservationData &&
-          reservationData.data
-            .filter((e) => e['mm_Match'] === true)
-            .map((v, index) => {
-              return (
-                <UserPage type={'car'} confirm={true} {...v} key={index} />
-              );
-            })}
-      </CarPageContainer>
+      {reservationData ? (
+        <CarPageContainer>
+          <h1>예약 확정 대기 목록</h1>
+          {reservationData &&
+            reservationData.data
+              .filter((e) => e['mm_Match'] === false)
+              .map((v, index) => {
+                return (
+                  <UserPage type={'car'} confirm={false} {...v} key={index} />
+                );
+              })}
+          <h1>예약 확정 목록</h1>
+          {reservationData &&
+            reservationData.data
+              .filter((e) => e['mm_Match'] === true)
+              .map((v, index) => {
+                return (
+                  <UserPage type={'car'} confirm={true} {...v} key={index} />
+                );
+              })}
+        </CarPageContainer>
+      ) : (
+        <NonCarPageContainer>
+          <p>📢 현재 예약한 카풀 목록이 없습니다.</p>
+        </NonCarPageContainer>
+      )}
     </Auth>
   );
 };

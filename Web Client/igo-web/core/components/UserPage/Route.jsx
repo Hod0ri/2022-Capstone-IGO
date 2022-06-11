@@ -45,7 +45,7 @@ const Route = ({ ...v }) => {
   const Arrive = type === 'home' || type === 'report' ? mc_Arrive : mm_Arrive;
   const ArriveTime =
     type === 'home' || type === 'report' ? mc_ArriveTime : mm_ArriveTime;
-  let day = new Date(mc_ArriveTime);
+  let day = new Date(ArriveTime);
   const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
   let week = WEEKDAY[day.getDay()];
   return (
