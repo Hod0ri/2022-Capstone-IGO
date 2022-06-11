@@ -212,3 +212,9 @@ class MatchLogView(APIView):
                 'err': 'FieldError'
             }
             return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
+        except:
+            response_json = {
+                'success': False,
+                'err': 'Does Not Exist'
+            }
+            return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
