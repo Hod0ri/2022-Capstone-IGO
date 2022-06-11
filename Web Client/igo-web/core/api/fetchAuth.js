@@ -11,4 +11,8 @@ export const fetchAuth = {
   delete: async (data) => await axios.delete(`${BASE_URL}/user`, data),
   login: async (data) => await axios.post(`${BASE_URL}/user/login`, data),
   logout: async () => await axios.get(`${BASE_URL}/user/logout`),
+  findId: async (data) =>
+    await axios.post(
+      `https://igo.soplay.dev/api/ems?user_Name=${data.user_Name}&user_Email=${data.user_Email}&user_Phone=${data.user_Phone}`
+    ),
 };
