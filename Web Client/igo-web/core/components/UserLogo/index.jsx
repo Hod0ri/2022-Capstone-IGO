@@ -7,7 +7,7 @@ import { useRecoilValue } from 'recoil';
 import { atomUserNick } from '../../atoms/loginState';
 
 const UserLogoContainer = styled.div`
-  width: 80px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,8 +17,8 @@ const UserLogoContainer = styled.div`
   font-size: ${(props) => props.theme.fontSize.md};
 `;
 
-const UserLogo = ({ icon = 'mail' }) => {
-  const user_Nick = useRecoilValue(atomUserNick);
+const UserLogo = ({ icon = 'mail', user_Nick = '' }) => {
+  const my_user_Nick = useRecoilValue(atomUserNick);
   return (
     <UserLogoContainer>
       <Image
@@ -27,7 +27,7 @@ const UserLogo = ({ icon = 'mail' }) => {
         height={80}
         alt="alt"
       />
-      <p>{user_Nick || '닉네임x'}</p>
+      <p>{user_Nick || my_user_Nick || '닉네임x'}</p>
     </UserLogoContainer>
   );
 };

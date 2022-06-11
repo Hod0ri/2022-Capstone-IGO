@@ -33,7 +33,7 @@ const LoadingContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => props.theme.color.white};
+  /* background-color: ${(props) => props.theme.color.white}; */
 `;
 const Loading = () => {
   return (
