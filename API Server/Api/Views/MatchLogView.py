@@ -193,8 +193,8 @@ class MatchLogView(APIView):
                             Q(mm_Match=False)
                         ).values('id')
                     )[0]['id']
-                    MatchDataDel = MatchData.objects.get(id=MatchLog)
-                    MatchDataDel.delete()
+                    MemberDataDel = MatchMember.objects.get(id=MatchLog)
+                    MemberDataDel.delete()
                     response_json = {
                         'success': True,
                         'err': ''
