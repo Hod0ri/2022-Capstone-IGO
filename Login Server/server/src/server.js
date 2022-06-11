@@ -9,6 +9,7 @@ const MONGO_URI = `mongodb://${MONGO_ROOT_DATA}@mongodb/LoginServer?authSource=a
 const COOKIE_SECRET_KEY = process.env.NODE_ENV === "development" ? "cookie-key" : process.env.COOKIE_SECRET_KEY;
 const cors = require("cors");
 const logger = require("morgan");
+const { kakaoRouter } = require("./routes/auth/kakaoRoute");
 
 const server = async () => {
   try {
@@ -29,6 +30,7 @@ const server = async () => {
 
     app.use("/api/auth/user", userRouter);
     // 못잡은 에러 처리
+    app.use("/api/kakao", kakaoRouter);
     app.use((error, req, res, next) => {
       console.error(error);
       res.status(500).json({ message: "Something went wrong" });

@@ -70,6 +70,7 @@ services:
       - COOKIE_SECRET_KEY=${COOKIE_SECRET_KEY}
       - MONGO_ROOT_ID=${MONGO_ROOT_ID}
       - MONGO_ROOT_PW=${MONGO_ROOT_PW}
+      - NEXT_PUBLIC_KAKAO_FIND_REST_API_KEY=${NEXT_PUBLIC_KAKAO_FIND_REST_API_KEY}
     links:
       - mongodb
       - django:backend
