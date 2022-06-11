@@ -8,13 +8,16 @@ from ..models import Member
 
 class EmsView(APIView):
     def get(self, request):
-        tempdata = JSONParser().parse(request)
         try:
+            user_Name = request.GET.get('user_Name')
+            user_Email = request.GET.get('user_Email')
+            user_Phone = request.GET.get('user_Phone')
+
             user_Id = str(list(
                 Member.objects.filter(
-                    Q(user_Phone=tempdata['user_Phone']) &
-                    Q(user_Email=tempdata['user_Email']) &
-                    Q(user_Name=tempdata['user_Name'])
+                    Q(user_Phone=user_Phone) &
+                    Q(user_Email=user_Email) &
+                    Q(user_Name=user_Name)
                 ).values('user_Id')
             )[0]['user_Id'])
 
