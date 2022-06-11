@@ -20,7 +20,10 @@ export const fetchApi = {
     post: async (data) => await axios.post(`${BASE_URL}/matchlog/`, data),
     get: async () => await axios.get(`${BASE_URL}/matchlog/`),
     put: async (data) => await axios.put(`${BASE_URL}/matchlog/`, data),
-    delete: async () => await axios.delete(`${BASE_URL}/matchlog/`),
+    delete: async (data) =>
+      await axios.delete(
+        `${BASE_URL}/matchlog${data ? `?mm_Member=${data}` : `/`}`
+      ),
   },
   search: {
     //현재 기능은 출발지만 구현되어 있어서 쿼리로 arrive만 보낸다
