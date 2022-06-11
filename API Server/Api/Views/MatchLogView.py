@@ -4,10 +4,10 @@ from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
-
 from ..serializers import MatchDataSerializer, MatchMemberSerializer
 from ..models import MatchData, MatchMember
 from ..FunctionModules.CookieJWT import CheckUserID
+from datetime import datetime
 
 
 class MatchLogView(APIView):
@@ -56,8 +56,15 @@ class MatchLogView(APIView):
             else:
                 tempdata['mm_Member'] = UserObj.user_Id
                 matchdata = MatchData.objects.get(mc_Driver=tempdata['mm_Driver'])
-
+                mcm = str(matchdata.mc_ArriveTime.strftime('%Y-%m-%d %H:%M'))
                 if matchdata:
+                    diff = (datetime.strptime(mcm, '%Y-%m-%d %H:%M') < datetime.strptime(tempdata['mm_ArriveTime'], '%Y-%m-%d %H:%M'))
+                    if not diff:
+                        response_json = {
+                            'success': False,
+                            'err': 'ArriveTime Error'
+                        }
+                        return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
                     tempdata['mm_Driver'] = matchdata.mc_Driver
                     matchmember_serializer = MatchMemberSerializer(data=tempdata)
                     if matchmember_serializer.is_valid():
