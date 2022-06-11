@@ -173,19 +173,36 @@ class MatchLogView(APIView):
         UserObj = CheckUserID(request)
         try:
             if UserObj.user_Driver:
-                DriverLog = list(
-                    MatchData.objects.filter(
-                        Q(mc_Driver=UserObj.user_Id) &
-                        Q(mc_Match=False)
-                    ).values('id')
-                )[0]['id']
-                MatchDataDel = MatchData.objects.get(id=DriverLog)
-                MatchDataDel.delete()
-                response_json = {
-                    'success': True,
-                    'err': ''
-                }
-                return JsonResponse(response_json, status=status.HTTP_200_OK)
+                mem_id = request.GET.get('mm_Member')
+                if mem_id:
+                    MatchLog = list(
+                        MatchMember.objects.filter(
+                            Q(mm_Member=mem_id) &
+                            Q(mm_Driver=UserObj.user_Id) &
+                            Q(mm_Match=False)
+                        ).values('id')
+                    )[0]['id']
+                    MatchDataDel = MatchData.objects.get(id=MatchLog)
+                    MatchDataDel.delete()
+                    response_json = {
+                        'success': True,
+                        'err': ''
+                    }
+                    return JsonResponse(response_json, status=status.HTTP_200_OK)
+                else:
+                    DriverLog = list(
+                        MatchData.objects.filter(
+                            Q(mc_Driver=UserObj.user_Id) &
+                            Q(mc_Match=False)
+                        ).values('id')
+                    )[0]['id']
+                    MatchDataDel = MatchData.objects.get(id=DriverLog)
+                    MatchDataDel.delete()
+                    response_json = {
+                        'success': True,
+                        'err': ''
+                    }
+                    return JsonResponse(response_json, status=status.HTTP_200_OK)
             else:
                 MemberLog = list(
                     MatchMember.objects.filter(
