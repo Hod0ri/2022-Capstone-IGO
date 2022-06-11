@@ -1,3 +1,4 @@
+from django.core.exceptions import FieldDoesNotExist, FieldError
 from django.db.models import Q
 from django.http import JsonResponse
 from rest_framework import status
@@ -91,6 +92,7 @@ class MatchLogView(APIView):
                     'data': MatchLog,
                     'err': ''
                 }
+
                 return JsonResponse(response_json, status=status.HTTP_200_OK)
             else:
                 response_json = {
@@ -119,9 +121,11 @@ class MatchLogView(APIView):
     def put(self, request):
         UserObj = CheckUserID(request)
         tempdata = JSONParser().parse(request)
-        tempdata['mc_Driver'] = UserObj.user_Id
 
         if UserObj.user_Driver:
+            tempdata['mc_Driver'] = UserObj.user_Id
+            tempdata['mc_Match'] = False
+
             match_serializer = MatchDataSerializer(data=tempdata)
             if match_serializer.is_valid():
                 match_serializer.save()
@@ -142,6 +146,8 @@ class MatchLogView(APIView):
 
             if matchdata:
                 tempdata['mm_Driver'] = matchdata.mc_Driver
+                tempdata['mm_Match'] = False
+
                 matchmember_serializer = MatchMemberSerializer(data=tempdata)
                 if matchmember_serializer.is_valid():
                     matchmember_serializer.save()
@@ -165,7 +171,6 @@ class MatchLogView(APIView):
 
     def delete(self, request):
         UserObj = CheckUserID(request)
-        tempdata = JSONParser().parse(request)
         try:
             if UserObj.user_Driver:
                 DriverLog = list(
@@ -195,9 +200,15 @@ class MatchLogView(APIView):
                     'err': ''
                 }
                 return JsonResponse(response_json, status=status.HTTP_200_OK)
-        except:
+        except FieldDoesNotExist:
             response_json = {
                 'success': False,
-                'err': ''
+                'err': 'FieldDoesNotExist'
             }
-            return JsonResponse(response_json, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
+        except FieldError:
+            response_json = {
+                'success': False,
+                'err': 'FieldError'
+            }
+            return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
