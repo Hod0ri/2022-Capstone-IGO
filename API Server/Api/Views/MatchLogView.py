@@ -84,7 +84,9 @@ class MatchLogView(APIView):
         UserObj = CheckUserID(request)
         if UserObj.user_Driver:
             MatchLog = list(
-                MatchData.objects.filter(Q(mc_Driver=UserObj.user_Id)).values()
+                MatchData.objects.filter(Q(mc_Driver=UserObj.user_Id)).values(
+                    'mc_Driver', 'mc_Arrive', 'mc_ArriveTime', 'mc_Goal', 'mc_Price', 'mc_Desc', 'mc_Match', 'mc_Count'
+                )
             )
             if MatchLog:
                 response_json = {
@@ -102,7 +104,9 @@ class MatchLogView(APIView):
                 return JsonResponse(response_json, status=status.HTTP_404_NOT_FOUND)
         else:
             MatchLog = list(
-                MatchMember.objects.filter(Q(mm_Member=UserObj.user_Id)).values()
+                MatchMember.objects.filter(Q(mm_Member=UserObj.user_Id)).values(
+                    'mm_Driver', 'mm_Member', 'mm_Arrive', 'mm_Goal', 'mm_ArriveTime', 'mm_Match'
+                )
             )
             if MatchLog:
                 response_json = {
