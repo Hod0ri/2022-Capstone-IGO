@@ -1,14 +1,13 @@
 import React from 'react';
 import Auth from '../core/components/Common/Auth';
-import ModalCard from '../core/components/ModalCard';
+import Report from '../core/components/Report';
 
-const Report = () => {
+const ReportPage = () => {
   return (
     <Auth auth={true}>
-      {/* <div>신고페이지입니다.</div> */}
-      <ModalCard userNick={'방어운전'} />
+      <Report />
     </Auth>
   );
 };
 
-export default Report;
+export default ReportPage;

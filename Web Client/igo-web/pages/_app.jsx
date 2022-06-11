@@ -44,7 +44,7 @@ const BodyContainer = styled.div`
   width: 500px;
   height: 100%;
   margin: 0 auto;
-  border: 1px solid ${(props) => props.theme.color.red};
+  /* border: 1px solid ${(props) => props.theme.color.red}; */
   // header, navbar 포지션 영역
   padding-top: 80px;
   padding-bottom: 97px;

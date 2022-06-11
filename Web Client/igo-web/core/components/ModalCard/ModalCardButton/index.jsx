@@ -25,26 +25,31 @@ const ButtonContainer = styled.div`
     background: ${(props) => props.theme.color.white};
   }
 `;
-const ModalCardButton = ({ report, setState = () => {}, userNick }) => {
+const ModalCardButton = ({
+  report,
+  setState = () => {},
+  userNick,
+  onClick = async () => {},
+}) => {
   return (
     <ModalCardButtonContainer>
       <ButtonContainer
-        onClick={async () =>
-          await axios
-            .post('/api/issue', {
-              ns_Target: userNick,
-              ns_Reason: report ? '노쇼' : '기타',
-              ns_Etc: '',
+        onClick={async () => {
+          await onClick()
+            .then(() => {
+              alert('신고가 접수되었습니다.'), setState(false);
             })
-            .then(() => setState(false))
-            .catch((e) => alert(`${e.code}로 인해 서버 통신에 실패했습니다!`))
-        }
+            .catch((err) => {
+              const { ns_Target, ns_Reason, ns_Etc } = err.response.data.err;
+              let errMessage = [];
+              ns_Target && errMessage.push('ns_Target');
+              alert(err.response.data.err.ns_Target);
+            });
+        }}
       >
         확인
       </ButtonContainer>
-      <ButtonContainer onClick={async () => setState(false)}>
-        취소
-      </ButtonContainer>
+      <ButtonContainer onClick={() => setState(false)}>취소</ButtonContainer>
     </ModalCardButtonContainer>
   );
 };

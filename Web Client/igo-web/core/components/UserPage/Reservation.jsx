@@ -24,7 +24,7 @@ const ReservationContainer = styled.div`
   background: ${(props) => props.theme.color.white};
 `;
 
-const Reservation = ({ ...v }) => {
+const Reservation = ({ onClickReport, ...v }) => {
   const setMatchData = useSetRecoilState(atomMatchDetail);
   const { type, confirm } = v;
   const route = useRouter();
@@ -42,6 +42,11 @@ const Reservation = ({ ...v }) => {
           }}
         >
           예약하기
+        </Button>
+      )}
+      {type === 'report' && (
+        <Button color="red" size="md" onClick={() => onClickReport()}>
+          신고하기
         </Button>
       )}
       <Review />

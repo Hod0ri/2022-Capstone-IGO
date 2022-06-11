@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Clock from './icon/clock_icon.png';
 import DriveRoute from './DriveRoute';
 import Male from './icon/Male.png';
+import { useRecoilValue } from 'recoil';
+import { atomUserDriver } from '../../atoms/loginState';
 
 const RoutContainer = styled.div`
   display: flex;
@@ -38,10 +40,11 @@ const DriveInfo = styled.div`
   }
 `;
 const Route = ({ ...v }) => {
-  const { type } = v;
-  const { mc_Arrive, mc_ArriveTime, mm_Arrive, mm_ArriveTime } = v;
-  const Arrive = type === 'home' ? mc_Arrive : mm_Arrive;
-  const ArriveTime = type === 'home' ? mc_ArriveTime : mm_ArriveTime;
+  const { type, mc_Arrive, mc_ArriveTime, mm_Arrive, mm_ArriveTime } = v;
+  const isDriver = useRecoilValue(atomUserDriver);
+  const Arrive = type === 'home' || type === 'report' ? mc_Arrive : mm_Arrive;
+  const ArriveTime =
+    type === 'home' || type === 'report' ? mc_ArriveTime : mm_ArriveTime;
   let day = new Date(mc_ArriveTime);
   const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
   let week = WEEKDAY[day.getDay()];
@@ -67,10 +70,14 @@ const Route = ({ ...v }) => {
         </p>
       </DriveInfo>
       <DriveInfo>
-        <p>
-          {ArriveTime.slice(11, 13)}시 {ArriveTime.slice(14, 16)}분에 카풀하실
-          분 구합니다.
-        </p>
+        {type === 'report' ? (
+          <p>{`${isDriver ? '탑승자' : '운전자'} : ${v.mc_Driver}`}</p>
+        ) : (
+          <p>
+            {ArriveTime.slice(11, 13)}시 {ArriveTime.slice(14, 16)}분에 카풀하실
+            분 구합니다.
+          </p>
+        )}
       </DriveInfo>
     </RoutContainer>
   );
