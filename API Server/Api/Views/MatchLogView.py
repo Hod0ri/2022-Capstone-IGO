@@ -189,7 +189,7 @@ class MatchLogView(APIView):
             else:
                 MemberLog = list(
                     MatchMember.objects.filter(
-                        Q(mm_Driver=UserObj.user_Id) &
+                        Q(mm_Member=UserObj.user_Id) &
                         Q(mm_Match=False)
                     ).values('id')
                 )[0]['id']
