@@ -63,6 +63,8 @@ services:
       - "./Web_Client/pages:/home/Web/pages"
       - "./Web_Client/core:/home/Web/core"
       - "./Web_Client/public:/home/Web/public"
+      - "./Web_Client/.next:/home/Web/.next"
+      
     # ports:
       # - "3000:3000"
     environment:
