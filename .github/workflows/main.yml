@@ -23,6 +23,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
           cache-dependency-path: Web Client/package-lock.json
+      # 파일 경로 이동
+      - name : move to path
+        run : cd ./Web Client/
       # npm 모듈 설치
       - name : npm install
         run : npm install
