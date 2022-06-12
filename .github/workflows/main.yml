@@ -43,7 +43,7 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "./Web_Client/.next/*"
           strip_components: 1
-          target: "~/2022-Capstone-IGO/Web_Client/.next"
+          target: "~/2022-Capstone-IGO/Web_Client/"
 
      
       #env 파일 생성
