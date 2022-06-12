@@ -13,9 +13,9 @@ import { atomUserNick } from '../../atoms/loginState';
 import Loading from '../Common/Loading';
 
 const BodyStyle = styled.div`
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
   width: 80%;
-  margin: 50px;
   p {
     margin-top: 30px;
     margin-bottom: 10px;
@@ -28,17 +28,34 @@ const BodyStyle = styled.div`
 `;
 
 const SubArea = styled.div`
+  ul {
+    @media screen and (max-width: 402px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
   display: flex;
   justify-content: center;
   margin-top: 40px;
   margin-bottom: 40px;
+  @media screen and (max-width: 402px) {
+    margin: 20px 0;
+  }
   li {
+    /* border: 1px solid black; */
     list-style: none;
     float: left;
     padding: 0 15px;
+    @media screen and (max-width: 402px) {
+      margin: 5px;
+    }
   }
 
   li::after {
+    @media screen and (max-width: 402px) {
+      display: none;
+    }
     content: '|';
     float: right;
     color: ${(props) => props.theme.color.gray};
@@ -100,7 +117,6 @@ const SignIn = () => {
     }
   };
   const userNick = useRecoilValue(atomUserNick);
-  console.log(userNick);
   return isData ? (
     <Loading />
   ) : (
@@ -123,6 +139,7 @@ const SignIn = () => {
         onChange={(e) =>
           setInputData({ ...inputData, user_Pw: e.target.value })
         }
+        onKeyDown={(e) => e.key === 'Enter' && onLoginClick()}
       />
 
       <SubArea>
