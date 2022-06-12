@@ -15,7 +15,7 @@ const DetailPageContainer = styled.div`
 const Home = () => {
   const detailData = useRecoilValue(atomMatchDetail);
   const route = useRouter();
-  !detailData && route.push('/');
+  typeof window !== 'undefined' && !detailData && route.push('/');
   return (
     <Auth auth={true}>
       <DetailPageContainer>
