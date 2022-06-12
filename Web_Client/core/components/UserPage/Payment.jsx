@@ -9,7 +9,8 @@ import { useRecoilValue } from 'recoil';
 import useLoginState from '../../hooks/useLoginState';
 import { atomMatchDetail } from '../../atoms/matchState';
 import { useRouter } from 'next/router';
-
+import StateContainer from '../KakaoMap';
+import Map from '../KakaoMap';
 const PaymentContainer = styled.div`
   display: flex;
   max-width: 400px;
@@ -108,6 +109,12 @@ const Payment = () => {
     !isLoading && !data && getPoint();
   }, [data, isLoading]);
 
+  //=== Map Data Set ===
+  const [startPoint = '신도림', driverNick = '넘어오지 않음'] = [
+    mc_Arrive,
+    mc_Driver,
+  ];
+
   return (
     data && (
       <PaymentContainer>
@@ -127,6 +134,9 @@ const Payment = () => {
           </div>
           <DriveRoute size={'25px'} startPoint={mc_Arrive} />
         </DriveRouteContainer>
+        <MapContainer>
+          <Map location={startPoint} />
+        </MapContainer>
         <PaymentInfoContainer>
           <div className="paymentInfo">
             <p>보유 포인트</p>
@@ -151,4 +161,8 @@ const Payment = () => {
   );
 };
 
+const MapContainer = styled.div`
+  width: 100%;
+  padding: 15px 0;
+`;
 export default Payment;
