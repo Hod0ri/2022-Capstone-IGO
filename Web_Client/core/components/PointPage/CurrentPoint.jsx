@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import DollarCoin from './icon/dollar_icon.png';
 import axios from 'axios';
+import { fetchApi } from '../../api/fetchApi';
+import Router, { withRouter } from 'next/router';
 
 const CurrentPointContaniner = styled.div`
   display: flex;
@@ -38,7 +40,7 @@ const ChargeButton = styled.button`
   border: none;
   border-radius: 10px;
   background: ${(props) => props.theme.color.lightgray};
-  color: ${(props) => props.theme.color.gray};
+  color: ${(props) => props.theme.color.black};
   width: 70px;
   height: 30px;
   justify-self: right;
@@ -50,7 +52,21 @@ const ChargeButton = styled.button`
   }
 `;
 
-const CurrentPoint = ({ pot_Amount }) => {
+const CurrentPoint = ({ pot_Amount, onResetData }) => {
+  const onChargeClick = async () => {
+    await fetchApi.point
+      .post({
+        pot_Reason: 'add',
+        pot_Change: 3000,
+      })
+      .then((res) => {
+        alert('3000원 충전됨');
+        onResetData();
+      })
+      .catch((err) => {
+        alert('충전 실패');
+      });
+  };
   return (
     <CurrentPointContaniner className="pointWrapContainer">
       <p>현재 보유 포인트</p>
@@ -65,7 +81,7 @@ const CurrentPoint = ({ pot_Amount }) => {
           />
           <p>{pot_Amount.toLocaleString()}P</p>
         </div>
-        <ChargeButton>충전하기</ChargeButton>
+        <ChargeButton onClick={() => onChargeClick()}>충전하기</ChargeButton>
       </PointContainer>
       <p>포인트 이용내역</p>
     </CurrentPointContaniner>
