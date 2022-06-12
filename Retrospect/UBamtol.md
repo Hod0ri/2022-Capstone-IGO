@@ -8,9 +8,9 @@
 
 ### To Done
 
-카풀 공유 플랫폼에서 동작하는 매칭 프로세스, 포인트 프로세스, 하단 네비게이션 탭 바(tab bar) 설계 및 구현을 했다.
-추가로 UI 설계에 빠진 부분들도 수정하며 설계 및 구현을 했다.
-JavaScript, React.js, Next.js, Node.js, API에 대한 공부도 했다.
+카풀 공유 플랫폼에서 동작하는 매칭 프로세스, 포인트 프로세스, 하단 네비게이션 탭 바(tab bar) 설계 및 구현을 했다.</br>
+추가로 UI 설계에 빠진 부분들도 수정하며 설계 및 구현을 했다.</br>
+JavaScript, React.js, Next.js, Node.js, API에 대한 공부도 했다.</br>
 
 ### Mistake and Limit
 
