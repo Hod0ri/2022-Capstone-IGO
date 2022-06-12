@@ -53,6 +53,19 @@ services:
       options:
         max-size: "100m"
         max-file: "3"
+  next:
+    container_name: IGO-Web
+    build:
+      context: "./Web Client/"
+      dockerfile: "./Dockerfile"
+    restart: always
+    volumes:
+      - "./Web Client:/home/Web"
+    # ports:
+      # - "3000:3000"
+    environment:
+      - TZ=Asia/Seoul
+      - NEXT_PUBLIC_KAKAO_MAP_REST_API_KEY=${NEXT_PUBLIC_KAKAO_MAP_REST_API_KEY}
   node:
     container_name: IGO-Login-Server
     build:
@@ -97,6 +110,7 @@ services:
     links:
     - node
     - django:backend
+    - next
     depends_on:
     - node
     logging:
