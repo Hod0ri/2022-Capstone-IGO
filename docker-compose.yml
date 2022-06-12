@@ -60,7 +60,9 @@ services:
       dockerfile: "./Dockerfile"
     restart: always
     volumes:
-      - "./Web_Client:/home/Web"
+      - "./Web_Client/pages:/home/Web/pages"
+      - "./Web_Client/core:/home/Web/core"
+      - "./Web_Client/public:/home/Web/public"
     # ports:
       # - "3000:3000"
     environment:
