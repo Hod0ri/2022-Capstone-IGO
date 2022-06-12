@@ -1,7 +1,9 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { fetchApi } from '../../api/fetchApi';
 import locationData from '../../etc/location/station.json';
+import Loading from '../Common/Loading';
 
 const KakaoMap = ({ location = '안양' }) => {
   const [loadKakao, setLoadKakao] = useState(false);
@@ -23,20 +25,17 @@ const KakaoMap = ({ location = '안양' }) => {
       const onLoadKakaoMap = () => {
         window.kakao.maps.load(async () => {
           //api 필요 요소 추출
-
-          let data = await axios
-            .get('https://apis-navi.kakaomobility.com/v1/directions', {
-              headers: {
-                Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_FIND_REST_API_KEY}`,
-              },
-              params: {
-                origin: `${longitude},${latitude},name=${location}`,
-                destination: `126.930539,37.4035503,name=대림대`,
-              },
+          setIsLoading(true);
+          let data = await fetchApi.kakaoNav
+            .get({
+              origin: `${longitude},${latitude},name=start`,
+              destination: `126.930539,37.4035503,name=asd`,
             })
-            .catch((e) => setFetchRouteErr(true))
-            .then((res) => res.data.routes[0]);
-
+            .then((res) => {
+              return res.data.routes[0];
+            })
+            .catch((e) => setFetchRouteErr(true));
+          setIsLoading(false);
           //이동거리 및 시간 추출
           const { distance, duration } = data.sections[0];
           setStateDatas({ distance, duration });
@@ -123,6 +122,7 @@ const KakaoMap = ({ location = '안양' }) => {
       <KaKaoMapContainer>
         <StateContainer>
           <div id="kakaoMapDistance">
+            {isLoading && <Loading />}
             {Math.floor(stateDatas.distance / 1000) || '--'}Km
           </div>
           <div>

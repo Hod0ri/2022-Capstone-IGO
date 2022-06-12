@@ -30,4 +30,7 @@ export const fetchApi = {
     get: async (query) =>
       await axios.get(`${BASE_URL}/search?arrive=${query ? query : ''}`),
   },
+  kakaoNav: {
+    get: async (data) => await axios.get(`${BASE_URL}/kakao`, { params: data }),
+  },
 };
