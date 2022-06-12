@@ -1,10 +1,16 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import styled from 'styled-components';
 import { fetchAuth } from '../core/api/fetchAuth';
 import Auth from '../core/components/Common/Auth';
 import SignIn from '../core/components/SignIn';
 import useLoginState from '../core/hooks/useLoginState';
+
+const SignInContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const SignInPage = () => {
   const [state, setState] = useState(false);
@@ -25,7 +31,9 @@ const SignInPage = () => {
 
   return (
     <Auth>
-      <SignIn />
+      <SignInContainer>
+        <SignIn />
+      </SignInContainer>
     </Auth>
   );
 };
