@@ -40,7 +40,7 @@ const Report = () => {
           return <ReportCard {...data} key={`reportCard_${index}`} />;
         })
       ) : (
-        <ReportNoData>IGO 이용 기록이 없습니다!!</ReportNoData>
+        <ReportNoData>📢 IGO 이용 기록이 없습니다!!</ReportNoData>
       )}
     </ReportCardContainer>
   );
@@ -52,8 +52,8 @@ const ReportCardContainer = styled.div`
 `;
 const ReportNoData = styled.div`
   font-size: ${(props) => props.theme.fontSize.lg};
-  color: ${(props) => props.theme.color.gray};
-  padding: 30px 0;
+  color: ${(props) => props.theme.color.black};
+  padding: 100px 0;
 `;
 
 export default Report;
