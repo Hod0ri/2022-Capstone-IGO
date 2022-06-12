@@ -56,11 +56,11 @@ services:
   next:
     container_name: IGO-Web
     build:
-      context: "./Web Client/"
+      context: "./Web_Client/"
       dockerfile: "./Dockerfile"
     restart: always
     volumes:
-      - "./Web Client:/home/Web"
+      - "./Web_Client:/home/Web"
     # ports:
       # - "3000:3000"
     environment:
