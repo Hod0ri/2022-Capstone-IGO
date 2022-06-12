@@ -32,6 +32,7 @@ jobs:
       - name : next build
         run : |
           cd ./Web_Client/
+          echo "${{secrets.ENV_FILE}}" >> .env
           npm run build
       ## 빌드 파일 서버 복사
       - name: Deploy build outputs
@@ -70,7 +71,5 @@ jobs:
           script: |
             cd ~/2022-Capstone-IGO/
             git pull
-            cd ./Web_Client/
-            npm install
-            cd ~/2022-Capstone-IGO/
             docker-compose up -d
+            docker-compose restart next
