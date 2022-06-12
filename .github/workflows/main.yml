@@ -6,33 +6,64 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
-    - name: Make .env file in reomte ssh server
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: |
-          cd ~/2022-Capstone-IGO/
-          rm .env
-          echo "${{secrets.ENV_FILE}}" >> .env
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: |
-          cd ~/2022-Capstone-IGO/
-          git pull
-          docker-compose up -d
-        
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      # npm 모듈 설치
+      - name : npm install
+        run : npm install
+      # 빌드
+      - name : next build
+        run : npm run build
+
+      ## 빌드 파일 서버 복사
+      - name: Deploy build outputs
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          source: ".next/*"
+          strip_components: 1
+          target: "~/2022-Capstone-IGO/Web\ Client/igo-web/.next"
+
+     
+      #env 파일 생성
+      - name: Make .env file in reomte ssh server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ~/2022-Capstone-IGO/
+            rm .env
+            echo "${{secrets.ENV_FILE}}" >> .env
+      
+      #docker-compose up -d 로 변경사항 패치
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ~/2022-Capstone-IGO/
+            git pull
+            docker-compose up -d
