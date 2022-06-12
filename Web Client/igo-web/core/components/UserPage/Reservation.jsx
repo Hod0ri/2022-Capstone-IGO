@@ -10,7 +10,8 @@ import { useRouter } from 'next/router';
 
 const ReservationContainer = styled.div`
   border: 2px solid ${(props) => props.theme.color.gray};
-  margin-top: 25px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   padding: 20px 30px;
   display: flex;
   border-radius: 10px;

@@ -42,9 +42,14 @@ const DriveInfo = styled.div`
 const Route = ({ ...v }) => {
   const { type, mc_Arrive, mc_ArriveTime, mm_Arrive, mm_ArriveTime } = v;
   const isDriver = useRecoilValue(atomUserDriver);
-  const Arrive = type === 'home' || type === 'report' ? mc_Arrive : mm_Arrive;
+  const Arrive =
+    type === 'home' || type === 'DriverHome' || type === 'report'
+      ? mc_Arrive
+      : mm_Arrive;
   const ArriveTime =
-    type === 'home' || type === 'report' ? mc_ArriveTime : mm_ArriveTime;
+    type === 'home' || type === 'DriverHome' || type === 'report'
+      ? mc_ArriveTime
+      : mm_ArriveTime;
   let day = new Date(ArriveTime);
   const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
   let week = WEEKDAY[day.getDay()];

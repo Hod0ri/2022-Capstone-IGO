@@ -14,7 +14,7 @@ const UserPageContainer = styled.div`
 const UserPage = ({ type, confirm, ...v }) => {
   return (
     <UserPageContainer>
-      {type === 'home' || type === 'car' ? (
+      {type === 'home' || type === 'car' || type === 'DriverHome' ? (
         <Reservation type={type} confirm={confirm} {...v} />
       ) : (
         <Payment {...v} />

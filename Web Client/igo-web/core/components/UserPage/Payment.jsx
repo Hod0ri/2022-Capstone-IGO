@@ -3,15 +3,12 @@ import DriveRoute from './DriveRoute';
 import styled from 'styled-components';
 import Image from 'next/image';
 import Male from '../UserLogo/icon/male.png';
-import StateContainer from '../KakaoMap';
-import Map from '../KakaoMap';
 import Button from '../Common/Button';
 import { fetchApi } from '../../api/fetchApi';
 import { useRecoilValue } from 'recoil';
 import useLoginState from '../../hooks/useLoginState';
 import { atomMatchDetail } from '../../atoms/matchState';
 import { useRouter } from 'next/router';
-import UserLogo from '../UserLogo';
 
 const PaymentContainer = styled.div`
   display: flex;
@@ -26,7 +23,6 @@ const PaymentContainer = styled.div`
 `;
 
 const DriveRouteContainer = styled.div`
-  border-bottom: 2px solid ${(props) => props.theme.color.lightgray};
   display: flex;
   width: 100%;
   padding: 15px;
@@ -96,6 +92,7 @@ const Payment = () => {
       })
       .catch((e) => {
         e.response;
+        alert('시간을 확인해주세요!');
       });
   };
 
@@ -105,17 +102,12 @@ const Payment = () => {
         .get()
         .then((res) => {
           setData(res.data.result[0]);
-          console.log(res.data.result);
         })
         .catch((e) => {});
     };
     !isLoading && !data && getPoint();
   }, [data, isLoading]);
-  //=== Map Data Set ===
-  const [startPoint = '신도림', driverNick = '넘어오지 않음'] = [
-    mc_Arrive,
-    mc_Driver,
-  ];
+
   return (
     data && (
       <PaymentContainer>
@@ -135,9 +127,6 @@ const Payment = () => {
           </div>
           <DriveRoute size={'25px'} startPoint={mc_Arrive} />
         </DriveRouteContainer>
-        <MapContainer>
-          <Map location={startPoint} />
-        </MapContainer>
         <PaymentInfoContainer>
           <div className="paymentInfo">
             <p>보유 포인트</p>
@@ -161,8 +150,5 @@ const Payment = () => {
     )
   );
 };
-const MapContainer = styled.div`
-  width: 100%;
-  padding: 15px 0;
-`;
+
 export default Payment;
