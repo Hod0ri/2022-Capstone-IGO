@@ -10,7 +10,7 @@ import InputBox from '../Common/InputBox';
 const SignUp = () => {
   //router import
   const router = useRouter();
-
+  const [isNickUsing, setIsNickUsing] = useState('');
   //inputData
   const [inputData, setInputData] = useState({
     user_Id: '',
@@ -74,6 +74,12 @@ const SignUp = () => {
     }
   };
 
+  const onClickCheckNick = async () => {
+    await fetchAuth
+      .checkNick(inputData.user_Nick)
+      .then((res) => setIsNickUsing(res.data.isUsing))
+      .catch((e) => console.log('닉네임확인 오류 발생'));
+  };
   return (
     <SignUpContainer>
       <InputBoxContainer>
@@ -88,7 +94,16 @@ const SignUp = () => {
         />
       </InputBoxContainer>
       <InputBoxContainer>
-        <p>닉네임</p>
+        <p>
+          닉네임{' '}
+          {isNickUsing ? (
+            <span className="red">사용중인 닉네임 입니다!!!</span>
+          ) : (
+            isNickUsing === false && (
+              <span className="green">사용가능한 닉네임 입니다!!!</span>
+            )
+          )}
+        </p>
         <div className="flex">
           <InputBox
             onChange={(e) =>
@@ -96,7 +111,11 @@ const SignUp = () => {
             }
             value={inputData['user_Nick']}
           />
-          <Button color="lightgary" fontColor="gray">
+          <Button
+            color="lightgary"
+            fontColor="gray"
+            onClick={() => onClickCheckNick()}
+          >
             중복 확인
           </Button>
         </div>
@@ -201,6 +220,9 @@ const SignUpContainer = styled.div`
   }
   .red {
     color: ${(props) => props.theme.color.red};
+  }
+  .green {
+    color: ${(props) => props.theme.color.green};
   }
   .ml-30 {
     margin-left: 30px;
