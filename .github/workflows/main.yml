@@ -22,18 +22,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: Web Client/package-lock.json 
+          cache-dependency-path: Web_Client/package-lock.json 
       # npm 모듈 설치
       - name : npm install
         run : |
-          cd ./Web\ Client/
+          cd ./Web_Client/
           npm install
       # 빌드
       - name : next build
         run : |
-          cd ./Web\ Client/
+          cd ./Web_Client/
           npm run build
-
       ## 빌드 파일 서버 복사
       - name: Deploy build outputs
         uses: appleboy/scp-action@master
@@ -42,9 +41,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "./Web Client/.next/*"
+          source: "./Web_Client/.next/*"
           strip_components: 1
-          target: "~/2022-Capstone-IGO/Web\ Client/.next"
+          target: "~/2022-Capstone-IGO/Web_Client/.next"
 
      
       #env 파일 생성
