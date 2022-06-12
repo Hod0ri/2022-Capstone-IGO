@@ -70,4 +70,7 @@ jobs:
           script: |
             cd ~/2022-Capstone-IGO/
             git pull
+            cd ./Web_Client/
+            npm install
+            cd ~/2022-Capstone-IGO/
             docker-compose up -d
