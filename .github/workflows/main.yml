@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "./Web\ Client/.next/*"
+          source: "./Web Client/.next/*"
           strip_components: 1
           target: "~/2022-Capstone-IGO/Web\ Client/.next"
 
