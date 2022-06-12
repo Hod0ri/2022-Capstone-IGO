@@ -18,23 +18,29 @@ const PointPageContainer = styled.div`
 
 const PointPage = () => {
   const [point, setPoint] = useState('');
+  const getPoint = async () => {
+    await fetchApi.point
+      .get()
+      .then((res) => {
+        setPoint(res.data.result);
+      })
+      .catch((e) => {});
+  };
+
   useEffect(() => {
-    const getPoint = async () => {
-      await fetchApi.point
-        .get()
-        .then((res) => {
-          setPoint(res.data.result);
-        })
-        .catch((e) => {});
-    };
     !point && getPoint();
   }, [point]);
+
   return (
     <PointPageContainer>
-      <CurrentPoint pot_Amount={point && point[0].pot_Amount} />
+      <CurrentPoint
+        pot_Amount={point && point[0].pot_Amount}
+        onResetData={() => getPoint()}
+      />
       {point &&
-        point.map((v, index) => {
-          return <UsageHistory {...v} key={index} />;
+        point.map((v, index, arr) => {
+          if (index !== arr.length - 1)
+            return <UsageHistory {...v} key={index} />;
         })}
     </PointPageContainer>
   );

@@ -9,7 +9,7 @@ const DriverButtonContainer = styled.button`
   border-radius: 50px;
   cursor: pointer;
   background: ${(props) => props.theme.color.blue};
-  width: 360px;
+  width: 80%;
   height: 212px;
   text-align: left;
   display: inline-flex;
@@ -32,8 +32,11 @@ const DriverButtonContainer = styled.button`
   }
   .driver {
     position: absolute;
-    left: 280px;
+    left: 60%;
     top: 219px;
+    @media screen and (max-width: 500px) {
+      left: 55%;
+    }
   }
 `;
 

@@ -15,4 +15,8 @@ export const fetchAuth = {
     await axios.post(
       `https://igo.soplay.dev/api/ems?user_Name=${data.user_Name}&user_Email=${data.user_Email}&user_Phone=${data.user_Phone}`
     ),
+  checkNick: async (data) =>
+    await axios.get(`${BASE_URL}/user/check/nick`, {
+      params: { user_Nick: data },
+    }),
 };

@@ -38,6 +38,9 @@ const StyledDriverButton = styled.div`
   .DriverData {
     font-size: ${(props) => props.theme.fontSize.md};
   }
+  .NonDriverData {
+    font-size: ${(props) => props.theme.fontSize.sm};
+  }
 `;
 const NonCarPageContainer = styled.div`
   display: flex;
@@ -88,17 +91,27 @@ const Home = () => {
             <div className="DriverListContainer">
               <p className="DriverData">내가 등록한 카풀 정보</p>
             </div>
-            {matchData &&
-              matchData.data.map((v, index) => {
-                return <UserPage type={'DriverHome'} {...v} key={index} />;
-              })}
+            {matchData ? (
+              <div>
+                {' '}
+                {matchData.data.map((v, index) => {
+                  return <UserPage type={'DriverHome'} {...v} key={index} />;
+                })}
+              </div>
+            ) : (
+              <div className="DriverListContainer">
+                <p className="NonDriverData">
+                  📢 현재 등록된 카풀 목록이 없습니다.
+                </p>
+              </div>
+            )}
+            {isTrue && <StartPointInputBox setIsTrue={setIsTrue} />}
           </div>
         ) : matchData ? (
           <div>
             <div className="moreListContainer">
               <p className="moreTitle">현재 등록된 카풀 목록</p>
             </div>
-            {isTrue && <StartPointInputBox setIsTrue={setIsTrue} />}
             {matchData &&
               matchData.data.map((v, index) => {
                 return <UserPage type={'home'} {...v} key={index} />;
