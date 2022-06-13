@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { fetchApi } from '../../core/api/fetchApi';
 import Auth from '../../core/components/Common/Auth';
+import Loading from '../../core/components/Common/Loading';
 import UserPage from '../../core/components/UserPage';
 
 const CarPageContainer = styled.div`
@@ -25,11 +26,13 @@ const NonCarPageContainer = styled.div`
 `;
 const Car = () => {
   const [reservationData, setReservationData] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const getData = async () => {
       await fetchApi.match
         .get()
         .then((res) => {
+          setIsLoading(true);
           setReservationData(res.data);
         })
         .catch((e) => {
@@ -37,11 +40,13 @@ const Car = () => {
         });
     };
     !reservationData && getData();
-  }, [reservationData]);
+  }, [reservationData, isLoading]);
 
   return (
     <Auth auth={true}>
-      {reservationData ? (
+      {!isLoading ? (
+        <Loading />
+      ) : reservationData ? (
         <CarPageContainer>
           <h1>예약 확정 대기 목록</h1>
           {reservationData &&
