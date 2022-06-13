@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { atomUserDriver } from '../core/atoms/loginState';
 import { fetchApi } from '../core/api/fetchApi';
 import Auth from '../core/components/Common/Auth';
+import Loading from '../core/components/Common/Loading';
 
 const StyledDriverButton = styled.div`
   margin-top: 50px;
@@ -56,12 +57,14 @@ const Home = () => {
   const [matchData, setMatchData] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [isTrue, setIsTrue] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const userDriver = useRecoilValue(atomUserDriver);
   useEffect(() => {
     const getData = async () => {
       await fetchApi.search
         .get()
         .then((res) => {
+          setIsLoading(true);
           setMatchData(res.data);
         })
         .catch((e) => {
@@ -73,56 +76,60 @@ const Home = () => {
       await fetchApi.matchlog
         .get()
         .then((res) => {
+          setIsLoading(true);
           setMatchData(res.data);
         })
         .catch((e) => {
           console.log(e.response);
         });
     };
-
     userDriver ? getMyData() : inputValue ? getData(inputValue) : getData();
-  }, [inputValue]);
+  }, [inputValue, isLoading]);
   return (
     <Auth auth={true}>
-      <StyledDriverButton>
-        {userDriver && <DriverButton onClick={() => setIsTrue(true)} />}
-        {userDriver ? (
-          <div>
-            <div className="DriverListContainer">
-              <p className="DriverData">내가 등록한 카풀 정보</p>
-            </div>
-            {matchData ? (
-              <div>
-                {' '}
-                {matchData.data.map((v, index) => {
-                  return <UserPage type={'DriverHome'} {...v} key={index} />;
-                })}
-              </div>
-            ) : (
+      {!isLoading ? (
+        <Loading />
+      ) : (
+        <StyledDriverButton>
+          {userDriver && <DriverButton onClick={() => setIsTrue(true)} />}
+          {userDriver ? (
+            <div>
               <div className="DriverListContainer">
-                <p className="NonDriverData">
-                  📢 현재 등록된 카풀 목록이 없습니다.
-                </p>
+                <p className="DriverData">내가 등록한 카풀 정보</p>
               </div>
-            )}
-            {isTrue && <StartPointInputBox setIsTrue={setIsTrue} />}
-          </div>
-        ) : matchData ? (
-          <div>
-            <div className="moreListContainer">
-              <p className="moreTitle">현재 등록된 카풀 목록</p>
+              {matchData ? (
+                <div>
+                  {' '}
+                  {matchData.data.map((v, index) => {
+                    return <UserPage type={'DriverHome'} {...v} key={index} />;
+                  })}
+                </div>
+              ) : (
+                <div className="DriverListContainer">
+                  <p className="NonDriverData">
+                    📢 현재 등록된 카풀 목록이 없습니다.
+                  </p>
+                </div>
+              )}
+              {isTrue && <StartPointInputBox setIsTrue={setIsTrue} />}
             </div>
-            {matchData &&
-              matchData.data.map((v, index) => {
-                return <UserPage type={'home'} {...v} key={index} />;
-              })}
-          </div>
-        ) : (
-          <NonCarPageContainer>
-            <p>📢 현재 등록된 카풀 목록이 없습니다.</p>
-          </NonCarPageContainer>
-        )}
-      </StyledDriverButton>
+          ) : matchData ? (
+            <div>
+              <div className="moreListContainer">
+                <p className="moreTitle">현재 등록된 카풀 목록</p>
+              </div>
+              {matchData &&
+                matchData.data.map((v, index) => {
+                  return <UserPage type={'home'} {...v} key={index} />;
+                })}
+            </div>
+          ) : (
+            <NonCarPageContainer>
+              <p>📢 현재 등록된 카풀 목록이 없습니다.</p>
+            </NonCarPageContainer>
+          )}
+        </StyledDriverButton>
+      )}
     </Auth>
   );
 };
