@@ -8,7 +8,8 @@ export const fetchAuth = {
   create: async (data) => await axios.post(`${BASE_URL}/user`, data),
   refresh: async () => await axios.get(`${BASE_URL}/user`),
   update: async (data) => await axios.put(`${BASE_URL}/user`, data),
-  delete: async (data) => await axios.delete(`${BASE_URL}/user`, data),
+  delete: async (data) =>
+    await axios.delete(`${BASE_URL}/user`, { data: data }),
   login: async (data) => await axios.post(`${BASE_URL}/user/login`, data),
   logout: async () => await axios.get(`${BASE_URL}/user/logout`),
   findId: async (data) =>
