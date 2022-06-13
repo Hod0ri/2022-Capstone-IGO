@@ -106,6 +106,7 @@ const SignUp = () => {
         </p>
         <div className="flex">
           <InputBox
+            placeholder="ex) 아이고죽겠다"
             onChange={(e) =>
               setInputData({ ...inputData, user_Nick: e.target.value })
             }
@@ -119,15 +120,18 @@ const SignUp = () => {
             중복 확인
           </Button>
         </div>
+        <p className="creationRule">※ 특수문자 제외, 2~9글자</p>
       </InputBoxContainer>
       <InputBoxContainer>
         <p>아이디</p>
         <InputBox
+          placeholder="ex) igo8282!"
           onChange={(e) =>
             setInputData({ ...inputData, user_Id: e.target.value })
           }
           value={inputData['user_Id']}
         />
+        <p className="creationRule">※ 소문자로 시작, 숫자 포함, 5글자 이상</p>
       </InputBoxContainer>
       <InputBoxContainer>
         <p>
@@ -145,6 +149,7 @@ const SignUp = () => {
           value={inputData['user_Pw']}
         />
         <InputBox
+          placeholder="비밀번호 재입력"
           type="password"
           onChange={(e) => setCheckPw(e.target.value)}
           value={checkPw}
@@ -183,6 +188,7 @@ const SignUp = () => {
       <InputBoxContainer>
         <p>이름</p>
         <InputBox
+          placeholder="ex) 대림이"
           onChange={(e) =>
             setInputData({ ...inputData, user_Name: e.target.value })
           }
@@ -192,6 +198,7 @@ const SignUp = () => {
       <InputBoxContainer>
         <p>휴대전화</p>
         <InputBox
+          placeholder="ex) 010-1234-5678"
           type="phone"
           onChange={(e) =>
             setInputData({
@@ -253,6 +260,11 @@ const InputBoxContainer = styled.div`
     & + input {
       margin-top: 10px;
     }
+  }
+  .creationRule {
+    color: ${(props) => props.theme.color.red};
+    font-size: ${(props) => props.theme.fontSize.xs};
+    margin-top: 5px;
   }
   #radio {
     div {
