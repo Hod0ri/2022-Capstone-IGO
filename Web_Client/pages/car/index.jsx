@@ -32,12 +32,12 @@ const Car = () => {
       await fetchApi.match
         .get()
         .then((res) => {
-          setIsLoading(true);
           setReservationData(res.data);
         })
         .catch((e) => {
           console.log(e.response);
         });
+      setIsLoading(true);
     };
     !reservationData && getData();
   }, [reservationData, isLoading]);

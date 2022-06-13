@@ -64,24 +64,24 @@ const Home = () => {
       await fetchApi.search
         .get()
         .then((res) => {
-          setIsLoading(true);
           setMatchData(res.data);
         })
         .catch((e) => {
           console.log(e.response);
         });
+      setIsLoading(true);
     };
 
     const getMyData = async () => {
       await fetchApi.matchlog
         .get()
         .then((res) => {
-          setIsLoading(true);
           setMatchData(res.data);
         })
         .catch((e) => {
           console.log(e.response);
         });
+      setIsLoading(true);
     };
     userDriver ? getMyData() : inputValue ? getData(inputValue) : getData();
   }, [inputValue, isLoading]);
