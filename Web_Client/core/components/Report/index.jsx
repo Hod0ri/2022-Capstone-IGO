@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { fetchApi } from '../../api/fetchApi';
+import Loading from '../Common/Loading';
 
 import ReportCard from './ReportCard';
 import ReportState from './ReportState';
@@ -11,6 +12,7 @@ const Report = () => {
   const [fetchMatchlogData, setFetchMatchlogData] = useState('');
   const [fetchDataType, setFetchDataType] = useState('');
   const [myReportData, setMyReportData] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const getchReportLog = async () => {
       await fetchApi.issue
@@ -19,21 +21,23 @@ const Report = () => {
         .catch((e) => console.log('신고내역 없음'));
     };
     const fetchMatch = async () => {
+      setIsLoading(true);
       await fetchApi.matchlog
         .get()
         .then((res) => {
-          setFetchDataType(res.data[`mc_Driver`] ? 'mc' : 'mm');
+          setFetchDataType(res.data.data[0]['mc_Driver'] ? 'mc' : 'mm');
           setFetchMatchlogData(res.data.data);
         })
         .catch((err) => {
           console.log(err.response.data);
         });
+      setIsLoading(false);
     };
 
     !fetchMatchlogData && fetchMatch();
     !myReportData && getchReportLog();
   });
-
+  if (isLoading) return <Loading />;
   return (
     <ReportCardContainer>
       {fetchMatchlogData ? (

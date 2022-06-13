@@ -21,6 +21,9 @@ const ReportStateContainer = styled.div`
   /* display: flex; */
   width: 100%;
   height: 100%;
+  & + & {
+    margin-top: 10px;
+  }
 `;
 
 export default ReportState;
