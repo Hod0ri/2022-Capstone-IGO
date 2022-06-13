@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import UserLogo from '../core/components/UserLogo';
 import styled from 'styled-components';
 import InputBox from '../core/components/Common/InputBox';
@@ -8,8 +8,9 @@ import { atomUserNick } from '../core/atoms/loginState';
 import { checkValue } from '../core/etc/checkValue';
 import { fetchAuth } from '../core/api/fetchAuth';
 import Auth from '../core/components/Common/Auth';
+import { withRouter } from 'next/router';
 
-const Account = () => {
+const Account = ({ router }) => {
   const user_Nick = useRecoilValue(atomUserNick);
 
   const [inputData, setInputData] = useState({
@@ -61,6 +62,25 @@ const Account = () => {
     }
   };
 
+  //회원 탈퇴
+  const [deleteUser, setDeleteUser] = useState(false);
+  const [user_Pw, setUser_Pw] = useState('');
+  const onDeleteUser = async () => {
+    if (deleteUser) {
+      await fetchAuth
+        .delete({ user_Pw: user_Pw })
+        .then((res) => {
+          alert('회원탈퇴가 정상적으로 처리되었습니다.!!');
+          router.push('/');
+        })
+        .catch((e) => {
+          alert('비밀번호를 확인해주세요! ');
+        });
+    } else {
+      setDeleteUser(true);
+      alert('비밀번호를 입력해주세요!');
+    }
+  };
   return (
     <Auth auth={true}>
       <AccountContainer>
@@ -131,6 +151,18 @@ const Account = () => {
           <Button className="btn" onClick={() => onUpdateUserId()}>
             수정
           </Button>
+          <DeleteAccount visible={deleteUser}>
+            <InputBox
+              placeholder="비밀번호를 입력해주세요!"
+              value={user_Pw}
+              type="password"
+              onChange={(e) => setUser_Pw(e.target.value)}
+            />
+
+            <Button color="red" onClick={() => onDeleteUser()}>
+              회원 탈퇴
+            </Button>
+          </DeleteAccount>
         </div>
       </AccountContainer>
     </Auth>
@@ -178,5 +210,12 @@ const AccountContainer = styled.div`
     }
   }
 `;
+const DeleteAccount = styled.div`
+  margin-top: 30px;
+  input {
+    display: ${(props) => (props.visible ? 'block' : 'none')};
+    margin-bottom: 15px;
+  }
+`;
 
-export default Account;
+export default withRouter(Account);
