@@ -30,11 +30,12 @@ const Report = () => {
         })
         .catch((err) => {
           console.log(err.response.data);
+          setFetchMatchlogData(false);
         });
       setIsLoading(false);
     };
 
-    !fetchMatchlogData && fetchMatch();
+    fetchMatchlogData === '' && fetchMatch();
     !myReportData && getchReportLog();
   });
   if (isLoading) return <Loading />;
